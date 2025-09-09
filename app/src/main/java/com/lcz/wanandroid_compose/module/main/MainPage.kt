@@ -1,19 +1,39 @@
 package com.lcz.wanandroid_compose.module.main
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.lcz.wanandroid_compose.navigation.AppNavGraph
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
 import com.lcz.wanandroid_compose.navigation.app_navigateToTest
 import com.lcz.wanandroid_compose.navigation.globalNavController
+import com.lcz.wanandroid_compose.widget.BottomBar
+import com.lcz.wanandroid_compose.widget.BottomBarItem
+import kotlinx.coroutines.launch
 
 /**
  * 作者:     刘传政
@@ -24,26 +44,60 @@ import com.lcz.wanandroid_compose.navigation.globalNavController
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainPage(paramsBean:AppRoutePath.Main,modifier: Modifier = Modifier) {
+fun MainPage(paramsBean: AppRoutePath.Main, modifier: Modifier = Modifier) {
+    val bottomBarItems = listOf(
+        BottomBarItem(
+            icon = Icons.Default.Home,
+            text = "首页"
+        ),
+        BottomBarItem(
+            icon = Icons.Default.Email,
+            text = "项目"
+        ),
+        BottomBarItem(
+            icon = Icons.Default.LocationOn,
+            text = "导航"
+        ),
+        BottomBarItem(
+            icon = Icons.Default.Share,
+            text = "公众号"
+        ),
+        BottomBarItem(
+            icon = Icons.Default.Person,
+            text = "我的"
+        ),
+    )
+
+    val pagerState = rememberPagerState(initialPage = 0) { bottomBarItems.size}
+    val coroutineScope = rememberCoroutineScope()
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(text = "WanAndroid")
+        bottomBar = {
+            BottomBar(items = bottomBarItems, currentSelectIndex = pagerState.currentPage) {
+                coroutineScope.launch {
+                    pagerState.scrollToPage(it)
                 }
-            )
+            }
         }
     ) {
-        Column(
+        Box(
             modifier = Modifier
                 .padding(it)
                 .fillMaxSize()
         ) {
-            Text(text = "MainPage")
-            Button(onClick = {
-                globalNavController?.app_navigateToTest(AppRoutePath.Test(from = "MainPage"))
-            }) {
-                Text(text = "跳转")
+            HorizontalPager(
+                userScrollEnabled = false,//是否允许用户手动滑动
+                state = pagerState) {
+                when (it) {
+                    0 -> {
+                        Text(text = "首页")
+                    }
+                    1 -> {
+                        Text(text = "收藏")
+                    }
+                    2 -> {
+                        Text(text = "我的")
+                    }
+                }
             }
         }
     }
