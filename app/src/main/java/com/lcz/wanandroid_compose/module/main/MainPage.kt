@@ -1,9 +1,12 @@
 package com.lcz.wanandroid_compose.module.main
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
@@ -28,8 +31,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
 import com.lcz.wanandroid_compose.navigation.app_navigateToTest
+import com.lcz.wanandroid_compose.navigation.app_navigateToTest2
 import com.lcz.wanandroid_compose.navigation.globalNavController
 import com.lcz.wanandroid_compose.widget.BottomBar
 import com.lcz.wanandroid_compose.widget.BottomBarItem
@@ -79,9 +85,12 @@ fun MainPage(paramsBean: AppRoutePath.Main, modifier: Modifier = Modifier) {
             }
         }
     ) {
+        it
         Box(
             modifier = Modifier
-                .padding(it)
+                .statusBarsPadding()
+                .navigationBarsPadding()
+//                .padding(it)
                 .fillMaxSize()
         ) {
             HorizontalPager(
@@ -90,6 +99,7 @@ fun MainPage(paramsBean: AppRoutePath.Main, modifier: Modifier = Modifier) {
                 when (it) {
                     0 -> {
                         Text(text = "首页")
+
                     }
                     1 -> {
                         Text(text = "收藏")

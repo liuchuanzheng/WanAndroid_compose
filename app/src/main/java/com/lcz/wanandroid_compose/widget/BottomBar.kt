@@ -1,6 +1,7 @@
 package com.lcz.wanandroid_compose.widget
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,34 +35,44 @@ fun BottomBar(
     currentSelectIndex: Int,
     onSelectListener: (Int) -> Unit
 ) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .shadow(elevation = 8.dp)
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(vertical = 5.dp)
-            .navigationBarsPadding()
-    ) {
-        items.forEachIndexed { index, it ->
-            var selected = currentSelectIndex == index
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .weight(1f)
-                    .clickable {
-                        onSelectListener(index)
-                    }
-            ) {
-                Icon(
-                    imageVector = it.icon,
-                    contentDescription = null,
-                    tint = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = it.text,
-                    color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
-                )
+    Column {
+        // 顶部边框
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(0.5.dp)
+                .background(MaterialTheme.colorScheme.onSurfaceVariant)
+        )
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+//                .border(1.dp, MaterialTheme.colorScheme.onSurfaceVariant)
+                //            .shadow(elevation = 8.dp)
+                //            .background(MaterialTheme.colorScheme.surface)
+                .padding(vertical = 5.dp)
+                .navigationBarsPadding()
+        ) {
+            items.forEachIndexed { index, it ->
+                var selected = currentSelectIndex == index
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable {
+                            onSelectListener(index)
+                        }
+                ) {
+                    Icon(
+                        imageVector = it.icon,
+                        contentDescription = null,
+                        tint = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = it.text,
+                        color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
         }
     }

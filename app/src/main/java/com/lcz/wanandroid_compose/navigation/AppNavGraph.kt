@@ -2,13 +2,17 @@ package com.lcz.wanandroid_compose.navigation
 
 import android.R.attr.data
 import android.os.Bundle
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -71,10 +75,14 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
         }
         composable<AppRoutePath.Test2> { backStackEntry ->
             val paramsBean = backStackEntry.toRoute<AppRoutePath.Test2>()
-            Button(modifier = Modifier.padding(vertical = 100.dp), onClick = {
-
-            }) {
-                Text(text = "当前test2")
+            Scaffold (bottomBar = {
+                Text("bar",modifier = Modifier.height(100.dp).background(Color.Red))
+            }){
+                it
+                Button(modifier = Modifier.padding(vertical = 100.dp), onClick = {
+                }) {
+                    Text(text = "当前test2")
+                }
             }
         }
     }
