@@ -48,7 +48,7 @@ fun BottomBar(
                 .fillMaxWidth()
 //                .border(1.dp, MaterialTheme.colorScheme.onSurfaceVariant)
                 //            .shadow(elevation = 8.dp)
-                //            .background(MaterialTheme.colorScheme.surface)
+//                            .background(MaterialTheme.colorScheme.surface)
                 .padding(vertical = 5.dp)
                 .navigationBarsPadding()
         ) {

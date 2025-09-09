@@ -74,7 +74,7 @@ fun MainPage(paramsBean: AppRoutePath.Main, modifier: Modifier = Modifier) {
         ),
     )
 
-    val pagerState = rememberPagerState(initialPage = 0) { bottomBarItems.size}
+    val pagerState = rememberPagerState(initialPage = 0) { bottomBarItems.size }
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
         bottomBar = {
@@ -85,27 +85,58 @@ fun MainPage(paramsBean: AppRoutePath.Main, modifier: Modifier = Modifier) {
             }
         }
     ) {
-        it
         Box(
             modifier = Modifier
-                .statusBarsPadding()
-                .navigationBarsPadding()
-//                .padding(it)
+//                .statusBarsPadding()
+//                .navigationBarsPadding()
+                .padding(bottom = it.calculateBottomPadding())//这里只添加bottom,让内容区域在底部导航栏上方,否则内容区域是被底部导航栏盖住的
                 .fillMaxSize()
         ) {
             HorizontalPager(
                 userScrollEnabled = false,//是否允许用户手动滑动
-                state = pagerState) {
+                state = pagerState
+            ) {
                 when (it) {
                     0 -> {
-                        Text(text = "首页")
+                        Text(text = "首页", modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.Red))
+                    }
 
-                    }
                     1 -> {
-                        Text(text = "收藏")
+                        Text(
+                            text = "项目",
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(Color.Green)
+                        )
                     }
+
                     2 -> {
-                        Text(text = "我的")
+                        Text(
+                            text = "导航",
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(Color.Blue)
+                        )
+                    }
+
+                    3 -> {
+                        Text(
+                            text = "公众号",
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(Color.Yellow)
+                        )
+                    }
+
+                    4 -> {
+                        Text(
+                            text = "我的",
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(Color.Magenta)
+                        )
                     }
                 }
             }
