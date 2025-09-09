@@ -1,4 +1,4 @@
-package com.lcz.wanandroid_compose.ui.theme
+package com.lcz.wanandroid_compose.theme
 
 import androidx.compose.ui.graphics.Color
 
