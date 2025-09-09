@@ -40,7 +40,12 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
         val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
             val currentRoute = destination.route ?: "unknown_route"
             val previousRoute = previousDestination ?: "app_start"
-            LogUtil.i(TAG, "导航路径：${previousRoute.split('.').last()} → ${currentRoute.split('.').last()}")
+            LogUtil.i(
+                TAG,
+                "导航路径：${previousRoute.split('.').last().split("?").first()} → ${
+                    currentRoute.split('.').last().split("?").first()
+                }"
+            )
             previousDestination = currentRoute
         }
 
@@ -87,11 +92,11 @@ fun NavHostController.app_navigateToTest2(paramsBean: AppRoutePath.Test2) {
 
 object AppRoutePath {
     @Serializable
-    data class Main(val from: String = "")
+    data class Main(val description: String = "主页", val from: String = "")
 
     @Serializable
-    data class Test(val from: String = "")
+    data class Test(val description: String = "测试页", val from: String = "")
 
     @Serializable
-    data class Test2(val from: String = "")
+    data class Test2(val description: String = "测试页2", val from: String = "")
 }
