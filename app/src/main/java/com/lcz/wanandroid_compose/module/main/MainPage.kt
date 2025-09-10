@@ -33,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.lcz.wanandroid_compose.module.mine.widget.MineWidget
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
 import com.lcz.wanandroid_compose.navigation.app_navigateToTest
 import com.lcz.wanandroid_compose.navigation.app_navigateToTest2
@@ -131,12 +132,7 @@ fun MainPage(paramsBean: AppRoutePath.Main, modifier: Modifier = Modifier) {
                     }
 
                     4 -> {
-                        Text(
-                            text = "我的",
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(Color.Magenta)
-                        )
+                        MineWidget()
                     }
                 }
             }

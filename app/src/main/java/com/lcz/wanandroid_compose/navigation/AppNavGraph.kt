@@ -20,6 +20,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.lcz.wanandroid_compose.module.login.LoginPage
 import com.lcz.wanandroid_compose.module.main.MainPage
 import com.lcz.wanandroid_compose.util.LogUtil
 import kotlinx.serialization.Serializable
@@ -85,6 +86,10 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
                 }
             }
         }
+        composable<AppRoutePath.Login> { backStackEntry ->
+            val paramsBean = backStackEntry.toRoute<AppRoutePath.Login>()
+            LoginPage()
+        }
     }
 }
 
@@ -94,6 +99,10 @@ fun NavHostController.app_navigateToTest(paramsBean: AppRoutePath.Test) {
 }
 
 fun NavHostController.app_navigateToTest2(paramsBean: AppRoutePath.Test2) {
+    this.navigate(paramsBean)
+    LogUtil.i(TAG, "导航传递参数:${paramsBean}")
+}
+fun NavHostController.app_navigateToLogin(paramsBean: AppRoutePath.Login) {
     this.navigate(paramsBean)
     LogUtil.i(TAG, "导航传递参数:${paramsBean}")
 }
@@ -107,4 +116,6 @@ object AppRoutePath {
 
     @Serializable
     data class Test2(val description: String = "测试页2", val from: String = "")
+    @Serializable
+    data class Login(val description: String = "登录页", val from: String = "")
 }

@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.implementation
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -48,6 +50,9 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.coil.compose)  // 添加Coil Compose库
+    implementation ("androidx.compose.material:material-icons-extended")//谷歌官方的图标扩展库。会增大apk体积。一般商业项目不用，因为图标也不符合公司ui设计
+    //以下都是测试相关的
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
