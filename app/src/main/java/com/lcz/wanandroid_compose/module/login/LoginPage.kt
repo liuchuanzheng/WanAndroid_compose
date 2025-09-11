@@ -42,6 +42,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.lcz.wanandroid_compose.navigation.globalNavController
 import com.lcz.wanandroid_compose.theme.WanAndroid_composeTheme
 import com.lcz.wanandroid_compose.util.LogUtil
+import com.lcz.wanandroid_compose.widget.LodingDialog
 
 /**
  * 作者:     刘传政
@@ -63,6 +64,7 @@ fun LoginPage() {
     val usernameHasInteracted = remember { mutableStateOf(false) }
     val passwordHasInteracted = remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
+    val showLoading = viewModel.isLoading.collectAsState()
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -157,6 +159,10 @@ fun LoginPage() {
             Spacer(modifier = Modifier.height(50.dp))
             Button(
                 modifier = Modifier.fillMaxWidth(),
+                enabled = username.value.isNotEmpty()
+                        && password.value.isNotEmpty()
+                        && username.value.length >= 6
+                        && password.value.length >= 6,
                 onClick = {
                     // 登录逻辑
                     viewModel.login()
@@ -171,6 +177,9 @@ fun LoginPage() {
                 fontWeight = FontWeight.Normal, color = Color.Gray
             )
 
+        }
+        if (showLoading.value) {
+            LodingDialog()
         }
     }
 

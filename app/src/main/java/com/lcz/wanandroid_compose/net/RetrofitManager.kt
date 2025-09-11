@@ -1,6 +1,7 @@
 package com.lcz.wanandroid_compose.net
 
 import android.content.Context
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
@@ -53,6 +54,7 @@ object RetrofitManager {
             // 请求超时时间
             .connectTimeout(TIME_OUT_SECONDS.toLong(), TimeUnit.SECONDS)
             .cookieJar(cookieJar)
+            .addInterceptor(ChuckerInterceptor(appContext))//网络监控库，方便调试
             .build()
 
     /**

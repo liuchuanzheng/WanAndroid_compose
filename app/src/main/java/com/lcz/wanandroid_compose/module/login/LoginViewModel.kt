@@ -23,8 +23,11 @@ class LoginViewModel : ViewModel() {
     val userName = _userName.asStateFlow()//一个公共的 这个转换类型是为了不让外界修改
     private val _password = MutableStateFlow("")
     val password = _password.asStateFlow()
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
     fun login() {
         viewModelScope.launch {
+            _isLoading.update { true }
             val userName = _userName.value
             val password = _password.value
             try {
@@ -32,7 +35,7 @@ class LoginViewModel : ViewModel() {
             } catch (e: Exception) {
                 e.printStackTrace()
             } finally {
-
+                _isLoading.update { false }
             }
         }
 

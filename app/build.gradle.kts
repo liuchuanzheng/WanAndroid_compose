@@ -1,4 +1,5 @@
 import org.gradle.kotlin.dsl.implementation
+import org.gradle.kotlin.dsl.releaseImplementation
 
 plugins {
     alias(libs.plugins.android.application)
@@ -57,6 +58,8 @@ dependencies {
     implementation(libs.converterGson)
     implementation(libs.persistentCookieJar)
     implementation(libs.logging.interceptor)
+    debugImplementation("com.github.chuckerteam.chucker:library:3.5.2")
+    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:3.5.2")
     //以下都是测试相关的
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
