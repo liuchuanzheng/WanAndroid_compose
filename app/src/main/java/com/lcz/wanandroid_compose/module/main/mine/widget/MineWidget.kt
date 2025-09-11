@@ -1,4 +1,4 @@
-package com.lcz.wanandroid_compose.module.mine.widget
+package com.lcz.wanandroid_compose.module.main.mine.widget
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
