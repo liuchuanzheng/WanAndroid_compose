@@ -1,9 +1,5 @@
 package com.lcz.wanandroid_compose.module.login
 
-import android.R.attr.label
-import android.R.attr.password
-import android.R.attr.singleLine
-import android.R.attr.value
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
@@ -12,14 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material.icons.rounded.Visibility
 import androidx.compose.material.icons.twotone.Visibility
 import androidx.compose.material.icons.twotone.VisibilityOff
 import androidx.compose.material3.Button
@@ -30,15 +21,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SegmentedButtonDefaults.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
@@ -48,22 +38,27 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.lcz.wanandroid_compose.navigation.globalNavController
 import com.lcz.wanandroid_compose.theme.WanAndroid_composeTheme
+import com.lcz.wanandroid_compose.util.LogUtil
 
 /**
  * 作者:     刘传政
  * 创建时间:  17:24 2025/9/10
  * QQ:      1052374416
  * 电话:     18501231486
- * 描述:
+ * 描述:     登录页的代码是比较原始的，尽量不封装，包括viewmodel.后续页面会封装。以便后续对比
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginPage() {
+    // 添加 ViewModel 实例
+    val viewModel: LoginViewModel = viewModel()
+    LogUtil.i(msg = "viewmodel实例:${viewModel}")
     // 添加输入状态
-    val username = remember { mutableStateOf("") }
-    val password = remember { mutableStateOf("") }
+    val username = viewModel.userName.collectAsState()
+    val password = viewModel.password.collectAsState()
     val showPassword = remember { mutableStateOf(false) }
     val usernameHasInteracted = remember { mutableStateOf(false) }
     val passwordHasInteracted = remember { mutableStateOf(false) }
@@ -72,7 +67,7 @@ fun LoginPage() {
         topBar = {
             CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    containerColor = MaterialTheme.colorScheme.background,
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
                 title = { Text(text = "登录") }, navigationIcon = {
@@ -107,7 +102,7 @@ fun LoginPage() {
                 modifier = Modifier.fillMaxWidth(),
                 value = username.value,
                 onValueChange = {
-                    username.value = it
+                    viewModel.updateUsername(it)
                     usernameHasInteracted.value = true
                 },
                 label = { Text(text = "账号") },
@@ -129,7 +124,10 @@ fun LoginPage() {
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = password.value,
-                onValueChange = { password.value = it },
+                onValueChange = {
+                    viewModel.updatePassword(it)
+                    passwordHasInteracted.value = true
+                },
                 label = { Text(text = "密码") },
                 keyboardOptions = KeyboardOptions.Default.copy(
                     imeAction = ImeAction.Done // 完成
@@ -161,6 +159,7 @@ fun LoginPage() {
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
                     // 登录逻辑
+                    viewModel.login()
                 }
             ) {
                 Text(text = "登录")
