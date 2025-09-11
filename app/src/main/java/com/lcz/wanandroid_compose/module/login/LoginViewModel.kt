@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lcz.wanandroid_compose.base.BaseViewModel
 import com.lcz.wanandroid_compose.data.repository.CommonRepository
+import com.lcz.wanandroid_compose.util.LogUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

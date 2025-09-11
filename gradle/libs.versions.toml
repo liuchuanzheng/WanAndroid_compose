@@ -11,7 +11,7 @@ composeBom = "2024.09.00"
 navigationCompose = "2.9.3"
 coil = "2.5.0"  # 添加Coil版本号
 retrofit = "3.0.0"
-logging-interceptor = "5.1.0"
+logging-interceptor = "4.10.0"
 persistentCookieJar = "v1.0.1"
 
 [libraries]
