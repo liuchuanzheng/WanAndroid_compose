@@ -42,6 +42,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.lcz.wanandroid_compose.navigation.globalNavController
 import com.lcz.wanandroid_compose.theme.WanAndroid_composeTheme
 import com.lcz.wanandroid_compose.util.LogUtil
+import com.lcz.wanandroid_compose.util.ToastUtil
 import com.lcz.wanandroid_compose.widget.LodingDialog
 
 /**
@@ -172,7 +173,11 @@ fun LoginPage() {
             }
             Spacer(modifier = Modifier.height(20.dp))
             Text(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .clickable {
+                        ToastUtil.showNotDev()
+                    },
                 text = "注册账号", fontSize = 16.sp,
                 fontWeight = FontWeight.Normal, color = Color.Gray
             )

@@ -1,6 +1,7 @@
 package com.lcz.wanandroid_compose.data.repository
 
 import com.lcz.wanandroid_compose.base.BaseNetResponseBean
+import com.lcz.wanandroid_compose.module.login.bean.LoginResponseBean
 import com.lcz.wanandroid_compose.net.CommonService
 import com.lcz.wanandroid_compose.net.RetrofitManager
 import kotlin.getValue
@@ -21,7 +22,7 @@ object CommonRepository {
         RetrofitManager.getService(CommonService::class.java)
     }
 
-    suspend fun login(username: String, password: String): BaseNetResponseBean<*> {
+    suspend fun login(username: String, password: String): BaseNetResponseBean<LoginResponseBean> {
         return commonService.login(username, password)
     }
 

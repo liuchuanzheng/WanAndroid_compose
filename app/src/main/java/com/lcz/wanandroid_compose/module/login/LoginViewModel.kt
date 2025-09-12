@@ -2,9 +2,14 @@ package com.lcz.wanandroid_compose.module.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lcz.wanandroid_compose.MyApp
 import com.lcz.wanandroid_compose.base.BaseViewModel
+import com.lcz.wanandroid_compose.constant.MyConstant
 import com.lcz.wanandroid_compose.data.repository.CommonRepository
+import com.lcz.wanandroid_compose.data.repository.UserManager
+import com.lcz.wanandroid_compose.navigation.globalNavController
 import com.lcz.wanandroid_compose.util.LogUtil
+import com.lcz.wanandroid_compose.util.ToastUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,14 +37,26 @@ class LoginViewModel : ViewModel() {
             val password = _password.value
             try {
                 var responseBean = CommonRepository.login(userName, password)
+                if (responseBean.errorCode == MyConstant.Net.CODE_SUCCESS) {
+                    //这里写死头像  因为登录后返回的头像是个空字符串
+                    responseBean.data?.icon = "https://img1.baidu.com/it/u=1221952588,3009131272&fm=253&app=138&f=JPEG?w=500&h=500"
+                    UserManager.getInstance().saveUser(responseBean.data)
+                    MyApp.myAppViewModel.updateUser(responseBean.data!!)
+                    ToastUtil.showShort("登录成功")
+                    globalNavController?.popBackStack()
+                } else {
+                    ToastUtil.showShort("登录失败")
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
+                ToastUtil.showLong("${e.message}")
             } finally {
                 _isLoading.update { false }
             }
         }
 
     }
+
     fun updateUsername(value: String) {
         _userName.update { value }
     }

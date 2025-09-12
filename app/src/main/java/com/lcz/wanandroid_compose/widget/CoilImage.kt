@@ -3,6 +3,7 @@ package com.lcz.wanandroid_compose.widget
 import android.R
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoStories
+import androidx.compose.material.icons.filled.HourglassEmpty
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -49,7 +50,7 @@ fun CoilImage(
         modifier = modifier,
         contentDescription = contentDescription,
 //        placeholder = placeholder ?: painterResource(id = (R.drawable.ic_menu_report_image)),
-        placeholder = placeholder ?: rememberVectorPainter(Icons.Default.Image),
+        placeholder = placeholder ?: rememberVectorPainter(Icons.Default.HourglassEmpty),
         error = error,
         fallback = fallback,
         onLoading = onLoading,
