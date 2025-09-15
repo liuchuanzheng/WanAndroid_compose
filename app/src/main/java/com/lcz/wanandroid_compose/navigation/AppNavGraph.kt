@@ -1,7 +1,5 @@
 package com.lcz.wanandroid_compose.navigation
 
-import android.R.attr.data
-import android.os.Bundle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -10,7 +8,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -20,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.lcz.wanandroid_compose.module.coin.MyCoinHistoryPage
 import com.lcz.wanandroid_compose.module.login.LoginPage
 import com.lcz.wanandroid_compose.module.main.MainPage
 import com.lcz.wanandroid_compose.util.LogUtil
@@ -90,6 +88,11 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
             val paramsBean = backStackEntry.toRoute<AppRoutePath.Login>()
             LoginPage()
         }
+        composable<AppRoutePath.MyCoinHistory> { backStackEntry ->
+            val paramsBean = backStackEntry.toRoute<AppRoutePath.MyCoinHistory>()
+            MyCoinHistoryPage()
+        }
+
     }
 }
 
@@ -106,6 +109,10 @@ fun NavHostController.app_navigateToLogin(paramsBean: AppRoutePath.Login) {
     this.navigate(paramsBean)
     LogUtil.i(TAG, "导航传递参数:${paramsBean}")
 }
+fun NavHostController.app_navigateToMyCoinHistory(paramsBean: AppRoutePath.MyCoinHistory) {
+    this.navigate(paramsBean)
+    LogUtil.i(TAG, "导航传递参数:${paramsBean}")
+}
 
 object AppRoutePath {
     @Serializable
@@ -118,4 +125,6 @@ object AppRoutePath {
     data class Test2(val description: String = "测试页2", val from: String = "")
     @Serializable
     data class Login(val description: String = "登录页", val from: String = "")
+    @Serializable
+    data class MyCoinHistory(val description: String = "我的积分", val from: String = "")
 }

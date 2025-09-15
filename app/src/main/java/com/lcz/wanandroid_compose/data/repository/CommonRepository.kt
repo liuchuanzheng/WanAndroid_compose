@@ -1,8 +1,11 @@
 package com.lcz.wanandroid_compose.data.repository
 
 import com.lcz.wanandroid_compose.base.BaseNetResponseBean
+import com.lcz.wanandroid_compose.base.BasePageResponseBean
+import com.lcz.wanandroid_compose.module.coin.data.MyCoinHistoryResponseBean
 import com.lcz.wanandroid_compose.module.login.bean.LoginResponseBean
-import com.lcz.wanandroid_compose.net.CommonService
+import com.lcz.wanandroid_compose.module.main.mine.bean.MyCoinResponseBean
+import com.lcz.wanandroid_compose.net.CommonApiService
 import com.lcz.wanandroid_compose.net.RetrofitManager
 import kotlin.getValue
 import kotlin.jvm.java
@@ -19,11 +22,22 @@ import kotlin.jvm.java
  */
 object CommonRepository {
     private val commonService by lazy {
-        RetrofitManager.getService(CommonService::class.java)
+        RetrofitManager.getService(CommonApiService::class.java)
     }
 
     suspend fun login(username: String, password: String): BaseNetResponseBean<LoginResponseBean> {
         return commonService.login(username, password)
+    }
+
+    suspend fun getMyCoin(): BaseNetResponseBean<MyCoinResponseBean> {
+        return commonService.getMyCoin()
+    }
+
+    suspend fun getMyCoinHistory(
+        pageNo: Int,
+        page_size: Int
+    ): BaseNetResponseBean<BasePageResponseBean<MyCoinHistoryResponseBean>> {
+        return commonService.getMyCoinHistory(pageNo, page_size)
     }
 
 }

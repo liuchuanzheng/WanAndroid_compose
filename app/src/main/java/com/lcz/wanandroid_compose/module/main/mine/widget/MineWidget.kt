@@ -37,6 +37,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,13 +48,22 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.lcz.wanandroid_compose.MyApp
+import com.lcz.wanandroid_compose.MyAppViewModel
 import com.lcz.wanandroid_compose.R
+import com.lcz.wanandroid_compose.module.login.LoginPage
+import com.lcz.wanandroid_compose.module.login.LoginViewModel
+import com.lcz.wanandroid_compose.module.login.bean.LoginResponseBean
+import com.lcz.wanandroid_compose.module.main.mine.viewmodel.MineWidgetViewModel
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
 import com.lcz.wanandroid_compose.navigation.app_navigateToLogin
+import com.lcz.wanandroid_compose.navigation.app_navigateToMyCoinHistory
 import com.lcz.wanandroid_compose.navigation.globalNavController
+import com.lcz.wanandroid_compose.theme.WanAndroid_composeTheme
 import com.lcz.wanandroid_compose.widget.CoilImage
 
 /**
@@ -65,13 +75,20 @@ import com.lcz.wanandroid_compose.widget.CoilImage
  */
 @Composable
 fun MineWidget() {
+    // 添加 ViewModel 实例
+    val viewModel: MineWidgetViewModel = viewModel()
+    val coinCount = viewModel.coinCount.collectAsState()
     val user = MyApp.myAppViewModel.user.collectAsState()
+    LaunchedEffect(Unit) {
+        viewModel.netGetMyCoin()
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
             .padding(horizontal = 16.dp)
     ) {
+        Spacer(modifier = Modifier.height(20.dp))
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -132,20 +149,31 @@ fun MineWidget() {
                     .background(Color.White)
                     .height(50.dp)
                     .padding(horizontal = 16.dp, vertical = 5.dp)
+                    .clickable {
+                        globalNavController?.app_navigateToMyCoinHistory(AppRoutePath.MyCoinHistory())
+                    }
 
             ) {
                 Icon(imageVector = Icons.TwoTone.ControlCamera, contentDescription = null)
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(text = "积分", fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.weight(1f))
+                Text(text = "${coinCount.value}", fontSize = 14.sp, fontWeight = FontWeight.W400)
                 Icon(imageVector = Icons.TwoTone.ArrowForwardIos, contentDescription = null)
             }
-            HorizontalDivider(
-                color = Color.LightGray.copy(alpha = 0.5f),
-                thickness = 0.5.dp,
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-            )
+                    .background(Color.White)
+            ) {
+                HorizontalDivider(
+                    color = Color.LightGray.copy(alpha = 0.5f),
+                    thickness = 0.5.dp,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                )
+            }
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -162,12 +190,20 @@ fun MineWidget() {
                 Spacer(modifier = Modifier.weight(1f))
                 Icon(imageVector = Icons.TwoTone.ArrowForwardIos, contentDescription = null)
             }
-            HorizontalDivider(
-                color = Color.LightGray.copy(alpha = 0.5f),
-                thickness = 0.5.dp,
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-            )
+                    .background(Color.White)
+            ) {
+                HorizontalDivider(
+                    color = Color.LightGray.copy(alpha = 0.5f),
+                    thickness = 0.5.dp,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                )
+            }
+
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
@@ -183,12 +219,19 @@ fun MineWidget() {
                 Spacer(modifier = Modifier.weight(1f))
                 Icon(imageVector = Icons.TwoTone.ArrowForwardIos, contentDescription = null)
             }
-            HorizontalDivider(
-                color = Color.LightGray.copy(alpha = 0.5f),
-                thickness = 0.5.dp,
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-            )
+                    .background(Color.White)
+            ) {
+                HorizontalDivider(
+                    color = Color.LightGray.copy(alpha = 0.5f),
+                    thickness = 0.5.dp,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                )
+            }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
@@ -225,5 +268,22 @@ fun MineWidget() {
             }
         }
 
+    }
+}
+
+//这里预览失败。需要研究下带有viewmodel的preview如何加载。
+@Preview
+@Composable
+private fun MineWidgetPreview() {
+    MyApp.myAppViewModel = viewModel<MyAppViewModel>()
+    // 添加预览用的模拟数据
+    val user = LoginResponseBean().apply {
+        id = 123
+        nickname = "预览用户"
+        icon = ""
+    }
+    MyApp.myAppViewModel.updateUser(user)
+    WanAndroid_composeTheme {
+        MineWidget()
     }
 }

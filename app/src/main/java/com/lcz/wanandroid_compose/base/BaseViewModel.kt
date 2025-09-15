@@ -2,10 +2,18 @@ package com.lcz.wanandroid_compose.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lcz.wanandroid_compose.constant.MyConstant
+import com.lcz.wanandroid_compose.util.DataWrapper
+import com.lcz.wanandroid_compose.util.LogUtil
+import com.lcz.wanandroid_compose.util.ToastUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 /**
  * 作者:     刘传政
@@ -16,56 +24,154 @@ import kotlinx.coroutines.launch
  */
 abstract class BaseViewModel : ViewModel() {
 
-    // 加载状态管理
-    private val _loading = MutableStateFlow(false)
-    val loading: StateFlow<Boolean> = _loading
+    // loading框状态管理，一般就是ui层监听，showDialog
+    protected val _showLoadingDialog = MutableStateFlow(false)
+    val showLoadingDialog: StateFlow<Boolean> = _showLoadingDialog
+    //当连续发送相同值时会被合并,即使对象是新建的。要让相同值不合并，可以通过添加版本号或时间戳包装数据
+    protected var version = 0 // 版本计数器
+    // 错误信息管理,一般就是ui层监听，toast提示错误信息
+    protected val _error = MutableStateFlow(DataWrapper<String>(data = ""))
+    val error: StateFlow<DataWrapper<String>> = _error
 
-    // 错误信息管理
-    private val _error = MutableStateFlow<String?>(null)
-    val error: StateFlow<String?> = _error
 
-    // 页面状态管理
-    private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
-    val uiState: StateFlow<UiState> = _uiState
-
-    // 分页加载状态
-    private val _pageState = MutableStateFlow(PageState())
-    val pageState: StateFlow<PageState> = _pageState
-
-    // 安全执行协程
-    protected fun launch(
-        showLoading: Boolean = true,
-        block: suspend CoroutineScope.() -> Unit
-    ) = viewModelScope.launch {
-        try {
-            if (showLoading) _loading.value = true
-            block()
-        } catch (e: Exception) {
-            _error.value = e.parseError()
-            _uiState.value = UiState.Error(e)
-        } finally {
-            if (showLoading) _loading.value = false
+    // 分页状态管理
+    protected val _pageState = MutableStateFlow(PageState())
+    val pageState = _pageState.asStateFlow()
+    init {
+        viewModelScope.launch {
+            _error
+                .drop(1)// 跳过初始化的空值
+                .collect {
+                ToastUtil.showShort(it.data)
+            }
         }
     }
 
-    // 页面状态定义
-    sealed class UiState {
-        object Loading : UiState()
-        object Empty : UiState()
-        class Error(val exception: Throwable) : UiState()
-        object Success : UiState()
+    // 安全执行协程
+    protected fun safeLaunch(
+        showLoadingDialog: Boolean = true,
+        tryBlock: suspend CoroutineScope.() -> Unit,
+        catchBlock: suspend CoroutineScope.(Exception, String) -> Unit = { e, msg -> },
+        finallyBlock: suspend CoroutineScope.() -> Unit = {}
+    ) = viewModelScope.launch {
+        try {
+            if (showLoadingDialog) _showLoadingDialog.value = true
+            tryBlock()
+        } catch (e: Exception) {
+            _error.value = DataWrapper(e.parseError(), ++version)
+            catchBlock(e, _error.value.data)
+            LogUtil.e(
+                tr = e,
+                tag = "BaseViewModel",
+                msg = e.message ?: "未知错误"
+            )
+        } finally {
+            if (showLoadingDialog) _showLoadingDialog.value = false
+            finallyBlock()
+        }
     }
 
-    // 分页状态
+    fun <T> safeLaunchWithPage(
+        showLoadingDialog: Boolean = true,
+        isRefresh: Boolean,//是否是下拉刷新
+        tryBlock: suspend CoroutineScope.(Int) -> BaseNetResponseBean<BasePageResponseBean<T>>,
+        catchBlock: suspend CoroutineScope.(Exception, String) -> Unit = { e, msg -> },
+        finallyBlock: suspend CoroutineScope.() -> Unit = {},
+        onSuccessBlock: (List<T>) -> Unit = {},
+    ) = viewModelScope.launch {
+        try {
+            if (showLoadingDialog) _showLoadingDialog.value = true
+            if (isRefresh) {
+                if (_pageState.value.isRefreshing) {
+                    return@launch
+                }
+                _pageState.value = _pageState.value.copy(isRefreshing = true)
+            } else {
+                if (_pageState.value.isLoadingMore || !_pageState.value.hasMore || _pageState.value.isRefreshing) {
+                    return@launch
+                }
+                _pageState.value = _pageState.value.copy(isLoadingMore = true)
+            }
+            var pageNo = _pageState.value.currentPage //这是临时页码。是否更新pageState的页面要看请求结果是否符合要求。
+            if (isRefresh) {
+                pageNo = 1
+            } else {
+                pageNo++
+            }
+            var responseBean = tryBlock(pageNo)
+            checkResponseCode(
+                responseBean,
+            ) {
+                it?.let {
+                    if (it.datas?.isNotEmpty() == true) {
+                        //列表不空
+                        if (isRefresh) {
+                            _pageState.value = _pageState.value.copy(
+                                currentPage = pageNo,
+                                hasMore = true,
+                            )
+                        } else {
+                            _pageState.value = _pageState.value.copy(
+                                currentPage = pageNo,
+                            )
+                        }
+                        onSuccessBlock(it.datas)
+                    } else {
+                        if (isRefresh) {
+
+                        } else {
+                            _pageState.value = _pageState.value.copy(
+                                hasMore = false,
+                            )
+                        }
+                    }
+
+
+                }
+            }
+        } catch (e: Exception) {
+            _error.value = DataWrapper(e.parseError(), ++version)
+            catchBlock(e, _error.value.data)
+            LogUtil.e(
+                tr = e,
+                tag = "BaseViewModel",
+                msg = e.message ?: "未知错误"
+            )
+        } finally {
+            if (showLoadingDialog) _showLoadingDialog.value = false
+            _pageState.value = _pageState.value.copy(isRefreshing = false, isLoadingMore = false)
+            finallyBlock()
+        }
+    }
+
+
+
+    // 分页状态管理
     data class PageState(
+        val isRefreshing: Boolean = false,
+        val isLoadingMore: Boolean = false,
+        val hasMore: Boolean = true,
         val currentPage: Int = 1,
-        val hasMore: Boolean = false
+        val PAGE_SIZE: Int = 10,
     )
+
+    fun <T> checkResponseCode(
+        responseBean: BaseNetResponseBean<T>,
+        errorBlock: () -> Unit = {},
+        okBlock: (T?) -> Unit
+    ) {
+        if (responseBean.errorCode == MyConstant.Net.CODE_SUCCESS) {
+            okBlock.invoke(responseBean.data)
+        } else {
+            errorBlock.invoke()
+        }
+    }
+
 }
 
 // 错误信息解析扩展函数
 private fun Throwable.parseError(): String = when (this) {
-    is java.net.UnknownHostException -> "网络连接异常"
-    is java.net.SocketTimeoutException -> "请求超时"
+    is UnknownHostException -> "网络连接异常"
+    is SocketTimeoutException -> "请求超时"
     else -> message ?: "未知错误"
 }
