@@ -7,7 +7,9 @@ import com.lcz.wanandroid_compose.util.DataWrapper
 import com.lcz.wanandroid_compose.util.LogUtil
 import com.lcz.wanandroid_compose.util.ToastUtil
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.drop
@@ -30,8 +32,11 @@ abstract class BaseViewModel : ViewModel() {
     //当连续发送相同值时会被合并,即使对象是新建的。要让相同值不合并，可以通过添加版本号或时间戳包装数据
     protected var version = 0 // 版本计数器
     // 错误信息管理,一般就是ui层监听，toast提示错误信息
-    protected val _error = MutableStateFlow(DataWrapper<String>(data = ""))
-    val error: StateFlow<DataWrapper<String>> = _error
+    //MutableStateFlow我记得是用来保存状态，并且每次更新都会把最新的值发送给收集者。它必须有初始值，而且每次emit的时候，如果值和当前的一样，可能不会触发更新。这适合用来表示UI的状态，比如加载中的状态。
+    //
+    //MutableSharedFlow则不同，它更像是一个事件流，可以没有初始值。可以配置额外的参数，比如replay，让新订阅者收到之前发送的几个值。它适合用来处理一次性事件，比如显示Toast或者导航事件，这些事件不需要保留状态，只需要处理一次。
+    protected val _error = MutableSharedFlow<String>()
+    val error: SharedFlow<String> = _error
 
 
     // 分页状态管理
@@ -40,9 +45,8 @@ abstract class BaseViewModel : ViewModel() {
     init {
         viewModelScope.launch {
             _error
-                .drop(1)// 跳过初始化的空值
                 .collect {
-                ToastUtil.showShort(it.data)
+                ToastUtil.showShort(it)
             }
         }
     }
@@ -58,8 +62,8 @@ abstract class BaseViewModel : ViewModel() {
             if (showLoadingDialog) _showLoadingDialog.value = true
             tryBlock()
         } catch (e: Exception) {
-            _error.value = DataWrapper(e.parseError(), ++version)
-            catchBlock(e, _error.value.data)
+            _error.emit(e.parseError())
+            catchBlock(e, e.parseError())
             LogUtil.e(
                 tr = e,
                 tag = "BaseViewModel",
@@ -130,8 +134,8 @@ abstract class BaseViewModel : ViewModel() {
                 }
             }
         } catch (e: Exception) {
-            _error.value = DataWrapper(e.parseError(), ++version)
-            catchBlock(e, _error.value.data)
+            _error.emit(e.parseError())
+            catchBlock(e, e.parseError())
             LogUtil.e(
                 tr = e,
                 tag = "BaseViewModel",

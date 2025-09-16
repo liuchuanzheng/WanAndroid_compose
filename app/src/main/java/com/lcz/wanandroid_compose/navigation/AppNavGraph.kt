@@ -17,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.lcz.wanandroid_compose.module.coin.CoinRankPage
 import com.lcz.wanandroid_compose.module.coin.MyCoinHistoryPage
 import com.lcz.wanandroid_compose.module.login.LoginPage
 import com.lcz.wanandroid_compose.module.main.MainPage
@@ -92,6 +93,10 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
             val paramsBean = backStackEntry.toRoute<AppRoutePath.MyCoinHistory>()
             MyCoinHistoryPage()
         }
+        composable<AppRoutePath.CoinRank> { backStackEntry ->
+            val paramsBean = backStackEntry.toRoute<AppRoutePath.CoinRank>()
+            CoinRankPage()
+        }
 
     }
 }
@@ -113,6 +118,10 @@ fun NavHostController.app_navigateToMyCoinHistory(paramsBean: AppRoutePath.MyCoi
     this.navigate(paramsBean)
     LogUtil.i(TAG, "导航传递参数:${paramsBean}")
 }
+fun NavHostController.app_navigateToCoinRank(paramsBean: AppRoutePath.CoinRank) {
+    this.navigate(paramsBean)
+    LogUtil.i(TAG, "导航传递参数:${paramsBean}")
+}
 
 object AppRoutePath {
     @Serializable
@@ -123,8 +132,13 @@ object AppRoutePath {
 
     @Serializable
     data class Test2(val description: String = "测试页2", val from: String = "")
+
     @Serializable
     data class Login(val description: String = "登录页", val from: String = "")
+
     @Serializable
     data class MyCoinHistory(val description: String = "我的积分", val from: String = "")
+
+    @Serializable
+    data class CoinRank(val description: String = "积分排行榜", val from: String = "")
 }

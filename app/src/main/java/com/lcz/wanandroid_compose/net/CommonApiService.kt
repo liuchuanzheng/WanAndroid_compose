@@ -38,4 +38,11 @@ interface CommonApiService {
         @Path("pageNo") pageNo: Int,
         @Query("page_size") page_size: Int
     ): BaseNetResponseBean<BasePageResponseBean<MyCoinHistoryResponseBean>>
+
+    /** 获取积分排行列表分页 */
+    @GET("coin/rank/{pageNo}/json")
+    suspend fun getCoinRankList(
+        @Path("pageNo") pageNo: Int,
+        @Query("page_size") pageSize: Int
+    ): BaseNetResponseBean<BasePageResponseBean<MyCoinResponseBean>>
 }

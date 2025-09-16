@@ -40,4 +40,11 @@ object CommonRepository {
         return commonService.getMyCoinHistory(pageNo, page_size)
     }
 
+    suspend fun getCoinRankList(
+        pageNo: Int,
+        pageSize: Int
+    ): BaseNetResponseBean<BasePageResponseBean<MyCoinResponseBean>> {
+        return commonService.getCoinRankList(pageNo, pageSize)
+    }
+
 }
