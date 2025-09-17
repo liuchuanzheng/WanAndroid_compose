@@ -62,6 +62,7 @@ import com.lcz.wanandroid_compose.module.main.mine.viewmodel.MineWidgetViewModel
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
 import com.lcz.wanandroid_compose.navigation.app_navigateToLogin
 import com.lcz.wanandroid_compose.navigation.app_navigateToMyCoinHistory
+import com.lcz.wanandroid_compose.navigation.app_navigateToSetting
 import com.lcz.wanandroid_compose.navigation.globalNavController
 import com.lcz.wanandroid_compose.theme.WanAndroid_composeTheme
 import com.lcz.wanandroid_compose.widget.CoilImage
@@ -257,6 +258,9 @@ fun MineWidget() {
                     .background(Color.White)
                     .height(50.dp)
                     .padding(horizontal = 16.dp, vertical = 5.dp)
+                    .clickable {
+                        globalNavController?.app_navigateToSetting(AppRoutePath.Setting())
+                    }
 
 
             ) {
