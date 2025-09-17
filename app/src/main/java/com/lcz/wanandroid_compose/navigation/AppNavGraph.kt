@@ -1,6 +1,11 @@
 package com.lcz.wanandroid_compose.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -34,6 +39,7 @@ import kotlinx.serialization.Serializable
 var globalNavController: NavHostController? = null
 val TAG = "AppNavGraph"
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun AppNavGraph(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
@@ -58,46 +64,97 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
             navController.removeOnDestinationChangedListener(listener)
         }
     }
-    NavHost(navController = navController, startDestination = AppRoutePath.Main(from = "导航图默认启动")) {
-        composable<AppRoutePath.Main> { backStackEntry ->
-
-            val paramsBean = backStackEntry.toRoute<AppRoutePath.Main>()
-            MainPage(paramsBean)
-
-        }
-        composable<AppRoutePath.Test> { backStackEntry ->
-            val paramsBean = backStackEntry.toRoute<AppRoutePath.Test>()
-            Button(modifier = Modifier.padding(vertical = 100.dp), onClick = {
-                navController.app_navigateToTest2(AppRoutePath.Test2(from = "Test"))
-            }) {
-                Text(text = "当前页面是test,点击跳转test2")
+    SharedTransitionLayout {
+        NavHost(
+            navController = navController,
+            startDestination = AppRoutePath.Main(from = "导航图默认启动"),
+            //这里统一设置页面动画。如果单独页面需要设置动画，那么在composable中单独设置即可
+            //动画。一个页面对应四个动画。都是定义的自己，不影响别的页面。比如ABC三个页面。当时人是B，当前在A，
+            //A打开B，那么B就有个正向进入动画enterTransition
+            //B再打开C，那么B就有个正向退出动画exitTransition
+            //C返回B，那么B就有个反向进入动画popEnterTransition
+            //B返回A，那么B就有个反向退出动画popExitTransition
+            // 正向进入动画
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(300)
+                )
+            },
+            // 正向退出动画
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(300)
+                )
+            },
+            // 反向进入动画
+            popEnterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(300)
+                )
+            },
+            // 反向退出动画
+            popExitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(300)
+                )
             }
-        }
-        composable<AppRoutePath.Test2> { backStackEntry ->
-            val paramsBean = backStackEntry.toRoute<AppRoutePath.Test2>()
-            Scaffold (bottomBar = {
-                Text("bar",modifier = Modifier.height(100.dp).background(Color.Red))
-            }){
-                it
-                Button(modifier = Modifier.padding(vertical = 100.dp), onClick = {
-                }) {
-                    Text(text = "当前test2")
+        ) {
+            composable<AppRoutePath.Main> { backStackEntry ->
+
+                val paramsBean = backStackEntry.toRoute<AppRoutePath.Main>()
+                MainPage(paramsBean)
+
+            }
+            composable<AppRoutePath.Test> { backStackEntry ->
+                val paramsBean = backStackEntry.toRoute<AppRoutePath.Test>()
+                Button(
+                    modifier = Modifier
+                        .padding(vertical = 100.dp)
+                        .sharedElement(rememberSharedContentState("test_button"), animatedVisibilityScope = this),
+                    onClick = {
+                        navController.app_navigateToTest2(AppRoutePath.Test2(from = "Test"))
+                    }) {
+                    Text(text = "当前页面是test,点击跳转test2")
                 }
             }
-        }
-        composable<AppRoutePath.Login> { backStackEntry ->
-            val paramsBean = backStackEntry.toRoute<AppRoutePath.Login>()
-            LoginPage()
-        }
-        composable<AppRoutePath.MyCoinHistory> { backStackEntry ->
-            val paramsBean = backStackEntry.toRoute<AppRoutePath.MyCoinHistory>()
-            MyCoinHistoryPage()
-        }
-        composable<AppRoutePath.CoinRank> { backStackEntry ->
-            val paramsBean = backStackEntry.toRoute<AppRoutePath.CoinRank>()
-            CoinRankPage()
-        }
+            composable<AppRoutePath.Test2> { backStackEntry ->
+                val paramsBean = backStackEntry.toRoute<AppRoutePath.Test2>()
+                Scaffold(bottomBar = {
+                    Text(
+                        "bar", modifier = Modifier
+                            .height(100.dp)
+                            .background(Color.Red)
+                    )
+                }) {
+                    it
+                    Button(
+                        modifier = Modifier
+                            .padding(vertical = 100.dp)
+                            .sharedElement(rememberSharedContentState("test_button"), animatedVisibilityScope = this),
+                        onClick = {
+                        }) {
+                        Text(text = "当前test2")
+                    }
+                }
+            }
+            composable<AppRoutePath.Login> { backStackEntry ->
+                val paramsBean = backStackEntry.toRoute<AppRoutePath.Login>()
+                LoginPage()
+            }
+            composable<AppRoutePath.MyCoinHistory> { backStackEntry ->
+                val paramsBean = backStackEntry.toRoute<AppRoutePath.MyCoinHistory>()
+                MyCoinHistoryPage()
+            }
+            composable<AppRoutePath.CoinRank> { backStackEntry ->
+                val paramsBean = backStackEntry.toRoute<AppRoutePath.CoinRank>()
+                CoinRankPage()
+            }
 
+        }
     }
 }
 
@@ -110,14 +167,17 @@ fun NavHostController.app_navigateToTest2(paramsBean: AppRoutePath.Test2) {
     this.navigate(paramsBean)
     LogUtil.i(TAG, "导航传递参数:${paramsBean}")
 }
+
 fun NavHostController.app_navigateToLogin(paramsBean: AppRoutePath.Login) {
     this.navigate(paramsBean)
     LogUtil.i(TAG, "导航传递参数:${paramsBean}")
 }
+
 fun NavHostController.app_navigateToMyCoinHistory(paramsBean: AppRoutePath.MyCoinHistory) {
     this.navigate(paramsBean)
     LogUtil.i(TAG, "导航传递参数:${paramsBean}")
 }
+
 fun NavHostController.app_navigateToCoinRank(paramsBean: AppRoutePath.CoinRank) {
     this.navigate(paramsBean)
     LogUtil.i(TAG, "导航传递参数:${paramsBean}")
