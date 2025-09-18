@@ -117,8 +117,8 @@ fun CoinRankPage(modifier: Modifier = Modifier) {
                 onLoadMore = {
                     viewModel.netGetCoinRankList(false)
                 },
-                itemContent = {
-                    CoinRankItemView(it)
+                itemContent = { index, item ->
+                    CoinRankItemView(index, item)
                 }
             )
         }
@@ -126,7 +126,7 @@ fun CoinRankPage(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun CoinRankItemView(item: MyCoinResponseBean?) {
+fun CoinRankItemView(index: Int, item: MyCoinResponseBean?) {
     item?.let {
         // 新增颜色判断逻辑
         val (rankColor, rankSize) = when (it.rank?.toIntOrNull() ?: 0) {

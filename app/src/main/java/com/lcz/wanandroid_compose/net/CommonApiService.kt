@@ -5,6 +5,7 @@ import com.lcz.wanandroid_compose.base.BasePageResponseBean
 import com.lcz.wanandroid_compose.constant.MyConstant
 import com.lcz.wanandroid_compose.module.coin.data.MyCoinHistoryResponseBean
 import com.lcz.wanandroid_compose.module.login.bean.LoginResponseBean
+import com.lcz.wanandroid_compose.module.main.home.data.Article
 import com.lcz.wanandroid_compose.module.main.mine.bean.MyCoinResponseBean
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -45,4 +46,14 @@ interface CommonApiService {
         @Path("pageNo") pageNo: Int,
         @Query("page_size") pageSize: Int
     ): BaseNetResponseBean<BasePageResponseBean<MyCoinResponseBean>>
+    /** 获取首页/体系详情文章数据 */
+    @GET("article/list/{pageNo}/json")
+    suspend fun getArticlePageList(
+        @Path("pageNo") pageNo: Int,
+        @Query("page_size") pageSize: Int,
+        @Query("cid") categoryId: Int? = null
+    ): BaseNetResponseBean<BasePageResponseBean<Article>>
+    /** 获取置顶文章集合数据 */
+    @GET("article/top/json")
+    suspend fun getArticleTopList(): BaseNetResponseBean<List<Article>>
 }

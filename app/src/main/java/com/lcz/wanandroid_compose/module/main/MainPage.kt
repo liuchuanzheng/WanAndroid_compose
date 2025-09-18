@@ -19,8 +19,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import com.lcz.wanandroid_compose.module.main.home.widget.HomeWidget
 import com.lcz.wanandroid_compose.module.main.mine.widget.MineWidget
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
+import com.lcz.wanandroid_compose.theme.WanAndroid_composeTheme
 import com.lcz.wanandroid_compose.widget.BottomBar
 import com.lcz.wanandroid_compose.widget.BottomBarItem
 import kotlinx.coroutines.launch
@@ -82,9 +85,7 @@ fun MainPage(paramsBean: AppRoutePath.Main, modifier: Modifier = Modifier) {
             ) {
                 when (it) {
                     0 -> {
-                        Text(text = "首页", modifier = Modifier
-                            .fillMaxSize()
-                            .background(Color.Red))
+                        HomeWidget()
                     }
 
                     1 -> {
@@ -120,5 +121,12 @@ fun MainPage(paramsBean: AppRoutePath.Main, modifier: Modifier = Modifier) {
                 }
             }
         }
+    }
+}
+@Preview
+@Composable
+fun MainPagePreview() {
+    WanAndroid_composeTheme {
+        MainPage(AppRoutePath.Main())
     }
 }

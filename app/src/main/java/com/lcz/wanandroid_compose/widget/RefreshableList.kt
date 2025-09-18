@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.HourglassEmpty
@@ -59,7 +60,7 @@ fun <T> RefreshableList(
     onLoadMore: () -> Unit,
     modifier: Modifier = Modifier,
     headerContent: @Composable (() -> Unit)? = null,
-    itemContent: @Composable (T) -> Unit
+    itemContent: @Composable (Int,T) -> Unit
 ) {
     val listState = rememberLazyListState()
     var totalCount = items.size + if (headerContent != null) 1 else 0
@@ -68,7 +69,7 @@ fun <T> RefreshableList(
         snapshotFlow {
             listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
         }.collect {
-            if (it != null && it >= totalCount - 1 && items.isNotEmpty() && !isLoadingMore && hasMore && allowLoadMore) {
+            if (it != null && it >= totalCount - 2 && items.isNotEmpty() && !isLoadingMore && hasMore && allowLoadMore) {
                 onLoadMore()
             }
         }
@@ -109,8 +110,8 @@ fun <T> RefreshableList(
                     }
                 }
                 // 列表项
-                items(items) {
-                    itemContent(it)
+                itemsIndexed(items) { index, item ->
+                    itemContent(index,item)
                 }
                 if (allowLoadMore) {
                     // 加载更多/没有更多数据
@@ -168,8 +169,8 @@ fun <T> RefreshableList(
                 }
             }
             // 列表项
-            items(items) {
-                itemContent(it)
+            itemsIndexed(items) { index, item ->
+                itemContent(index, item)
             }
         }
     }

@@ -117,8 +117,8 @@ fun MyCoinHistoryPage(modifier: Modifier = Modifier) {
                 onLoadMore = {
                     viewModel.netGetMyCoinHistory(false)
                 },
-                itemContent = {
-                    MyCoinHistoryItemView(it)
+                itemContent = { index, item ->
+                    MyCoinHistoryItemView(index, item)
                 }
             )
         }
@@ -127,7 +127,7 @@ fun MyCoinHistoryPage(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun MyCoinHistoryItemView(item: MyCoinHistoryResponseBean?) {
+fun MyCoinHistoryItemView(index: Int, item: MyCoinHistoryResponseBean?) {
     item?.let {
         ElevatedCard(
             elevation = CardDefaults.cardElevation(

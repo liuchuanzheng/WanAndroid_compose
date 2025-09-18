@@ -4,6 +4,7 @@ import com.lcz.wanandroid_compose.base.BaseNetResponseBean
 import com.lcz.wanandroid_compose.base.BasePageResponseBean
 import com.lcz.wanandroid_compose.module.coin.data.MyCoinHistoryResponseBean
 import com.lcz.wanandroid_compose.module.login.bean.LoginResponseBean
+import com.lcz.wanandroid_compose.module.main.home.data.Article
 import com.lcz.wanandroid_compose.module.main.mine.bean.MyCoinResponseBean
 import com.lcz.wanandroid_compose.net.CommonApiService
 import com.lcz.wanandroid_compose.net.RetrofitManager
@@ -45,6 +46,18 @@ object CommonRepository {
         pageSize: Int
     ): BaseNetResponseBean<BasePageResponseBean<MyCoinResponseBean>> {
         return commonService.getCoinRankList(pageNo, pageSize)
+    }
+
+    suspend fun getArticleList(
+        pageNo: Int,
+        pageSize: Int,
+        categoryId: Int? = null
+    ): BaseNetResponseBean<BasePageResponseBean<Article>> {
+        return commonService.getArticlePageList(pageNo, pageSize, categoryId)
+    }
+    /** 获取置顶文章集合数据 */
+    suspend fun getArticleTopList(): BaseNetResponseBean<List<Article>> {
+        return commonService.getArticleTopList()
     }
 
 }
