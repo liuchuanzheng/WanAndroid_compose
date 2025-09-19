@@ -141,13 +141,13 @@ fun MineWidget() {
         Spacer(modifier = Modifier.height(40.dp))
         Card(
             modifier = Modifier
-                .background(Color.White, MaterialTheme.shapes.medium)
+                .background(MaterialTheme.colorScheme.surface, MaterialTheme.shapes.medium)
 
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .background(Color.White)
+                    .background(MaterialTheme.colorScheme.surface)
                     .height(50.dp)
                     .padding(horizontal = 16.dp, vertical = 5.dp)
                     .clickable {
@@ -165,7 +165,7 @@ fun MineWidget() {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.White)
+                    .background(MaterialTheme.colorScheme.surface)
             ) {
                 HorizontalDivider(
                     color = Color.LightGray.copy(alpha = 0.5f),
@@ -179,7 +179,7 @@ fun MineWidget() {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .background(Color.White)
+                    .background(MaterialTheme.colorScheme.surface)
                     .height(50.dp)
                     .padding(horizontal = 16.dp, vertical = 5.dp)
 
@@ -194,7 +194,7 @@ fun MineWidget() {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.White)
+                    .background(MaterialTheme.colorScheme.surface)
             ) {
                 HorizontalDivider(
                     color = Color.LightGray.copy(alpha = 0.5f),
@@ -208,7 +208,7 @@ fun MineWidget() {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .background(Color.White)
+                    .background(MaterialTheme.colorScheme.surface)
                     .height(50.dp)
                     .padding(horizontal = 16.dp, vertical = 5.dp)
 
@@ -223,7 +223,7 @@ fun MineWidget() {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.White)
+                    .background(MaterialTheme.colorScheme.surface)
             ) {
                 HorizontalDivider(
                     color = Color.LightGray.copy(alpha = 0.5f),
@@ -236,7 +236,7 @@ fun MineWidget() {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .background(Color.White)
+                    .background(MaterialTheme.colorScheme.surface)
                     .height(50.dp)
                     .padding(horizontal = 16.dp, vertical = 5.dp)
 
@@ -255,7 +255,7 @@ fun MineWidget() {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .background(Color.White)
+                    .background(MaterialTheme.colorScheme.surface)
                     .height(50.dp)
                     .padding(horizontal = 16.dp, vertical = 5.dp)
                     .clickable {

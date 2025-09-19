@@ -1,6 +1,5 @@
 package com.lcz.wanandroid_compose.module.setting.page
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -14,34 +13,37 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.twotone.ArrowBack
 import androidx.compose.material.icons.twotone.ArrowBack
 import androidx.compose.material.icons.twotone.ArrowForwardIos
-import androidx.compose.material.icons.twotone.Settings
 import androidx.compose.material3.Card
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.lcz.wanandroid_compose.MyApp
+import com.lcz.wanandroid_compose.data.repository.ThemeManager
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
-import com.lcz.wanandroid_compose.navigation.app_navigateToSetting
 import com.lcz.wanandroid_compose.navigation.globalNavController
+import com.lcz.wanandroid_compose.util.SPUtil
 import com.lcz.wanandroid_compose.util.ToastUtil
 import com.lcz.wanandroid_compose.widget.ConfirmDialog
 import kotlinx.coroutines.CoroutineScope
@@ -63,6 +65,7 @@ fun SettingPage(paramsBean: AppRoutePath.Setting) {
     val context = LocalContext.current
     val cacheSize = remember { mutableStateOf("0.00MB") }
     val showClearCacheDialog = remember { mutableStateOf(false) }
+    val themeType = MyApp.myAppViewModel.themeType.collectAsState()
     // 缓存大小计算
     LaunchedEffect(Unit) {
         cacheSize.value = withContext(Dispatchers.IO) {
@@ -74,8 +77,14 @@ fun SettingPage(paramsBean: AppRoutePath.Setting) {
     }
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(text = "设置") },
+            if (themeType.value == 0) {
+                //这个判断是为了让标题栏及时触发重组。否则第一次切换主题时，标题栏的颜色不会改变。感觉是个bug
+            }
+
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(text = "设置")
+                },
                 navigationIcon = {
                     IconButton(onClick = {
                         globalNavController?.popBackStack()
@@ -84,7 +93,7 @@ fun SettingPage(paramsBean: AppRoutePath.Setting) {
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White,
+                    containerColor = MaterialTheme.colorScheme.surface,
                 ),
 
                 )
@@ -119,6 +128,25 @@ fun SettingPage(paramsBean: AppRoutePath.Setting) {
                         // 清除缓存逻辑
                         showClearCacheDialog.value = true
                     })
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                Card(modifier = Modifier.padding(horizontal = 16.dp)) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.surface)
+                            .height(50.dp)
+                            .padding(horizontal = 16.dp, vertical = 5.dp)
+
+
+                    ) {
+                        Text(text = "自定义主题", fontSize = 16.sp, fontWeight = FontWeight.W400)
+                        Spacer(modifier = Modifier.weight(1f))
+                        Switch(checked = (themeType.value == 1), onCheckedChange = {
+                            MyApp.myAppViewModel.updateThemeType(if (it) 1 else 0)
+                            ThemeManager.getInstance().saveThemeType(if (it) 1 else 0)
+                        })
+                    }
                 }
             }
         }
@@ -156,6 +184,7 @@ private fun getDirSize(dir: File): Long {
     if (!dir.exists()) return 0L
     return dir.walk().filter { it.isFile }.sumOf { it.length() }
 }
+
 // 添加目录删除方法
 private fun deleteDir(dir: File): Boolean {
     return if (dir.isDirectory) {
@@ -173,7 +202,7 @@ private fun SettingItem(modifier: Modifier = Modifier, title: String, trailingTe
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.surface)
             .height(50.dp)
             .padding(horizontal = 16.dp, vertical = 5.dp)
 

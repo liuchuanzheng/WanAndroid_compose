@@ -12,22 +12,17 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -48,9 +43,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.lcz.wanandroid_compose.module.main.home.data.Article
 import com.lcz.wanandroid_compose.module.main.home.viewmodel.HomeWidgetViewModel
-import com.lcz.wanandroid_compose.navigation.AppRoutePath
-import com.lcz.wanandroid_compose.navigation.app_navigateToCoinRank
-import com.lcz.wanandroid_compose.navigation.globalNavController
 import com.lcz.wanandroid_compose.theme.WanAndroid_composeTheme
 import com.lcz.wanandroid_compose.util.LogUtil
 import com.lcz.wanandroid_compose.widget.Banner
@@ -118,20 +110,31 @@ fun HomeWidget(modifier: Modifier = Modifier) {
                 },
                 headerContent = {
                     if (bannerList.value.isNotEmpty()) {
-                        Banner(
+                        Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(200.dp),
-                            images = bannerList.value.map {
-                                it.imagePath ?: ""
-                            },
-                            autoScroll = true,
-                            indicatorSize = 10,
-                            indicatorModifier = Modifier.padding(bottom = 10.dp),
-                            onBannerItemClick = {
+                                .padding(top = 10.dp)
+                                .height(200.dp)
+                                .padding(horizontal = 16.dp)
+                                .clip(RoundedCornerShape(12.dp))
+                                .border(BorderStroke(1.dp, Color.Gray), shape = RoundedCornerShape(12.dp))
+                        ) {
+                            Banner(
 
-                            }
-                        )
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(200.dp),
+                                images = bannerList.value.map {
+                                    it.imagePath ?: ""
+                                },
+                                autoScroll = true,
+                                indicatorSize = 10,
+                                indicatorModifier = Modifier.padding(bottom = 10.dp),
+                                onBannerItemClick = {
+
+                                }
+                            )
+                        }
                     }
                 },
                 itemContent = { index, item ->
@@ -152,6 +155,9 @@ fun TitleBar() {
             .padding(horizontal = 16.dp)
             .clip(roundedCornerShape)
             .border(BorderStroke(1.dp, Color.Gray), shape = roundedCornerShape)
+            .clickable {
+
+            }
             .padding(horizontal = 16.dp, vertical = 8.dp),
 
         verticalAlignment = Alignment.CenterVertically,
