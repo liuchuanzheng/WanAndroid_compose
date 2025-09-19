@@ -12,16 +12,22 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -42,8 +48,12 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.lcz.wanandroid_compose.module.main.home.data.Article
 import com.lcz.wanandroid_compose.module.main.home.viewmodel.HomeWidgetViewModel
+import com.lcz.wanandroid_compose.navigation.AppRoutePath
+import com.lcz.wanandroid_compose.navigation.app_navigateToCoinRank
+import com.lcz.wanandroid_compose.navigation.globalNavController
 import com.lcz.wanandroid_compose.theme.WanAndroid_composeTheme
 import com.lcz.wanandroid_compose.util.LogUtil
+import com.lcz.wanandroid_compose.widget.Banner
 import com.lcz.wanandroid_compose.widget.RefreshableList
 
 /**
@@ -59,24 +69,32 @@ fun HomeWidget(modifier: Modifier = Modifier) {
     val viewModel = viewModel<HomeWidgetViewModel>()
 
     val articleList by viewModel.articleList.collectAsState()
+    val bannerList = viewModel.bannerList.collectAsState()
     val pageState by viewModel.pageState.collectAsState()
 
     LaunchedEffect(Unit) {
         LogUtil.d("ProjectChildPage", "触发刷新")
         if (articleList.isNullOrEmpty()) {
             viewModel.netGetArticleList(true)
+            viewModel.netGetBanner()
         }
     }
     //顶部状态栏的滚动跟随行为。一共三种，自己挑
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
+
             CenterAlignedTopAppBar(
+                modifier = Modifier
+                    .height(75.dp) // 设置自定义高度（Material3 默认高度为 80.dp）
+                    .shadow(8.dp),
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                ),
                 title = {
-                    Text(text = "首页")
+                    TitleBar()
                 },
-                modifier = Modifier.shadow(8.dp),
                 scrollBehavior = scrollBehavior
             )
         }
@@ -93,9 +111,28 @@ fun HomeWidget(modifier: Modifier = Modifier) {
                 hasMore = pageState.hasMore,
                 onRefresh = {
                     viewModel.netGetArticleList(true)
+                    viewModel.netGetBanner()
                 },
                 onLoadMore = {
                     viewModel.netGetArticleList(false)
+                },
+                headerContent = {
+                    if (bannerList.value.isNotEmpty()) {
+                        Banner(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(200.dp),
+                            images = bannerList.value.map {
+                                it.imagePath ?: ""
+                            },
+                            autoScroll = true,
+                            indicatorSize = 10,
+                            indicatorModifier = Modifier.padding(bottom = 10.dp),
+                            onBannerItemClick = {
+
+                            }
+                        )
+                    }
                 },
                 itemContent = { index, item ->
                     ItemView(index, item)
@@ -103,6 +140,25 @@ fun HomeWidget(modifier: Modifier = Modifier) {
             )
         }
 
+    }
+}
+
+@Composable
+fun TitleBar() {
+    val roundedCornerShape = RoundedCornerShape(12.dp)
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .clip(roundedCornerShape)
+            .border(BorderStroke(1.dp, Color.Gray), shape = roundedCornerShape)
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Icon(imageVector = Icons.Default.Search, contentDescription = null)
+        Text(text = "搜索")
     }
 }
 

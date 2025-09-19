@@ -6,6 +6,7 @@ import com.lcz.wanandroid_compose.constant.MyConstant
 import com.lcz.wanandroid_compose.module.coin.data.MyCoinHistoryResponseBean
 import com.lcz.wanandroid_compose.module.login.bean.LoginResponseBean
 import com.lcz.wanandroid_compose.module.main.home.data.Article
+import com.lcz.wanandroid_compose.module.main.home.data.BannerResponseBean
 import com.lcz.wanandroid_compose.module.main.mine.bean.MyCoinResponseBean
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -56,4 +57,7 @@ interface CommonApiService {
     /** 获取置顶文章集合数据 */
     @GET("article/top/json")
     suspend fun getArticleTopList(): BaseNetResponseBean<List<Article>>
+    /** 获取轮播图数据 */
+    @GET("banner/json")
+    suspend fun getBanner(): BaseNetResponseBean<BannerResponseBean>
 }
