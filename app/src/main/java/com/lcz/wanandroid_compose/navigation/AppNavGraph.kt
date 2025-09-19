@@ -5,7 +5,6 @@ import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -26,6 +25,7 @@ import com.lcz.wanandroid_compose.module.coin.CoinRankPage
 import com.lcz.wanandroid_compose.module.coin.MyCoinHistoryPage
 import com.lcz.wanandroid_compose.module.login.LoginPage
 import com.lcz.wanandroid_compose.module.main.MainPage
+import com.lcz.wanandroid_compose.module.search.page.SearchPage
 import com.lcz.wanandroid_compose.module.setting.page.SettingPage
 import com.lcz.wanandroid_compose.util.LogUtil
 import kotlinx.serialization.Serializable
@@ -158,6 +158,10 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
                 val paramsBean = backStackEntry.toRoute<AppRoutePath.Setting>()
                 SettingPage(paramsBean)
             }
+            composable<AppRoutePath.Search> { backStackEntry ->
+                val paramsBean = backStackEntry.toRoute<AppRoutePath.Search>()
+                SearchPage(paramsBean)
+            }
 
         }
     }
@@ -192,6 +196,10 @@ fun NavHostController.app_navigateToSetting(paramsBean: AppRoutePath.Setting) {
     this.navigate(paramsBean)
     LogUtil.i(TAG, "导航传递参数:${paramsBean}")
 }
+fun NavHostController.app_navigateToSearch(paramsBean: AppRoutePath.Search) {
+    this.navigate(paramsBean)
+    LogUtil.i(TAG, "导航传递参数:${paramsBean}")
+}
 
 object AppRoutePath {
     @Serializable
@@ -213,4 +221,6 @@ object AppRoutePath {
     data class CoinRank(val description: String = "积分排行榜", val from: String = "")
     @Serializable
     data class Setting(val description: String = "设置页", val from: String = "")
+    @Serializable
+    data class Search(val description: String = "搜索页", val from: String = "")
 }

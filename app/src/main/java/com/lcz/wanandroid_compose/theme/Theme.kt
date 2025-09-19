@@ -65,6 +65,7 @@ fun WanAndroid_composeTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
+    themeType: Int= 0,
     content: @Composable () -> Unit
 ) {
     var colorScheme = when {
@@ -76,9 +77,7 @@ fun WanAndroid_composeTheme(
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
-    // 0 默认的日间模式和夜间模式自动切换 1自定义的主题，不自动切换
-    var themeType = MyApp.myAppViewModel.themeType.collectAsState()
-    if (themeType.value == 1) {
+    if (themeType == 1) {
         // 自定义的主题
         colorScheme = MyColorScheme
     }

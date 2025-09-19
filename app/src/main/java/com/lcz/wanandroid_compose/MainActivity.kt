@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.collectAsState
 import com.lcz.wanandroid_compose.navigation.AppNavGraph
 import com.lcz.wanandroid_compose.theme.WanAndroid_composeTheme
 
@@ -27,7 +28,9 @@ class MainActivity : ComponentActivity() {
                     View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
         }*/
         setContent {
-            WanAndroid_composeTheme {
+            // 0 默认的日间模式和夜间模式自动切换 1自定义的主题，不自动切换
+            var themeType = MyApp.myAppViewModel.themeType.collectAsState()
+            WanAndroid_composeTheme(themeType = themeType.value) {
                 //第一个compose页面就是导航图,剩下的都是导航图控制的。这样逻辑清晰
                 AppNavGraph()
             }

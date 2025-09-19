@@ -1,4 +1,4 @@
-package com.lcz.wanandroid_compose.module.main.home.widget
+package com.lcz.wanandroid_compose.module.search.page
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -12,8 +12,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Search
@@ -21,8 +23,11 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -33,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextAlign
@@ -44,7 +50,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.lcz.wanandroid_compose.module.main.home.data.Article
 import com.lcz.wanandroid_compose.module.main.home.viewmodel.HomeWidgetViewModel
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
-import com.lcz.wanandroid_compose.navigation.app_navigateToSearch
 import com.lcz.wanandroid_compose.navigation.globalNavController
 import com.lcz.wanandroid_compose.theme.WanAndroid_composeTheme
 import com.lcz.wanandroid_compose.util.LogUtil
@@ -60,7 +65,7 @@ import com.lcz.wanandroid_compose.widget.RefreshableList
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeWidget(modifier: Modifier = Modifier) {
+fun SearchPage(paramsBean: AppRoutePath.Search) {
     val viewModel = viewModel<HomeWidgetViewModel>()
 
     val articleList by viewModel.articleList.collectAsState()
@@ -153,21 +158,39 @@ fun HomeWidget(modifier: Modifier = Modifier) {
 fun TitleBar() {
     val roundedCornerShape = RoundedCornerShape(12.dp)
     Row(
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .clip(roundedCornerShape)
-            .border(BorderStroke(1.dp, Color.Gray), shape = roundedCornerShape)
-            .clickable {
-                globalNavController?.app_navigateToSearch(AppRoutePath.Search())
-            }
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
     ) {
-        Icon(imageVector = Icons.Default.Search, contentDescription = null)
-        Text(text = "搜索", fontSize = 14.sp)
+        Icon(imageVector = Icons.Default.ArrowBackIos, contentDescription = null, modifier = Modifier.clickable {
+            globalNavController?.popBackStack()
+        })
+        Row(
+            modifier = Modifier
+                .weight(1f)
+                .clip(roundedCornerShape)
+                .border(BorderStroke(1.dp, Color.Gray), shape = roundedCornerShape)
+                .clickable {
+
+                }
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            Icon(imageVector = Icons.Default.Search, contentDescription = null)
+            Text(text = "搜索")
+        }
+        Spacer(modifier = Modifier.width(10.dp))
+        OutlinedCard (onClick = { }) {
+            Box(
+                modifier = Modifier
+                    .padding(horizontal = 10.dp)
+            ) {
+                Text(text = "搜索")
+            }
+        }
     }
 }
 
@@ -276,6 +299,16 @@ fun ItemView(index: Int, item: Article) {
 
 @Preview
 @Composable
+fun SearchPagePreview_Dark2() {
+    WanAndroid_composeTheme {
+        Text("11ssss11")
+    }
+
+
+}
+
+@Preview
+@Composable
 fun ItemViewPreview() {
     WanAndroid_composeTheme {
         ItemView(
@@ -300,7 +333,7 @@ fun ItemViewPreview_Dark() {
         ItemView(
             1,
             Article(
-                title = "这是标题1",
+                title = "这是标题",
                 shareUser = "这是分享人",
                 niceDate = "这是日期",
                 superChapterName = "这是分类",
@@ -310,20 +343,21 @@ fun ItemViewPreview_Dark() {
     }
 }
 
-@Preview
+@Preview(showSystemUi = true)
 @Composable
-fun MyCoinHistoryPagePreview() {
+fun SearchPagePreviewPreview() {
     WanAndroid_composeTheme {
-        HomeWidget()
+        SearchPage(AppRoutePath.Search())
     }
 }
 
 
 @Preview
 @Composable
-fun MyCoinHistoryPagePreview_Dark() {
+fun SearchPagePreview_Dark() {
     WanAndroid_composeTheme(darkTheme = true) {
-        HomeWidget()
+        SearchPage(AppRoutePath.Search())
     }
 
 }
+
