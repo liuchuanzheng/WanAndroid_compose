@@ -7,6 +7,7 @@ import com.lcz.wanandroid_compose.module.login.bean.LoginResponseBean
 import com.lcz.wanandroid_compose.module.main.home.data.Article
 import com.lcz.wanandroid_compose.module.main.home.data.BannerResponseBean
 import com.lcz.wanandroid_compose.module.main.mine.bean.MyCoinResponseBean
+import com.lcz.wanandroid_compose.module.search.data.HotSearch
 import com.lcz.wanandroid_compose.net.CommonApiService
 import com.lcz.wanandroid_compose.net.RetrofitManager
 import kotlin.getValue
@@ -56,13 +57,28 @@ object CommonRepository {
     ): BaseNetResponseBean<BasePageResponseBean<Article>> {
         return commonService.getArticlePageList(pageNo, pageSize, categoryId)
     }
+
     /** 获取置顶文章集合数据 */
     suspend fun getArticleTopList(): BaseNetResponseBean<List<Article>> {
         return commonService.getArticleTopList()
     }
+
     /** 获取轮播图数据 */
     suspend fun getBanner(): BaseNetResponseBean<BannerResponseBean> {
         return commonService.getBanner()
     }
 
+    /** 获取热门搜索数据 */
+    suspend fun getHotSearchList(): BaseNetResponseBean<List<HotSearch>> {
+        return commonService.getHotSearchList()
+    }
+
+    /** 根据关键词搜索数据 */
+    suspend fun searchDataByKey(
+        pageNo: Int,
+        pageSize: Int,
+        searchKey: String
+    ): BaseNetResponseBean<BasePageResponseBean<Article>> {
+        return commonService.searchDataByKey(pageNo, pageSize, searchKey)
+    }
 }

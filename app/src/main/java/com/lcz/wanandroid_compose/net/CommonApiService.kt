@@ -8,6 +8,7 @@ import com.lcz.wanandroid_compose.module.login.bean.LoginResponseBean
 import com.lcz.wanandroid_compose.module.main.home.data.Article
 import com.lcz.wanandroid_compose.module.main.home.data.BannerResponseBean
 import com.lcz.wanandroid_compose.module.main.mine.bean.MyCoinResponseBean
+import com.lcz.wanandroid_compose.module.search.data.HotSearch
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -60,4 +61,14 @@ interface CommonApiService {
     /** 获取轮播图数据 */
     @GET("banner/json")
     suspend fun getBanner(): BaseNetResponseBean<BannerResponseBean>
+    /** 获取热门搜索数据 */
+    @GET("hotkey/json")
+    suspend fun getHotSearchList(): BaseNetResponseBean<List<HotSearch>>
+    /** 根据关键词搜索数据 */
+    @POST("article/query/{pageNo}/json")
+    suspend fun searchDataByKey(
+        @Path("pageNo") pageNo: Int,
+        @Query("page_size") pageSize: Int,
+        @Query("k") searchKey: String
+    ): BaseNetResponseBean<BasePageResponseBean<Article>>
 }

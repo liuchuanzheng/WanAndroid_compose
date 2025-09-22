@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.converterGson)
     implementation(libs.persistentCookieJar)
     implementation(libs.logging.interceptor)
+    implementation(libs.androidx.compose.ui.text)
     debugImplementation("com.github.chuckerteam.chucker:library:3.5.2")
     releaseImplementation("com.github.chuckerteam.chucker:library-no-op:3.5.2")
     //以下都是测试相关的

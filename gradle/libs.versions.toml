@@ -13,6 +13,7 @@ coil = "2.5.0"  # 添加Coil版本号
 retrofit = "3.0.0"
 logging-interceptor = "4.10.0"
 persistentCookieJar = "v1.0.1"
+uiText = "1.9.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -38,6 +39,7 @@ converterGson = { group = "com.squareup.retrofit2", name = "converter-gson", ver
 logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "logging-interceptor" }
 # okhttp3 缓存
 persistentCookieJar = { group = "com.github.franmontiel", name = "PersistentCookieJar", version.ref = "persistentCookieJar" }
+androidx-compose-ui-text = { group = "androidx.compose.ui", name = "ui-text", version.ref = "uiText" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

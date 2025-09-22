@@ -78,6 +78,7 @@ abstract class BaseViewModel : ViewModel() {
     fun <T> safeLaunchWithPage(
         showLoadingDialog: Boolean = true,
         isRefresh: Boolean,//是否是下拉刷新
+        startPage: Int = 1,
         tryBlock: suspend CoroutineScope.(Int) -> BaseNetResponseBean<BasePageResponseBean<T>>,
         catchBlock: suspend CoroutineScope.(Exception, String) -> Unit = { e, msg -> },
         finallyBlock: suspend CoroutineScope.() -> Unit = {},
@@ -98,7 +99,7 @@ abstract class BaseViewModel : ViewModel() {
             }
             var pageNo = _pageState.value.currentPage //这是临时页码。是否更新pageState的页面要看请求结果是否符合要求。
             if (isRefresh) {
-                pageNo = 1
+                pageNo = startPage
             } else {
                 pageNo++
             }

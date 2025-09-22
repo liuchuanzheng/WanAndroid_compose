@@ -48,6 +48,7 @@ import com.lcz.wanandroid_compose.navigation.app_navigateToSearch
 import com.lcz.wanandroid_compose.navigation.globalNavController
 import com.lcz.wanandroid_compose.theme.WanAndroid_composeTheme
 import com.lcz.wanandroid_compose.util.LogUtil
+import com.lcz.wanandroid_compose.util.toHtml
 import com.lcz.wanandroid_compose.widget.Banner
 import com.lcz.wanandroid_compose.widget.RefreshableList
 
@@ -246,7 +247,7 @@ fun ItemView(index: Int, item: Article) {
             }
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = item.title.toString(),
+                text = item.title?.toHtml().toString(),
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = 14.sp,
                 maxLines = 2,
