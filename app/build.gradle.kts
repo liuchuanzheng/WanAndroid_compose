@@ -9,6 +9,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        create("release") {
+            storeFile = file("./keystore/liuchuanzheng.jks")
+            storePassword = "123456"
+            keyAlias = "liuchuanzheng"
+            keyPassword = "123456"
+        }
+    }
     namespace = "com.lcz.wanandroid_compose"
     compileSdk = 36
 
@@ -24,7 +32,10 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true // 启用代码混淆
+            isShrinkResources = true // 移除未使用资源
+            isDebuggable = false // 禁用调试模式
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -38,6 +49,11 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true //开启 BuildConfig 生成
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.3" // 使用最新稳定版
+        // 添加以下配置允许实验性API
+        kotlinCompilerExtensionVersion += "-experimental"
     }
 }
 

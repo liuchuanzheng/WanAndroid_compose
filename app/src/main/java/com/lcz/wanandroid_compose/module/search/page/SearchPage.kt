@@ -10,6 +10,7 @@ import androidx.compose.animation.shrinkOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -357,7 +358,6 @@ fun Recommend(viewModel: SearchPageViewModel) {
 
     }
 }
-
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun Recommend_hot(viewModel: SearchPageViewModel) {
@@ -396,8 +396,7 @@ fun Recommend_hot(viewModel: SearchPageViewModel) {
 
     }
 }
-
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun Recommend_history(viewModel: SearchPageViewModel) {
     val searchHistoryList = viewModel.searchHistoryList.collectAsState()
