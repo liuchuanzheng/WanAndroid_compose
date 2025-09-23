@@ -32,16 +32,16 @@ class SearchPageViewModel : BaseViewModel() {
 
     init {
         //模拟数据
-        _hotSearchList.value = listOf(
-            HotSearch(1, "111", "面试", 1, 1),
-            HotSearch(2, "222", "Android", 2, 2),
-            HotSearch(3, "333", "Kotlin", 3, 3),
-            HotSearch(3, "333", "Kotlin", 3, 3),
-            HotSearch(3, "333", "Kotlin", 3, 3),
-            HotSearch(3, "333", "Kotlin", 3, 3),
-            HotSearch(3, "333", "Kotlin", 3, 3),
-            HotSearch(3, "333", "Kotlin", 3, 3),
-        )
+//        _hotSearchList.value = listOf(
+//            HotSearch(1, "111", "面试", 1, 1),
+//            HotSearch(2, "222", "Android", 2, 2),
+//            HotSearch(3, "333", "Kotlin", 3, 3),
+//            HotSearch(3, "333", "Kotlin", 3, 3),
+//            HotSearch(3, "333", "Kotlin", 3, 3),
+//            HotSearch(3, "333", "Kotlin", 3, 3),
+//            HotSearch(3, "333", "Kotlin", 3, 3),
+//            HotSearch(3, "333", "Kotlin", 3, 3),
+//        )
     }
 
     /** 输入框文本改变 */

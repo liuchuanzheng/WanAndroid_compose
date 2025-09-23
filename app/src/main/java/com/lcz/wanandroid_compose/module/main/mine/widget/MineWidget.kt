@@ -60,6 +60,7 @@ import com.lcz.wanandroid_compose.module.login.LoginViewModel
 import com.lcz.wanandroid_compose.module.login.bean.LoginResponseBean
 import com.lcz.wanandroid_compose.module.main.mine.viewmodel.MineWidgetViewModel
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
+import com.lcz.wanandroid_compose.navigation.app_navigateToDemo
 import com.lcz.wanandroid_compose.navigation.app_navigateToLogin
 import com.lcz.wanandroid_compose.navigation.app_navigateToMyCoinHistory
 import com.lcz.wanandroid_compose.navigation.app_navigateToSetting
@@ -238,7 +239,11 @@ fun MineWidget() {
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.surface)
                     .height(50.dp)
+                    .clickable{
+                        globalNavController?.app_navigateToDemo(AppRoutePath.Demo(from = "我的"))
+                    }
                     .padding(horizontal = 16.dp, vertical = 5.dp)
+
 
 
             ) {

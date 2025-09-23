@@ -23,6 +23,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.lcz.wanandroid_compose.module.coin.CoinRankPage
 import com.lcz.wanandroid_compose.module.coin.MyCoinHistoryPage
+import com.lcz.wanandroid_compose.module.demo.DemoPage
+import com.lcz.wanandroid_compose.module.demo.sign.page.SignPage
 import com.lcz.wanandroid_compose.module.login.LoginPage
 import com.lcz.wanandroid_compose.module.main.MainPage
 import com.lcz.wanandroid_compose.module.search.page.SearchPage
@@ -162,6 +164,14 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
                 val paramsBean = backStackEntry.toRoute<AppRoutePath.Search>()
                 SearchPage(paramsBean)
             }
+            composable<AppRoutePath.Demo> { backStackEntry ->
+                val paramsBean = backStackEntry.toRoute<AppRoutePath.Demo>()
+                DemoPage(paramsBean)
+            }
+            composable<AppRoutePath.Sign> { backStackEntry ->
+                val paramsBean = backStackEntry.toRoute<AppRoutePath.Sign>()
+                SignPage(paramsBean)
+            }
 
         }
     }
@@ -200,6 +210,15 @@ fun NavHostController.app_navigateToSearch(paramsBean: AppRoutePath.Search) {
     this.navigate(paramsBean)
     LogUtil.i(TAG, "导航传递参数:${paramsBean}")
 }
+fun NavHostController.app_navigateToDemo(paramsBean: AppRoutePath.Demo) {
+    this.navigate(paramsBean)
+    LogUtil.i(TAG, "导航传递参数:${paramsBean}")
+}
+fun NavHostController.app_navigateToSign(paramsBean: AppRoutePath.Sign) {
+    this.navigate(paramsBean)
+    LogUtil.i(TAG, "导航传递参数:${paramsBean}")
+}
+
 
 object AppRoutePath {
     @Serializable
@@ -223,4 +242,8 @@ object AppRoutePath {
     data class Setting(val description: String = "设置页", val from: String = "")
     @Serializable
     data class Search(val description: String = "搜索页", val from: String = "")
+    @Serializable
+    data class Sign(val description: String = "签名页", val from: String = "")
+    @Serializable
+    data class Demo(val description: String = "Demo页", val from: String = "")
 }
