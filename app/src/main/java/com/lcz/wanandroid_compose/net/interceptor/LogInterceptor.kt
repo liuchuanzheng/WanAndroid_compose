@@ -1,6 +1,5 @@
 package com.lcz.wanandroid_compose.net.interceptor
 
-import com.lcz.wanandroid_compose.BuildConfig
 import com.lcz.wanandroid_compose.util.LogUtil
 import okhttp3.logging.HttpLoggingInterceptor
 
@@ -15,4 +14,4 @@ val logInterceptor = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logg
 
     }
     // 注意要生成BuildConfig类，就必须在gradle中配置buildConfig为true
-}).setLevel(if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE)
+}).setLevel(HttpLoggingInterceptor.Level.BODY)

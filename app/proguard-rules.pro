@@ -19,3 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keep class com.lcz.wanandroid_compose.**.data.** { *; }
+-keep interface com.lcz.wanandroid_compose.**.data.** { *; }
+-keep class com.lcz.wanandroid_compose.**.bean.** { *; }
+-keep interface com.lcz.wanandroid_compose.**.bean.** { *; }
+-keep class com.lcz.wanandroid_compose.base.** { *; }
+-keep interface com.lcz.wanandroid_compose.base.** { *; }

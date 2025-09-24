@@ -1,5 +1,6 @@
 package com.lcz.wanandroid_compose.module.search.page
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
@@ -20,14 +21,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -52,7 +51,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -77,7 +75,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.lcz.wanandroid_compose.module.main.home.data.Article
-import com.lcz.wanandroid_compose.module.main.home.widget.ItemView
 import com.lcz.wanandroid_compose.module.search.viewmodel.SearchPageViewModel
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
 import com.lcz.wanandroid_compose.navigation.globalNavController
@@ -96,8 +93,7 @@ import com.lcz.wanandroid_compose.widget.RefreshableList
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchPage(paramsBean: AppRoutePath.Search) {
-    val viewModel = viewModel<SearchPageViewModel>()
+fun SearchPage(paramsBean: AppRoutePath.Search, viewModel: SearchPageViewModel = viewModel()) {
 
     val showResult by viewModel.showResult.collectAsState()
 
@@ -300,15 +296,6 @@ fun SearchItemView(index: Int, item: Article, inputText: String) {
     }
 }
 
-val brush = Brush.linearGradient(
-    colors = listOf(
-        Color.Red,
-        Color.Yellow,
-        Color.Green,
-        Color.Blue,
-        Color.Magenta
-    )
-)
 
 // 新增高亮文本构建函数
 private fun buildHighlightText(source: String, keyword: String?): AnnotatedString {
@@ -358,6 +345,7 @@ fun Recommend(viewModel: SearchPageViewModel) {
 
     }
 }
+
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun Recommend_hot(viewModel: SearchPageViewModel) {
@@ -396,6 +384,7 @@ fun Recommend_hot(viewModel: SearchPageViewModel) {
 
     }
 }
+
 @OptIn(ExperimentalLayoutApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun Recommend_history(viewModel: SearchPageViewModel) {
@@ -426,7 +415,8 @@ fun Recommend_history(viewModel: SearchPageViewModel) {
                         }, onLongClick = {
                             ToastUtil.showShort("删除逻辑，不实现了")
                         })
-                        .padding(horizontal = 8.dp, vertical = 5.dp)
+                        .padding(horizontal = 8.dp, vertical = 5.dp),
+                    contentAlignment = Alignment.Center,
                 ) {
                     Text(text = it)
                 }
@@ -530,126 +520,12 @@ fun TitleBar(viewModel: SearchPageViewModel) {
     }
 }
 
-@Composable
-fun ItemView(index: Int, item: Article) {
-    Box(
-        modifier = Modifier
-            .padding(horizontal = 16.dp, vertical = 5.dp)
-            .shadow(
-                elevation = 4.dp,          // 提升阴影高度
-                shape = MaterialTheme.shapes.medium,
-                ambientColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f),
-                spotColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)
-            )
-            .background(MaterialTheme.colorScheme.surface)
-            .fillMaxWidth()
-//            .height(100.dp)
-            .clip(MaterialTheme.shapes.medium)
-            .border(
-                BorderStroke(1.dp, color = if (item.isTop) Color.Red else Color.Green),
-                shape = MaterialTheme.shapes.medium
-            )
-            .clickable {
-
-            }
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-
-
-    ) {
-        Column(
-            verticalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                Row {
-                    item.author?.ifEmpty { item.shareUser }?.let {
-                        Text(
-                            text = it,
-                            color = MaterialTheme.colorScheme.onSurface,
-                            fontSize = 14.sp,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                    if (item.type == 1) Text(
-                        text = "置顶",
-                        color = Color.Red,
-                        fontSize = 11.sp,
-                        modifier = Modifier
-                            .padding(start = 8.dp)
-                            .border(1.dp, Color.Red, shape = RoundedCornerShape(2.dp))
-                            .padding(horizontal = 4.dp)
-                    )
-                    if (item.fresh == true) Text(
-                        text = "新",
-                        color = Color.Magenta,
-                        fontSize = 11.sp,
-                        modifier = Modifier
-                            .padding(start = 8.dp)
-                            .border(1.dp, Color.Magenta, shape = RoundedCornerShape(4.dp))
-                            .padding(horizontal = 8.dp)
-                    )
-
-
-                }
-                Text(
-                    text = item.niceDate.toString(),
-                    color = Color.Gray,
-                    fontSize = 12.sp,
-                    textAlign = TextAlign.Center
-                )
-
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = item.title.toString(),
-                color = MaterialTheme.colorScheme.primary,
-                fontSize = 14.sp,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = item.superChapterName.toString(),
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = 12.sp,
-                    textAlign = TextAlign.Center
-                )
-                Icon(
-                    imageVector = if (item.collect == true) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                    contentDescription = null,
-                    tint = if (item.collect == true) Color.Red else Color.Gray
-                )
-            }
-        }
-    }
-}
-
-@Preview
-@Composable
-fun SearchPagePreview_Dark2() {
-    WanAndroid_composeTheme {
-        Text("11ssss11")
-    }
-
-
-}
-
 @Preview
 @Composable
 fun ItemViewPreview() {
     WanAndroid_composeTheme {
-        ItemView(
-            1,
-            Article(
+        SearchItemView(
+            1, Article(
                 title = "这是标题",
                 shareUser = "这是分享人",
                 niceDate = "这是日期",
@@ -657,42 +533,45 @@ fun ItemViewPreview() {
                 collect = true,
                 fresh = true,
                 type = 1
-            )
-        )
-    }
-}
-
-@Preview
-@Composable
-fun ItemViewPreview_Dark() {
-    WanAndroid_composeTheme(darkTheme = true) {
-        ItemView(
-            1,
-            Article(
-                title = "这是标题",
-                shareUser = "这是分享人",
-                niceDate = "这是日期",
-                superChapterName = "这是分类",
-                collect = true
-            )
+            ), "这是"
         )
     }
 }
 
 @Preview(showSystemUi = true)
 @Composable
+fun ItemViewPreview_Dark() {
+    WanAndroid_composeTheme(darkTheme = true) {
+        SearchItemView(
+            1, Article(
+                title = "这是标题",
+                shareUser = "这是分享人",
+                niceDate = "这是日期",
+                superChapterName = "这是分类",
+                collect = true,
+                fresh = true,
+                type = 1
+            ), "这是"
+        )
+    }
+}
+
+@SuppressLint("ViewModelConstructorInComposable")
+@Preview(showSystemUi = true, showBackground = true)
+@Composable
 fun SearchPagePreviewPreview() {
     WanAndroid_composeTheme {
-        SearchPage(AppRoutePath.Search())
+        SearchPage(AppRoutePath.Search(), viewModel = SearchPageViewModel(true))
     }
 }
 
 
+@SuppressLint("ViewModelConstructorInComposable")
 @Preview
 @Composable
 fun SearchPagePreview_Dark() {
     WanAndroid_composeTheme(darkTheme = true) {
-        SearchPage(AppRoutePath.Search())
+        SearchPage(AppRoutePath.Search(), viewModel = SearchPageViewModel(true))
     }
 
 }

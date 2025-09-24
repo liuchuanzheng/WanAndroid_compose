@@ -14,11 +14,27 @@ import kotlinx.coroutines.flow.asStateFlow
  * 电话:     18501231486
  * 描述:
  */
-class MyAppViewModel : BaseViewModel() {
-    private val _user = MutableStateFlow(UserManager.getInstance().getUser())
+class MyAppViewModel(private val isPreview: Boolean = false) : BaseViewModel() {
+    private val _user = MutableStateFlow<LoginResponseBean?>(LoginResponseBean())
     val user = _user.asStateFlow()
-    private val _themeType = MutableStateFlow(ThemeManager.getInstance().getThemeType()) // 0 默认的日间模式和夜间模式自动切换 1自定义的主题，不自动切换
+    private val _themeType = MutableStateFlow(0) // 0 默认的日间模式和夜间模式自动切换 1自定义的主题，不自动切换
     val themeType = _themeType.asStateFlow()
+
+    init {
+        if (isPreview) {
+            // 添加预览用的模拟数据
+            val user = LoginResponseBean().apply {
+                id = 123
+                nickname = "预览用户"
+                icon = ""
+            }
+            _user.value = user
+        } else {
+            _user.value = UserManager.getInstance().getUser()
+            _themeType.value = ThemeManager.getInstance().getThemeType()
+        }
+    }
+
     fun updateUser(user: LoginResponseBean) {
         _user.value = user
     }

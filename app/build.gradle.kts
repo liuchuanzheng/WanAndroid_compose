@@ -11,7 +11,7 @@ plugins {
 android {
     signingConfigs {
         create("release") {
-            storeFile = file("./keystore/liuchuanzheng.jks")
+            storeFile = file("${rootProject.projectDir}/keystore/liuchuanzheng.jks")
             storePassword = "123456"
             keyAlias = "liuchuanzheng"
             keyPassword = "123456"
@@ -34,7 +34,7 @@ android {
         release {
             isMinifyEnabled = true // 启用代码混淆
             isShrinkResources = true // 移除未使用资源
-            isDebuggable = false // 禁用调试模式
+//            isDebuggable = false // 禁用调试模式
             signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }

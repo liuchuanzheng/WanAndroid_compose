@@ -18,10 +18,10 @@ import kotlin.collections.plus
  * 电话:     18501231486
  * 描述:
  */
-class SearchPageViewModel : BaseViewModel() {
+class SearchPageViewModel(private val isPreview: Boolean = false) : BaseViewModel() {
     private val _hotSearchList = MutableStateFlow<List<HotSearch>>(emptyList())
     val hotSearchList = _hotSearchList
-    private val _searchHistoryList = MutableStateFlow(SearchHistoryManager.getInstance().getSearchHistory())
+    private val _searchHistoryList = MutableStateFlow(emptyList<String>())
     val searchHistoryList = _searchHistoryList.asStateFlow()
     private val _inputText = MutableStateFlow("")
     val inputText = _inputText.asStateFlow()
@@ -42,6 +42,16 @@ class SearchPageViewModel : BaseViewModel() {
 //            HotSearch(3, "333", "Kotlin", 3, 3),
 //            HotSearch(3, "333", "Kotlin", 3, 3),
 //        )
+        if (!isPreview) {
+            spGetSearchHistory()
+        } else {
+            // 预览模式使用模拟数据
+            _searchHistoryList.value = listOf("Android", "Kotlin", "Compose")
+            _hotSearchList.value = listOf(
+                HotSearch(1, "", "热门搜索1", 1, 1),
+                HotSearch(2, "", "热门搜索2", 2, 1)
+            )
+        }
     }
 
     /** 输入框文本改变 */

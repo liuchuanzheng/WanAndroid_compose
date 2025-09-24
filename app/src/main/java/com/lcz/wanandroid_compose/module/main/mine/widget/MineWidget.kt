@@ -1,6 +1,6 @@
 package com.lcz.wanandroid_compose.module.main.mine.widget
 
-import androidx.compose.foundation.Image
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -18,20 +18,14 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForwardIos
-import androidx.compose.material.icons.filled.ControlCamera
-import androidx.compose.material.icons.filled.HourglassEmpty
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.twotone.ArrowForwardIos
-import androidx.compose.material.icons.twotone.Chat
 import androidx.compose.material.icons.twotone.ChatBubbleOutline
 import androidx.compose.material.icons.twotone.ControlCamera
 import androidx.compose.material.icons.twotone.DeveloperMode
 import androidx.compose.material.icons.twotone.Settings
 import androidx.compose.material.icons.twotone.SlowMotionVideo
 import androidx.compose.material3.Card
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -42,11 +36,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -54,10 +45,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.lcz.wanandroid_compose.MyApp
 import com.lcz.wanandroid_compose.MyAppViewModel
-import com.lcz.wanandroid_compose.R
-import com.lcz.wanandroid_compose.module.login.LoginPage
-import com.lcz.wanandroid_compose.module.login.LoginViewModel
-import com.lcz.wanandroid_compose.module.login.bean.LoginResponseBean
 import com.lcz.wanandroid_compose.module.main.mine.viewmodel.MineWidgetViewModel
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
 import com.lcz.wanandroid_compose.navigation.app_navigateToDemo
@@ -76,11 +63,9 @@ import com.lcz.wanandroid_compose.widget.CoilImage
  * 描述:
  */
 @Composable
-fun MineWidget() {
-    // 添加 ViewModel 实例
-    val viewModel: MineWidgetViewModel = viewModel()
+fun MineWidget(viewModel: MineWidgetViewModel = viewModel(), appViewModel: MyAppViewModel = MyApp.myAppViewModel) {
     val coinCount = viewModel.coinCount.collectAsState()
-    val user = MyApp.myAppViewModel.user.collectAsState()
+    val user = appViewModel.user.collectAsState()
     LaunchedEffect(Unit) {
         viewModel.netGetMyCoin()
     }
@@ -239,11 +224,10 @@ fun MineWidget() {
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.surface)
                     .height(50.dp)
-                    .clickable{
+                    .clickable {
                         globalNavController?.app_navigateToDemo(AppRoutePath.Demo(from = "我的"))
                     }
                     .padding(horizontal = 16.dp, vertical = 5.dp)
-
 
 
             ) {
@@ -281,18 +265,19 @@ fun MineWidget() {
 }
 
 //这里预览失败。需要研究下带有viewmodel的preview如何加载。
-@Preview
+@SuppressLint("ViewModelConstructorInComposable")
+@Preview( showBackground = true)
 @Composable
 private fun MineWidgetPreview() {
-    MyApp.myAppViewModel = viewModel<MyAppViewModel>()
-    // 添加预览用的模拟数据
-    val user = LoginResponseBean().apply {
-        id = 123
-        nickname = "预览用户"
-        icon = ""
-    }
-    MyApp.myAppViewModel.updateUser(user)
-    WanAndroid_composeTheme {
-        MineWidget()
+//    MyApp.myAppViewModel = viewModel<MyAppViewModel>()
+//    // 添加预览用的模拟数据
+//    val user = LoginResponseBean().apply {
+//        id = 123
+//        nickname = "预览用户"
+//        icon = ""
+//    }
+//    MyApp.myAppViewModel.updateUser(user)
+    WanAndroid_composeTheme(darkTheme = false) {
+        MineWidget(appViewModel = MyAppViewModel(true))
     }
 }
