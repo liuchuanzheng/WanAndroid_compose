@@ -70,6 +70,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -555,9 +556,22 @@ fun ItemViewPreview_Dark() {
         )
     }
 }
+/*
+* 预览限制
+由于预览在 Android Studio 中呈现的方式，它们非常轻巧，不需要整个 Android 框架来呈现。不过，这种方法存在以下限制：
 
+无法访问网络
+无法访问文件
+有些 Context API 不一定完全可用
+*
+* 预览和 ViewModels
+在可组合项中使用 ViewModel 时，预览功能会受到限制。预览系统无法构建传递给 ViewModel 的所有参数，例如代码库、使用情形、管理器或类似参数。此外，如果您的 ViewModel 参与依赖项注入（例如使用 Hilt），预览系统无法构建整个依赖项图来构造 ViewModel。
+
+当您尝试使用 ViewModel 预览可组合项时，Android Studio 在渲染特定可组合项时会显示错误：
+* */
 @SuppressLint("ViewModelConstructorInComposable")
-@Preview(showSystemUi = true, showBackground = true)
+@PreviewLightDark()
+//@Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun SearchPagePreviewPreview() {
     WanAndroid_composeTheme {
@@ -565,14 +579,4 @@ fun SearchPagePreviewPreview() {
     }
 }
 
-
-@SuppressLint("ViewModelConstructorInComposable")
-@Preview
-@Composable
-fun SearchPagePreview_Dark() {
-    WanAndroid_composeTheme(darkTheme = true) {
-        SearchPage(AppRoutePath.Search(), viewModel = SearchPageViewModel(true))
-    }
-
-}
 

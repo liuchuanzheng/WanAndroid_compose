@@ -1,6 +1,7 @@
 package com.lcz.wanandroid_compose.module.main.mine.widget
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -39,7 +40,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewDynamicColors
+import androidx.compose.ui.tooling.preview.PreviewFontScale
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
+import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -264,9 +271,19 @@ fun MineWidget(viewModel: MineWidgetViewModel = viewModel(), appViewModel: MyApp
     }
 }
 
-//这里预览失败。需要研究下带有viewmodel的preview如何加载。
 @SuppressLint("ViewModelConstructorInComposable")
-@Preview( showBackground = true)
+@PreviewFontScale
+@PreviewDynamicColors
+@PreviewLightDark
+@PreviewScreenSizes
+//配置壁纸，体现动态颜色的效果
+//体验各种预览参数
+@Preview(
+    showBackground = true,
+    wallpaper = Wallpapers.GREEN_DOMINATED_EXAMPLE,
+    device = Devices.PIXEL_5,
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
 @Composable
 private fun MineWidgetPreview() {
 //    MyApp.myAppViewModel = viewModel<MyAppViewModel>()
@@ -277,7 +294,7 @@ private fun MineWidgetPreview() {
 //        icon = ""
 //    }
 //    MyApp.myAppViewModel.updateUser(user)
-    WanAndroid_composeTheme(darkTheme = false) {
+    WanAndroid_composeTheme(darkTheme = false, dynamicColor = true) {
         MineWidget(appViewModel = MyAppViewModel(true))
     }
 }
