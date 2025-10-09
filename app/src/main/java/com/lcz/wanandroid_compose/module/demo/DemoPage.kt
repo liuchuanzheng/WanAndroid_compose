@@ -15,6 +15,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
 import com.lcz.wanandroid_compose.navigation.app_navigateToSign
+import com.lcz.wanandroid_compose.navigation.app_navigateToSliderDemo
+import com.lcz.wanandroid_compose.navigation.app_navigateToTickTok
 import com.lcz.wanandroid_compose.navigation.globalNavController
 
 /**
@@ -31,6 +33,12 @@ fun DemoPage(paramsBean: AppRoutePath.Demo) {
             ItemView("手写签名", "通过画笔签名，保存图片") {
                 globalNavController?.app_navigateToSign(AppRoutePath.Sign())
             }
+            ItemView("滑动条", "滑动条demo") {
+                globalNavController?.app_navigateToSliderDemo(AppRoutePath.SliderDemo())
+            }
+            ItemView("抖音视频", "抖音视频demo") {
+                globalNavController?.app_navigateToTickTok(AppRoutePath.TickTok())
+            }
         }
     }
 
@@ -42,9 +50,10 @@ fun ItemView(title: String, description: String = "暂无描述", onClick: () ->
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                horizontal = 16.dp
+                horizontal = 16.dp,
+                vertical = 8.dp
             )
-            .clickable{
+            .clickable {
                 onClick.invoke()
             }
     ) {

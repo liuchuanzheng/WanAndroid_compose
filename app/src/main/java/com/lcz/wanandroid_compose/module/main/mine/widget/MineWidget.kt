@@ -55,6 +55,7 @@ import com.lcz.wanandroid_compose.MyAppViewModel
 import com.lcz.wanandroid_compose.module.main.mine.viewmodel.MineWidgetViewModel
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
 import com.lcz.wanandroid_compose.navigation.app_navigateToDemo
+import com.lcz.wanandroid_compose.navigation.app_navigateToDouyin
 import com.lcz.wanandroid_compose.navigation.app_navigateToLogin
 import com.lcz.wanandroid_compose.navigation.app_navigateToMyCoinHistory
 import com.lcz.wanandroid_compose.navigation.app_navigateToSetting
@@ -203,6 +204,9 @@ fun MineWidget(viewModel: MineWidgetViewModel = viewModel(), appViewModel: MyApp
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.surface)
                     .height(50.dp)
+                    .clickable{
+                        globalNavController?.app_navigateToDouyin(AppRoutePath.Douyin())
+                    }
                     .padding(horizontal = 16.dp, vertical = 5.dp)
 
 

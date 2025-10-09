@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -45,8 +46,11 @@ import com.lcz.wanandroid_compose.module.main.home.data.Article
 import com.lcz.wanandroid_compose.module.main.home.viewmodel.HomeWidgetViewModel
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
 import com.lcz.wanandroid_compose.navigation.app_navigateToSearch
+import com.lcz.wanandroid_compose.navigation.app_navigateToVideoPlayer
 import com.lcz.wanandroid_compose.navigation.globalNavController
+import com.lcz.wanandroid_compose.ui.video.VideoItem
 import com.lcz.wanandroid_compose.theme.WanAndroid_composeTheme
+import com.lcz.wanandroid_compose.ui.video.sampleVideos
 import com.lcz.wanandroid_compose.util.LogUtil
 import com.lcz.wanandroid_compose.util.toHtml
 import com.lcz.wanandroid_compose.widget.Banner
@@ -153,22 +157,51 @@ fun HomeWidget(modifier: Modifier = Modifier) {
 @Composable
 fun TitleBar() {
     val roundedCornerShape = RoundedCornerShape(12.dp)
+    
+
+    
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .clip(roundedCornerShape)
-            .border(BorderStroke(1.dp, Color.Gray), shape = roundedCornerShape)
-            .clickable {
-                globalNavController?.app_navigateToSearch(AppRoutePath.Search())
-            }
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-
+            .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Icon(imageVector = Icons.Default.Search, contentDescription = null)
-        Text(text = "搜索", fontSize = 14.sp)
+        // 搜索框
+        Row(
+            modifier = Modifier
+                .weight(1f)
+                .padding(end = 8.dp)
+                .clip(roundedCornerShape)
+                .border(BorderStroke(1.dp, Color.Gray), shape = roundedCornerShape)
+                .clickable {
+                    globalNavController?.app_navigateToSearch(AppRoutePath.Search())
+                }
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Icon(imageVector = Icons.Default.Search, contentDescription = null)
+            Text(text = "搜索", fontSize = 14.sp)
+        }
+        
+        // 视频播放器按钮
+        Row(
+            modifier = Modifier
+                .clip(roundedCornerShape)
+                .border(BorderStroke(1.dp, Color.Gray), shape = roundedCornerShape)
+                .clickable {
+                    globalNavController?.app_navigateToVideoPlayer(
+                        AppRoutePath.VideoPlayer()
+                    )
+                }
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Icon(imageVector = Icons.Default.PlayArrow, contentDescription = null)
+            Text(text = "视频", fontSize = 14.sp)
+        }
     }
 }
 
