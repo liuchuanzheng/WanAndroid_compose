@@ -47,6 +47,7 @@ fun BoxScope.Cover(
 ) {
     Box(
         modifier = Modifier
+            .padding(bottom = 15.dp)
             .align(Alignment.BottomStart),
     ) {
         Row(
@@ -84,6 +85,7 @@ fun Cover_right(
     onShareClick: () -> Unit,
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(horizontal = 10.dp)) {
+        //头像
         Box {
             Column {
                 CoilImage(
@@ -118,7 +120,8 @@ fun Cover_right(
 
             }
         }
-        Spacer(modifier = Modifier.height(15.dp))
+        Spacer(modifier = Modifier.height(20.dp))
+        //点赞
         Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.clickable {
             onLikeChange(!videoBean.isLiked)
         }) {
@@ -130,19 +133,21 @@ fun Cover_right(
             )
             Text(text = videoBean.likeCount.toString(), color = Color.White, fontSize = 12.sp)
         }
-        Spacer(modifier = Modifier.height(15.dp))
+        Spacer(modifier = Modifier.height(20.dp))
+        //收藏
         Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.clickable {
             onCollectChange(!videoBean.isCollect)
         }) {
             Icon(
                 imageVector = Icons.Default.Star,
                 contentDescription = null,
-                tint = if (videoBean.isCollect) Color.Red else Color.White,
+                tint = if (videoBean.isCollect) Color.Yellow else Color.White,
                 modifier = Modifier.size(35.dp)
             )
             Text(text = videoBean.collectCount.toString(), color = Color.White, fontSize = 12.sp)
         }
-        Spacer(modifier = Modifier.height(15.dp))
+        Spacer(modifier = Modifier.height(20.dp))
+        //分享
         Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.clickable {
             onShareClick()
         }) {

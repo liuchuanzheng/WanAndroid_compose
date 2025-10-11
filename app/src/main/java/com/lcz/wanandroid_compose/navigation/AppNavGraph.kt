@@ -29,6 +29,7 @@ import com.lcz.wanandroid_compose.module.coin.MyCoinHistoryPage
 import com.lcz.wanandroid_compose.module.demo.DemoPage
 import com.lcz.wanandroid_compose.module.demo.sign.page.SignPage
 import com.lcz.wanandroid_compose.module.demo.slider.SliderDemoPage
+import com.lcz.wanandroid_compose.module.demo.ticktokprogressbar.TickTokProgressBarPage
 import com.lcz.wanandroid_compose.module.login.LoginPage
 import com.lcz.wanandroid_compose.module.main.MainPage
 import com.lcz.wanandroid_compose.module.search.page.SearchPage
@@ -186,6 +187,10 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
                 val paramsBean = backStackEntry.toRoute<AppRoutePath.TickTok>()
                 TickTokPage(paramsBean)
             }
+            composable<AppRoutePath.TickTokProgressBar> { backStackEntry ->
+                val paramsBean = backStackEntry.toRoute<AppRoutePath.TickTokProgressBar>()
+                TickTokProgressBarPage(paramsBean)
+            }
 
 
 
@@ -244,6 +249,10 @@ fun NavHostController.app_navigateToTickTok(paramsBean: AppRoutePath.TickTok) {
     this.navigate(paramsBean)
     LogUtil.i(TAG, "导航传递参数:${paramsBean}")
 }
+fun NavHostController.app_navigateToTickTokProgressBar(paramsBean: AppRoutePath.TickTokProgressBar) {
+    this.navigate(paramsBean)
+    LogUtil.i(TAG, "导航传递参数:${paramsBean}")
+}
 
 
 
@@ -278,4 +287,6 @@ object AppRoutePath {
     
     @Serializable
     data class TickTok(val description: String = "抖音视频页", val from: String = "")
+    @Serializable
+    data class TickTokProgressBar(val description: String = "抖音风格视频进度条页", val from: String = "")
 }

@@ -1,5 +1,6 @@
 package com.lcz.wanandroid_compose.module.ticktok.widget
 
+import android.R.attr.value
 import androidx.annotation.OptIn
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.spring
@@ -70,8 +71,6 @@ fun VideoPlayCard(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .clickable {
-            }
     ) {
         // 播放器实现
         ExoPlayerWrapper(
@@ -92,22 +91,31 @@ fun VideoPlayCard(
             onDurationRead = {
                 onDurationRead.invoke(it)
             },
-
-
-            )
+        )
         if (videoBean.videoPlayState.duration.toFloat() > 0) {
             // 底部进度条
-            CustomSeekBar(
-                progress = videoBean.videoPlayState.currentPlayProgress,
-                max = videoBean.videoPlayState.duration.toFloat(),
-                onSeek = { value, isUser ->
-                    isUserSeek = isUser
-                    onProgressChanged.invoke(value)
-                },
+            var progress =
+                (videoBean.videoPlayState.currentPlayProgress / videoBean.videoPlayState.duration.toFloat()).coerceIn(
+                    0f,
+                    1f
+                )
+            var currentTime = formatVideoDuration(videoBean.videoPlayState.currentPlayProgress.toLong())
+            var totalTime = formatVideoDuration(videoBean.videoPlayState.duration)
+            Box(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .padding(16.dp)
-            )
+                    .padding(bottom = 5.dp)
+            ) {
+                CustomTikTokProgressBar(
+                    progress = progress,
+                    currentTime = currentTime,
+                    totalTime = totalTime,
+                    onProgressChanged = { newProgress, isUser ->
+                        isUserSeek = isUser
+                        onProgressChanged.invoke(newProgress * videoBean.videoPlayState.duration)
+                    }
+                )
+            }
         }
 
     }
@@ -140,7 +148,7 @@ private fun ExoPlayerWrapper(
             )
         ).build().apply {
             LogUtil.i(tag = "TickTokPage", msg = "创建exoPlayer:${this} id:${id}")
-            repeatMode = ExoPlayer.REPEAT_MODE_ONE
+            repeatMode = ExoPlayer.REPEAT_MODE_ONE //重复播放
 
             setMediaItem(MediaItem.fromUri(videoUrl))
             prepare()
@@ -234,7 +242,7 @@ private fun ExoPlayerWrapper(
     LaunchedEffect(isPlaying) {
 
         while (isPlaying) {
-            delay(500) // 约60帧/秒更新
+            delay(100) // 约60帧/秒更新
             if (isPlaying && !isUserSeek && isInitialized && !isVideoCompleted) {
 
                 val duration = exoPlayer.duration
@@ -255,79 +263,91 @@ private fun ExoPlayerWrapper(
             exoPlayer.seekTo(progress.toLong())
         }
     }
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .clickable {
-                onPlayPauseChanged(!isPlaying)
-            }
-    ) {
-
-        // ExoPlayer视图
-        AndroidView(
+    Box {
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Black),
-            factory = { ctx ->
-                PlayerView(ctx).apply {
-                    resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
-                    useController = false // 隐藏默认控制器
-                    setArtworkDisplayMode(PlayerView.ARTWORK_DISPLAY_MODE_FIT)
-                }
-            },
-            update = { view ->
-                // 确保每次播放器实例变化时都绑定到视图
-                view.player = exoPlayer
-            }
-        )
-        AnimatedVisibility(
-            !isPlaying,
-            modifier = Modifier
-                .align(alignment = Alignment.Center),
-            enter = fadeIn() + slideInVertically(
-                animationSpec = spring(
-                    stiffness = 120f,// 降低刚度值使动画更慢
-                    dampingRatio = 0.4f// 调整阻尼比（0.6 是临界阻尼，值越小反弹越多）,
-                ),
-                initialOffsetY = { fullHeight -> fullHeight }),
-
-            exit = slideOutVertically(  // 新增垂直滑动退出
-                animationSpec = tween(1000),
-                targetOffsetY = { fullHeight -> fullHeight }
-            ) + fadeOut(),
         ) {
-            Icon(
-                imageVector = Icons.Default.PlayCircleOutline, contentDescription = "",
-                modifier = Modifier.size(60.dp),
-                tint = Color.Magenta
-            )
-        }
 
+            // ExoPlayer视图
+            AndroidView(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black),
+                factory = { ctx ->
+                    PlayerView(ctx).apply {
+                        resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+                        useController = false // 隐藏默认控制器
+                        setArtworkDisplayMode(PlayerView.ARTWORK_DISPLAY_MODE_FIT)
+                    }
+                },
+                update = { view ->
+                    // 确保每次播放器实例变化时都绑定到视图
+                    view.player = exoPlayer
+                }
+            )
+            // 播放按钮
+            AnimatedVisibility(
+                !isPlaying,
+                modifier = Modifier
+                    .align(alignment = Alignment.Center),
+                enter = fadeIn() + slideInVertically(
+                    animationSpec = spring(
+                        stiffness = 120f,// 降低刚度值使动画更慢
+                        dampingRatio = 0.4f// 调整阻尼比（0.6 是临界阻尼，值越小反弹越多）,
+                    ),
+                    initialOffsetY = { fullHeight -> fullHeight }),
+
+                exit = slideOutVertically(  // 新增垂直滑动退出
+                    animationSpec = tween(1000),
+                    targetOffsetY = { fullHeight -> fullHeight }
+                ) + fadeOut(),
+            ) {
+                Icon(
+                    imageVector = Icons.Default.PlayCircleOutline, contentDescription = "",
+                    modifier = Modifier.size(60.dp),
+                    tint = Color.Magenta
+                )
+            }
+
+        }
+        //留出底部一定区域，防止跟进度条重叠，点击事件与拖动事件冲突
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 50.dp)
+                .clickable {
+                    onPlayPauseChanged(!isPlaying)
+                }
+        ) {
+        }
     }
+
 }
 
-@Composable
-private fun CustomSeekBar(
-    progress: Float,
-    max: Float = 100f,
-    onSeek: (Float, Boolean) -> Unit,
-    modifier: Modifier = Modifier
-) {
 
-    Slider(
-        value = progress,
-        onValueChange = {
-            onSeek(it, true)
-        },
-        onValueChangeFinished = {
-            onSeek(progress, false) // 修改3：拖动结束时同步最终值
-        },
-        valueRange = 0f..max,
-        modifier = modifier,
-        colors = SliderDefaults.colors(
-            thumbColor = Color.Red,
-            activeTrackColor = Color.Red.copy(alpha = 0.7f)
-        )
-    )
+/**
+ * 将视频时长（毫秒）转换为可读时间格式
+ * - 时长 < 1小时：返回 "MM:SS"（如 "02:30"）
+ * - 时长 ≥ 1小时：返回 "HH:MM:SS"（如 "01:02:30"）
+ * @param durationMs 视频时长（毫秒，需 ≥ 0）
+ */
+fun formatVideoDuration(durationMs: Long): String {
+    // 确保时长非负（避免异常输入）
+    val totalSeconds = (durationMs / 1000).coerceAtLeast(0)
+
+    // 计算时、分、秒
+    val hours = totalSeconds / 3600
+    val remainingSeconds = totalSeconds % 3600
+    val minutes = remainingSeconds / 60
+    val seconds = remainingSeconds % 60
+
+    // 根据是否有小时位，返回不同格式
+    return if (hours > 0) {
+        // 带小时：HH:MM:SS（小时不足两位补0）
+        String.format("%02d:%02d:%02d", hours, minutes, seconds)
+    } else {
+        // 不带小时：MM:SS（分钟不足两位补0）
+        String.format("%02d:%02d", minutes, seconds)
+    }
 }

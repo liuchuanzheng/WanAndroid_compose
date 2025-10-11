@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
 import com.lcz.wanandroid_compose.navigation.app_navigateToSign
 import com.lcz.wanandroid_compose.navigation.app_navigateToSliderDemo
-import com.lcz.wanandroid_compose.navigation.app_navigateToTickTok
+import com.lcz.wanandroid_compose.navigation.app_navigateToTickTokProgressBar
 import com.lcz.wanandroid_compose.navigation.globalNavController
 
 /**
@@ -35,6 +35,11 @@ fun DemoPage(paramsBean: AppRoutePath.Demo) {
             }
             ItemView("滑动条", "滑动条demo") {
                 globalNavController?.app_navigateToSliderDemo(AppRoutePath.SliderDemo())
+            }
+            ItemView("抖音风格视频进度条", "拖动时变高大，松手后2秒变得狭窄") {
+                globalNavController?.app_navigateToTickTokProgressBar(
+                    AppRoutePath.TickTokProgressBar()
+                )
             }
         }
     }

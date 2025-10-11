@@ -73,7 +73,9 @@ fun TickTokPage(paramsBean: AppRoutePath.TickTok, viewModel: TickTokPageViewMode
         if (videoList.isNotEmpty()) {
             VerticalPager(
                 state = pagerState, modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxSize(),
+                beyondViewportPageCount = 2, // 关键：缓存当前页前后各 2 页（共 5 页）
+//                pageSpacing = 10.dp
             ) { page ->
                 val isVisible = pagerState.currentPage == page
                 var videoBean = videoList.get(page)
