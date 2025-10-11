@@ -140,4 +140,16 @@ class TickTokPageViewModel(isPreview: Boolean = false) : BaseViewModel() {
             }
         }
     }
+
+    //指定id isPlaying变为true,其他的变为false
+    fun updatePlayingState(videoId: Int) {
+        videoList.value = videoList.value.map { video ->
+            if (video.id == videoId) {
+                video.copy(videoPlayState = video.videoPlayState.copy(isPlaying = true))
+            } else {
+                video.copy(videoPlayState = video.videoPlayState.copy(isPlaying = false))
+            }
+        }
+    }
+
 }

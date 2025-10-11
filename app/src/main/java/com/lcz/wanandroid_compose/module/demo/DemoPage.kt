@@ -36,9 +36,6 @@ fun DemoPage(paramsBean: AppRoutePath.Demo) {
             ItemView("滑动条", "滑动条demo") {
                 globalNavController?.app_navigateToSliderDemo(AppRoutePath.SliderDemo())
             }
-            ItemView("抖音视频", "抖音视频demo") {
-                globalNavController?.app_navigateToTickTok(AppRoutePath.TickTok())
-            }
         }
     }
 

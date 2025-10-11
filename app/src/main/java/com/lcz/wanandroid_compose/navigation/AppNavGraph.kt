@@ -29,13 +29,11 @@ import com.lcz.wanandroid_compose.module.coin.MyCoinHistoryPage
 import com.lcz.wanandroid_compose.module.demo.DemoPage
 import com.lcz.wanandroid_compose.module.demo.sign.page.SignPage
 import com.lcz.wanandroid_compose.module.demo.slider.SliderDemoPage
-import com.lcz.wanandroid_compose.module.douyin.page.DouyinPage
 import com.lcz.wanandroid_compose.module.login.LoginPage
 import com.lcz.wanandroid_compose.module.main.MainPage
 import com.lcz.wanandroid_compose.module.search.page.SearchPage
 import com.lcz.wanandroid_compose.module.setting.page.SettingPage
 import com.lcz.wanandroid_compose.module.ticktok.page.TickTokPage
-import com.lcz.wanandroid_compose.ui.video.VideoFeedScreen
 import com.lcz.wanandroid_compose.util.LogUtil
 import kotlinx.serialization.Serializable
 
@@ -180,19 +178,9 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
                 val paramsBean = backStackEntry.toRoute<AppRoutePath.Sign>()
                 SignPage(paramsBean)
             }
-            composable<AppRoutePath.Douyin> { backStackEntry ->
-                val paramsBean = backStackEntry.toRoute<AppRoutePath.Douyin>()
-                DouyinPage(paramsBean)
-            }
             composable<AppRoutePath.SliderDemo> { backStackEntry ->
                 val paramsBean = backStackEntry.toRoute<AppRoutePath.SliderDemo>()
                 SliderDemoPage(paramsBean)
-            }
-            composable<AppRoutePath.VideoPlayer> { backStackEntry ->
-                val paramsBean = backStackEntry.toRoute<AppRoutePath.VideoPlayer>()
-                VideoFeedScreen(
-                    modifier = Modifier.fillMaxSize()
-                )
             }
             composable<AppRoutePath.TickTok> { backStackEntry ->
                 val paramsBean = backStackEntry.toRoute<AppRoutePath.TickTok>()
@@ -247,19 +235,11 @@ fun NavHostController.app_navigateToSign(paramsBean: AppRoutePath.Sign) {
     LogUtil.i(TAG, "导航传递参数:${paramsBean}")
 }
 
-fun NavHostController.app_navigateToDouyin(paramsBean: AppRoutePath.Douyin) {
-    this.navigate(paramsBean)
-    LogUtil.i(TAG, "导航传递参数:${paramsBean}")
-}
 fun NavHostController.app_navigateToSliderDemo(paramsBean: AppRoutePath.SliderDemo) {
     this.navigate(paramsBean)
     LogUtil.i(TAG, "导航传递参数:${paramsBean}")
 }
 
-fun NavHostController.app_navigateToVideoPlayer(paramsBean: AppRoutePath.VideoPlayer) {
-    this.navigate(paramsBean)
-    LogUtil.i(TAG, "导航传递参数:${paramsBean}")
-}
 fun NavHostController.app_navigateToTickTok(paramsBean: AppRoutePath.TickTok) {
     this.navigate(paramsBean)
     LogUtil.i(TAG, "导航传递参数:${paramsBean}")
@@ -294,16 +274,8 @@ object AppRoutePath {
     @Serializable
     data class Demo(val description: String = "Demo页", val from: String = "")
     @Serializable
-    data class Douyin(val description: String = "抖音页", val from: String = "")
-    @Serializable
     data class SliderDemo(val description: String = "滑动条Demo页", val from: String = "")
     
-    @Serializable
-    data class VideoPlayer(
-        val description: String = "视频播放器", 
-        val from: String = "",
-//        val videos: List<com.lcz.wanandroid_compose.ui.video.VideoItem> = emptyList()
-    )
     @Serializable
     data class TickTok(val description: String = "抖音视频页", val from: String = "")
 }

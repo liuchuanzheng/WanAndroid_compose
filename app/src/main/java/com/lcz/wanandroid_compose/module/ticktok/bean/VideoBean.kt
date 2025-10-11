@@ -8,28 +8,28 @@ package com.lcz.wanandroid_compose.module.ticktok.bean
  * 描述:
  */
 data class VideoBean(
-    val videoUrl: String,
-    val coverUrl: String,
-    val title: String,
-    val author: String,
-    val authorIconUrl: String,
-    val commentCount: Int,
-    val likeCount: Int,
-    val collectCount: Int,
-    val forwardCount: String,
-    val isFollow: Boolean,
-    val isCollect: Boolean,
-    val isLiked: Boolean,
-    val shareCount: Int,
-    val duration: Int,//这代表网络返回的视频时长
-    val id: Int,
-    val videoPlayState: VideoPlayState = VideoPlayState()
+    var videoUrl: String,
+    var coverUrl: String,
+    var title: String,
+    var author: String,
+    var authorIconUrl: String,
+    var commentCount: Int,
+    var likeCount: Int,
+    var collectCount: Int,
+    var forwardCount: String,
+    var isFollow: Boolean,
+    var isCollect: Boolean,
+    var isLiked: Boolean,
+    var shareCount: Int,
+    var duration: Int,//这代表网络返回的视频时长
+    var id: Int,
+    var videoPlayState: VideoPlayState = VideoPlayState()
 )
 
 data class VideoPlayState(
-    val isPlaying: Boolean = false,
-    val currentPlayProgress: Float = 0F,
-    val duration: Long = 0L,//这代表视频实际时长
-    val isLoading: Boolean = true,
-    val isCompleted: Boolean = false
+    var isPlaying: Boolean = false,
+    var currentPlayProgress: Float = 0F,
+    var duration: Long = 0L,//这代表视频实际时长
+    var isLoading: Boolean = true,
+    var isCompleted: Boolean = false
 )

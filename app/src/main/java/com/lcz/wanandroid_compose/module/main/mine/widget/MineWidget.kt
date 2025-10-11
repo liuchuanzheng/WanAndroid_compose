@@ -55,10 +55,10 @@ import com.lcz.wanandroid_compose.MyAppViewModel
 import com.lcz.wanandroid_compose.module.main.mine.viewmodel.MineWidgetViewModel
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
 import com.lcz.wanandroid_compose.navigation.app_navigateToDemo
-import com.lcz.wanandroid_compose.navigation.app_navigateToDouyin
 import com.lcz.wanandroid_compose.navigation.app_navigateToLogin
 import com.lcz.wanandroid_compose.navigation.app_navigateToMyCoinHistory
 import com.lcz.wanandroid_compose.navigation.app_navigateToSetting
+import com.lcz.wanandroid_compose.navigation.app_navigateToTickTok
 import com.lcz.wanandroid_compose.navigation.globalNavController
 import com.lcz.wanandroid_compose.theme.WanAndroid_composeTheme
 import com.lcz.wanandroid_compose.widget.CoilImage
@@ -205,7 +205,7 @@ fun MineWidget(viewModel: MineWidgetViewModel = viewModel(), appViewModel: MyApp
                     .background(MaterialTheme.colorScheme.surface)
                     .height(50.dp)
                     .clickable{
-                        globalNavController?.app_navigateToDouyin(AppRoutePath.Douyin())
+                        globalNavController?.app_navigateToTickTok(AppRoutePath.TickTok())
                     }
                     .padding(horizontal = 16.dp, vertical = 5.dp)
 
