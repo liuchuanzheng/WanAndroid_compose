@@ -182,7 +182,7 @@ fun CustomTikTokProgressBar(
                                 onDrag = { change, dragAmount ->
                                     change.consume()
                                     //乘3是增加拖动速度，提升用户体验
-                                    val newProgress = (progressRefresh + dragAmount.x * 3 / size.width).coerceIn(0f, 1f)
+                                    val newProgress = (progressRefresh + dragAmount.x * 2 / size.width).coerceIn(0f, 1f)
                                     onProgressChanged(newProgress, true)
                                 },
                                 onDragEnd = {
