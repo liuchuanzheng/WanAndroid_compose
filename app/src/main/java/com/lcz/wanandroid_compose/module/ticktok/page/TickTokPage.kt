@@ -18,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,6 +29,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.lcz.wanandroid_compose.module.ticktok.bean.VideoBean
 import com.lcz.wanandroid_compose.module.ticktok.viewmodel.TickTokPageViewModel
@@ -65,6 +69,32 @@ fun TickTokPage(paramsBean: AppRoutePath.TickTok, viewModel: TickTokPageViewMode
             LogUtil.i("TickTokPage", "修改播放状态为true id:${videoBean.id} ")
         }
     }
+    val lifecycleOwner = LocalLifecycleOwner.current
+    var isAppInBackground by remember { mutableStateOf(false) }
+    // 添加生命周期监听
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            when (event) {
+                Lifecycle.Event.ON_PAUSE -> {
+                    isAppInBackground = true
+                    // 暂停所有正在播放的视频
+                    viewModel.pauseAllVideos()
+                }
+
+                Lifecycle.Event.ON_RESUME -> {
+                    isAppInBackground = false
+                }
+
+                else -> {}
+            }
+        }
+
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()

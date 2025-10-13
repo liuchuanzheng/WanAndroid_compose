@@ -152,4 +152,14 @@ class TickTokPageViewModel(isPreview: Boolean = false) : BaseViewModel() {
         }
     }
 
+    fun pauseAllVideos() {
+        videoList.value = videoList.value.map { video ->
+            if (video.videoPlayState.isPlaying) {
+                video.copy(videoPlayState = video.videoPlayState.copy(isPlaying = false))
+            } else {
+                video
+            }
+        }.toMutableList()
+    }
+
 }
