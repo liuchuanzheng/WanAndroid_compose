@@ -45,8 +45,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.lcz.wanandroid_compose.module.main.home.data.Article
 import com.lcz.wanandroid_compose.module.main.home.viewmodel.HomeWidgetViewModel
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
-import com.lcz.wanandroid_compose.navigation.app_navigateToSearch
-import com.lcz.wanandroid_compose.navigation.globalNavController
+import com.lcz.wanandroid_compose.navigation.PageJumpManager
 import com.lcz.wanandroid_compose.theme.WanAndroid_composeTheme
 import com.lcz.wanandroid_compose.util.LogUtil
 import com.lcz.wanandroid_compose.util.toHtml
@@ -172,7 +171,7 @@ fun TitleBar() {
                 .clip(roundedCornerShape)
                 .border(BorderStroke(1.dp, Color.Gray), shape = roundedCornerShape)
                 .clickable {
-                    globalNavController?.app_navigateToSearch(AppRoutePath.Search())
+                    PageJumpManager.navigateToSearch(AppRoutePath.Search())
                 }
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,

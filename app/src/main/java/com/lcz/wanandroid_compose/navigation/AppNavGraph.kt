@@ -27,6 +27,7 @@ import androidx.navigation.toRoute
 import com.lcz.wanandroid_compose.module.coin.CoinRankPage
 import com.lcz.wanandroid_compose.module.coin.MyCoinHistoryPage
 import com.lcz.wanandroid_compose.module.demo.DemoPage
+import com.lcz.wanandroid_compose.module.demo.netcache.NetCacheDemoPage
 import com.lcz.wanandroid_compose.module.demo.sign.page.SignPage
 import com.lcz.wanandroid_compose.module.demo.slider.SliderDemoPage
 import com.lcz.wanandroid_compose.module.demo.ticktokprogressbar.TickTokProgressBarPage
@@ -126,7 +127,7 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
                         .padding(vertical = 100.dp)
                         .sharedElement(rememberSharedContentState("test_button"), animatedVisibilityScope = this),
                     onClick = {
-                        navController.app_navigateToTest2(AppRoutePath.Test2(from = "Test"))
+                        PageJumpManager.navigateToTest2(AppRoutePath.Test2(from = "Test"))
                     }) {
                     Text(text = "当前页面是test,点击跳转test2")
                 }
@@ -191,102 +192,13 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
                 val paramsBean = backStackEntry.toRoute<AppRoutePath.TickTokProgressBar>()
                 TickTokProgressBarPage(paramsBean)
             }
+            composable<AppRoutePath.NetCache> { backStackEntry ->
+                val paramsBean = backStackEntry.toRoute<AppRoutePath.NetCache>()
+                NetCacheDemoPage(paramsBean)
+            }
 
 
 
         }
     }
-}
-
-fun NavHostController.app_navigateToTest(paramsBean: AppRoutePath.Test) {
-    this.navigate(paramsBean)
-    LogUtil.i(TAG, "导航传递参数:${paramsBean}")
-}
-
-fun NavHostController.app_navigateToTest2(paramsBean: AppRoutePath.Test2) {
-    this.navigate(paramsBean)
-    LogUtil.i(TAG, "导航传递参数:${paramsBean}")
-}
-
-fun NavHostController.app_navigateToLogin(paramsBean: AppRoutePath.Login) {
-    this.navigate(paramsBean)
-    LogUtil.i(TAG, "导航传递参数:${paramsBean}")
-}
-
-fun NavHostController.app_navigateToMyCoinHistory(paramsBean: AppRoutePath.MyCoinHistory) {
-    this.navigate(paramsBean)
-    LogUtil.i(TAG, "导航传递参数:${paramsBean}")
-}
-
-fun NavHostController.app_navigateToCoinRank(paramsBean: AppRoutePath.CoinRank) {
-    this.navigate(paramsBean)
-    LogUtil.i(TAG, "导航传递参数:${paramsBean}")
-}
-
-fun NavHostController.app_navigateToSetting(paramsBean: AppRoutePath.Setting) {
-    this.navigate(paramsBean)
-    LogUtil.i(TAG, "导航传递参数:${paramsBean}")
-}
-fun NavHostController.app_navigateToSearch(paramsBean: AppRoutePath.Search) {
-    this.navigate(paramsBean)
-    LogUtil.i(TAG, "导航传递参数:${paramsBean}")
-}
-fun NavHostController.app_navigateToDemo(paramsBean: AppRoutePath.Demo) {
-    this.navigate(paramsBean)
-    LogUtil.i(TAG, "导航传递参数:${paramsBean}")
-}
-fun NavHostController.app_navigateToSign(paramsBean: AppRoutePath.Sign) {
-    this.navigate(paramsBean)
-    LogUtil.i(TAG, "导航传递参数:${paramsBean}")
-}
-
-fun NavHostController.app_navigateToSliderDemo(paramsBean: AppRoutePath.SliderDemo) {
-    this.navigate(paramsBean)
-    LogUtil.i(TAG, "导航传递参数:${paramsBean}")
-}
-
-fun NavHostController.app_navigateToTickTok(paramsBean: AppRoutePath.TickTok) {
-    this.navigate(paramsBean)
-    LogUtil.i(TAG, "导航传递参数:${paramsBean}")
-}
-fun NavHostController.app_navigateToTickTokProgressBar(paramsBean: AppRoutePath.TickTokProgressBar) {
-    this.navigate(paramsBean)
-    LogUtil.i(TAG, "导航传递参数:${paramsBean}")
-}
-
-
-
-object AppRoutePath {
-    @Serializable
-    data class Main(val description: String = "主页", val from: String = "")
-
-    @Serializable
-    data class Test(val description: String = "测试页", val from: String = "")
-
-    @Serializable
-    data class Test2(val description: String = "测试页2", val from: String = "")
-
-    @Serializable
-    data class Login(val description: String = "登录页", val from: String = "")
-
-    @Serializable
-    data class MyCoinHistory(val description: String = "我的积分", val from: String = "")
-
-    @Serializable
-    data class CoinRank(val description: String = "积分排行榜", val from: String = "")
-    @Serializable
-    data class Setting(val description: String = "设置页", val from: String = "")
-    @Serializable
-    data class Search(val description: String = "搜索页", val from: String = "")
-    @Serializable
-    data class Sign(val description: String = "签名页", val from: String = "")
-    @Serializable
-    data class Demo(val description: String = "Demo页", val from: String = "")
-    @Serializable
-    data class SliderDemo(val description: String = "滑动条Demo页", val from: String = "")
-    
-    @Serializable
-    data class TickTok(val description: String = "抖音视频页", val from: String = "")
-    @Serializable
-    data class TickTokProgressBar(val description: String = "抖音风格视频进度条页", val from: String = "")
 }

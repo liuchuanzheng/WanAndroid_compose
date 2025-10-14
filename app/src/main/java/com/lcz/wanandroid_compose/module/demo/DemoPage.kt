@@ -14,10 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
-import com.lcz.wanandroid_compose.navigation.app_navigateToSign
-import com.lcz.wanandroid_compose.navigation.app_navigateToSliderDemo
-import com.lcz.wanandroid_compose.navigation.app_navigateToTickTokProgressBar
-import com.lcz.wanandroid_compose.navigation.globalNavController
+import com.lcz.wanandroid_compose.navigation.PageJumpManager
 
 /**
  * 作者:     刘传政
@@ -31,15 +28,18 @@ fun DemoPage(paramsBean: AppRoutePath.Demo) {
     LazyColumn(modifier = Modifier.statusBarsPadding()) {
         item {
             ItemView("手写签名", "通过画笔签名，保存图片") {
-                globalNavController?.app_navigateToSign(AppRoutePath.Sign())
+                PageJumpManager.navigateToSign(AppRoutePath.Sign())
             }
             ItemView("滑动条", "滑动条demo") {
-                globalNavController?.app_navigateToSliderDemo(AppRoutePath.SliderDemo())
+                PageJumpManager.navigateToSliderDemo(AppRoutePath.SliderDemo())
             }
             ItemView("抖音风格视频进度条", "拖动时变高大，松手后2秒变得狭窄") {
-                globalNavController?.app_navigateToTickTokProgressBar(
+                PageJumpManager.navigateToTickTokProgressBar(
                     AppRoutePath.TickTokProgressBar()
                 )
+            }
+            ItemView("缓存拦截器", "通过缓存拦截器，优化网络接口体验") {
+                PageJumpManager.navigateToNetCache(AppRoutePath.NetCache())
             }
         }
     }

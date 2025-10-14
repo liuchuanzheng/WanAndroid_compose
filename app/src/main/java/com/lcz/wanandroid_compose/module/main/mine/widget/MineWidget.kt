@@ -54,12 +54,7 @@ import com.lcz.wanandroid_compose.MyApp
 import com.lcz.wanandroid_compose.MyAppViewModel
 import com.lcz.wanandroid_compose.module.main.mine.viewmodel.MineWidgetViewModel
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
-import com.lcz.wanandroid_compose.navigation.app_navigateToDemo
-import com.lcz.wanandroid_compose.navigation.app_navigateToLogin
-import com.lcz.wanandroid_compose.navigation.app_navigateToMyCoinHistory
-import com.lcz.wanandroid_compose.navigation.app_navigateToSetting
-import com.lcz.wanandroid_compose.navigation.app_navigateToTickTok
-import com.lcz.wanandroid_compose.navigation.globalNavController
+import com.lcz.wanandroid_compose.navigation.PageJumpManager
 import com.lcz.wanandroid_compose.theme.WanAndroid_composeTheme
 import com.lcz.wanandroid_compose.widget.CoilImage
 
@@ -113,7 +108,7 @@ fun MineWidget(viewModel: MineWidgetViewModel = viewModel(), appViewModel: MyApp
                 modifier = Modifier
                     .clickable {
                         if (user.value == null) {
-                            globalNavController?.app_navigateToLogin(AppRoutePath.Login())
+                            PageJumpManager.navigateToLogin(AppRoutePath.Login())
                         } else {
                         }
                     }
@@ -145,7 +140,7 @@ fun MineWidget(viewModel: MineWidgetViewModel = viewModel(), appViewModel: MyApp
                     .height(50.dp)
                     .padding(horizontal = 16.dp, vertical = 5.dp)
                     .clickable {
-                        globalNavController?.app_navigateToMyCoinHistory(AppRoutePath.MyCoinHistory())
+                        PageJumpManager.navigateToMyCoinHistory(AppRoutePath.MyCoinHistory())
                     }
 
             ) {
@@ -205,7 +200,7 @@ fun MineWidget(viewModel: MineWidgetViewModel = viewModel(), appViewModel: MyApp
                     .background(MaterialTheme.colorScheme.surface)
                     .height(50.dp)
                     .clickable{
-                        globalNavController?.app_navigateToTickTok(AppRoutePath.TickTok())
+                        PageJumpManager.navigateToTickTok(AppRoutePath.TickTok())
                     }
                     .padding(horizontal = 16.dp, vertical = 5.dp)
 
@@ -236,7 +231,7 @@ fun MineWidget(viewModel: MineWidgetViewModel = viewModel(), appViewModel: MyApp
                     .background(MaterialTheme.colorScheme.surface)
                     .height(50.dp)
                     .clickable {
-                        globalNavController?.app_navigateToDemo(AppRoutePath.Demo(from = "我的"))
+                        PageJumpManager.navigateToDemo(AppRoutePath.Demo(from = "我的"))
                     }
                     .padding(horizontal = 16.dp, vertical = 5.dp)
 
@@ -259,7 +254,7 @@ fun MineWidget(viewModel: MineWidgetViewModel = viewModel(), appViewModel: MyApp
                     .height(50.dp)
                     .padding(horizontal = 16.dp, vertical = 5.dp)
                     .clickable {
-                        globalNavController?.app_navigateToSetting(AppRoutePath.Setting())
+                        PageJumpManager.navigateToSetting(AppRoutePath.Setting())
                     }
 
 

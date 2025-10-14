@@ -43,7 +43,7 @@ import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.lcz.wanandroid_compose.module.coin.data.MyCoinHistoryResponseBean
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
-import com.lcz.wanandroid_compose.navigation.app_navigateToCoinRank
+import com.lcz.wanandroid_compose.navigation.PageJumpManager
 import com.lcz.wanandroid_compose.navigation.globalNavController
 import com.lcz.wanandroid_compose.theme.WanAndroid_composeTheme
 import com.lcz.wanandroid_compose.util.LogUtil
@@ -91,7 +91,7 @@ fun MyCoinHistoryPage(modifier: Modifier = Modifier) {
                 },
                 actions = {
                     TextButton(onClick = {
-                        globalNavController?.app_navigateToCoinRank(AppRoutePath.CoinRank())
+                        PageJumpManager.navigateToCoinRank(AppRoutePath.CoinRank())
                     }) {
                         Text(text = "排行榜")
                     }
