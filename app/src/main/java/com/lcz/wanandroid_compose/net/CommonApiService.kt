@@ -7,6 +7,7 @@ import com.lcz.wanandroid_compose.module.coin.data.MyCoinHistoryResponseBean
 import com.lcz.wanandroid_compose.module.login.bean.LoginResponseBean
 import com.lcz.wanandroid_compose.module.main.home.data.Article
 import com.lcz.wanandroid_compose.module.main.home.data.BannerResponseBean
+import com.lcz.wanandroid_compose.module.main.home.data.ProjectTitle
 import com.lcz.wanandroid_compose.module.main.mine.bean.MyCoinResponseBean
 import com.lcz.wanandroid_compose.module.search.data.HotSearch
 import retrofit2.http.Field
@@ -70,5 +71,15 @@ interface CommonApiService {
         @Path("pageNo") pageNo: Int,
         @Query("page_size") pageSize: Int,
         @Query("k") searchKey: String
+    ): BaseNetResponseBean<BasePageResponseBean<Article>>
+    /** 获取项目分类数据 */
+    @GET("project/tree/json")
+    suspend fun getProjectTitleList(): BaseNetResponseBean<List<ProjectTitle>>
+    /** 获取项目列表分页数据 */
+    @GET("project/list/{pageNo}/json")
+    suspend fun getProjectPageList(
+        @Path("pageNo") pageNo: Int,
+        @Query("page_size") pageSize: Int,
+        @Query("cid") categoryId: Int
     ): BaseNetResponseBean<BasePageResponseBean<Article>>
 }

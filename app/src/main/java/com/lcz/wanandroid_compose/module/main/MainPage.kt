@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.lcz.wanandroid_compose.module.main.home.widget.HomeWidget
+import com.lcz.wanandroid_compose.module.main.home.widget.ProjectWidget
 import com.lcz.wanandroid_compose.module.main.mine.widget.MineWidget
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
 import com.lcz.wanandroid_compose.theme.WanAndroid_composeTheme
@@ -89,12 +90,7 @@ fun MainPage(paramsBean: AppRoutePath.Main, modifier: Modifier = Modifier) {
                     }
 
                     1 -> {
-                        Text(
-                            text = "项目",
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(Color.Green)
-                        )
+                        ProjectWidget()
                     }
 
                     2 -> {

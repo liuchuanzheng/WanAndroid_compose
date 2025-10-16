@@ -6,6 +6,7 @@ import com.lcz.wanandroid_compose.module.coin.data.MyCoinHistoryResponseBean
 import com.lcz.wanandroid_compose.module.login.bean.LoginResponseBean
 import com.lcz.wanandroid_compose.module.main.home.data.Article
 import com.lcz.wanandroid_compose.module.main.home.data.BannerResponseBean
+import com.lcz.wanandroid_compose.module.main.home.data.ProjectTitle
 import com.lcz.wanandroid_compose.module.main.mine.bean.MyCoinResponseBean
 import com.lcz.wanandroid_compose.module.search.data.HotSearch
 import com.lcz.wanandroid_compose.net.CommonApiService
@@ -24,30 +25,30 @@ import kotlin.jvm.java
  *          数据仓库的作用是隐藏数据的来源和获取方式，使应用程序可以方便地访问和使用数据。
  */
 object CommonRepository {
-    private val commonService by lazy {
+    private val commonRetrofitService by lazy {
         RetrofitManager.getService(CommonApiService::class.java)
     }
 
     suspend fun login(username: String, password: String): BaseNetResponseBean<LoginResponseBean> {
-        return commonService.login(username, password)
+        return commonRetrofitService.login(username, password)
     }
 
     suspend fun getMyCoin(): BaseNetResponseBean<MyCoinResponseBean> {
-        return commonService.getMyCoin()
+        return commonRetrofitService.getMyCoin()
     }
 
     suspend fun getMyCoinHistory(
         pageNo: Int,
         page_size: Int
     ): BaseNetResponseBean<BasePageResponseBean<MyCoinHistoryResponseBean>> {
-        return commonService.getMyCoinHistory(pageNo, page_size)
+        return commonRetrofitService.getMyCoinHistory(pageNo, page_size)
     }
 
     suspend fun getCoinRankList(
         pageNo: Int,
         pageSize: Int
     ): BaseNetResponseBean<BasePageResponseBean<MyCoinResponseBean>> {
-        return commonService.getCoinRankList(pageNo, pageSize)
+        return commonRetrofitService.getCoinRankList(pageNo, pageSize)
     }
 
     suspend fun getArticleList(
@@ -55,22 +56,22 @@ object CommonRepository {
         pageSize: Int,
         categoryId: Int? = null
     ): BaseNetResponseBean<BasePageResponseBean<Article>> {
-        return commonService.getArticlePageList(pageNo, pageSize, categoryId)
+        return commonRetrofitService.getArticlePageList(pageNo, pageSize, categoryId)
     }
 
     /** 获取置顶文章集合数据 */
     suspend fun getArticleTopList(): BaseNetResponseBean<List<Article>> {
-        return commonService.getArticleTopList()
+        return commonRetrofitService.getArticleTopList()
     }
 
     /** 获取轮播图数据 */
     suspend fun getBanner(): BaseNetResponseBean<BannerResponseBean> {
-        return commonService.getBanner()
+        return commonRetrofitService.getBanner()
     }
 
     /** 获取热门搜索数据 */
     suspend fun getHotSearchList(): BaseNetResponseBean<List<HotSearch>> {
-        return commonService.getHotSearchList()
+        return commonRetrofitService.getHotSearchList()
     }
 
     /** 根据关键词搜索数据 */
@@ -79,6 +80,20 @@ object CommonRepository {
         pageSize: Int,
         searchKey: String
     ): BaseNetResponseBean<BasePageResponseBean<Article>> {
-        return commonService.searchDataByKey(pageNo, pageSize, searchKey)
+        return commonRetrofitService.searchDataByKey(pageNo, pageSize, searchKey)
+    }
+
+    /** 获取项目分类数据 */
+    suspend fun getProjectTitleList(): BaseNetResponseBean<List<ProjectTitle>> {
+        return commonRetrofitService.getProjectTitleList()
+    }
+
+    /** 获取项目列表分页数据 */
+    suspend fun getProjectPageList(
+        pageNo: Int,
+        pageSize: Int,
+        categoryId: Int
+    ): BaseNetResponseBean<BasePageResponseBean<Article>> {
+        return commonRetrofitService.getProjectPageList(pageNo, pageSize, categoryId)
     }
 }
