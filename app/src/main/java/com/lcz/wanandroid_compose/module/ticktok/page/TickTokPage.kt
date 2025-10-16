@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -16,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBackIos
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -94,100 +96,105 @@ fun TickTokPage(paramsBean: AppRoutePath.TickTok, viewModel: TickTokPageViewMode
             lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color.Black)
-    ) {
-        if (videoList.isNotEmpty()) {
-            VerticalPager(
-                state = pagerState, modifier = Modifier
-                    .fillMaxSize(),
-                beyondViewportPageCount = 2, // 关键：缓存当前页前后各 2 页（共 5 页）
+    Scaffold {
+        it
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = Color.Black)
+                .padding(bottom = it.calculateBottomPadding())
+        ) {
+            if (videoList.isNotEmpty()) {
+                VerticalPager(
+                    state = pagerState, modifier = Modifier
+                        .fillMaxSize(),
+                    beyondViewportPageCount = 2, // 关键：缓存当前页前后各 2 页（共 5 页）
 //                pageSpacing = 10.dp
-            ) { page ->
-                val isVisible = pagerState.currentPage == page
-                var videoBean = videoList.get(page)
-                LogUtil.e("TickTokPage", "id:${videoBean.id} isPlaying:${videoBean.videoPlayState.isPlaying}")
-                VideoItem(
-                    videoBean,
-                    page,
-                    onProgressChanged = {
+                ) { page ->
+                    val isVisible = pagerState.currentPage == page
+                    var videoBean = videoList.get(page)
+                    LogUtil.e("TickTokPage", "id:${videoBean.id} isPlaying:${videoBean.videoPlayState.isPlaying}")
+                    VideoItem(
+                        videoBean,
+                        page,
+                        onProgressChanged = {
 
-                        viewModel.updateVideoProperty(videoBean.id) { videoBean ->
-                            videoBean.copy(videoPlayState = videoBean.videoPlayState.copy(currentPlayProgress = it))
-                        }
-                        LogUtil.i("TickTokPage", "onProgressChanged: $videoBean")
-                    },
-                    onPlayPauseChanged = { isPlaying ->
-                        viewModel.updateVideoProperty(videoBean.id) {
-                            it.copy(videoPlayState = it.videoPlayState.copy(isPlaying = isPlaying))
-                        }
-                        LogUtil.i("TickTokPage", "onPlayPauseChanged $videoBean")
-                    },
-                    onVideoCompleted = {
-                        viewModel.updateVideoProperty(videoBean.id) {
-                            it.copy(videoPlayState = it.videoPlayState.copy(isPlaying = false))
-                        }
-                    },
-                    onDurationRead = {
-                        viewModel.updateVideoProperty(videoBean.id) { videoBean ->
-                            videoBean.copy(videoPlayState = videoBean.videoPlayState.copy(duration = it))
-                        }
-                        LogUtil.i("TickTokPage", "onDurationRead: it=$it, $videoBean")
-                    },
-                    onLikeChange = { like ->
-                        viewModel.updateVideoProperty(videoBean.id) {
-                            it.copy(isLiked = like, likeCount = if (like) it.likeCount + 1 else it.likeCount - 1)
-                        }
-                    },
-                    onCollectChange = { collect ->
-                        viewModel.updateVideoProperty(videoBean.id) {
-                            it.copy(
-                                isCollect = collect,
-                                collectCount = if (collect) it.collectCount + 1 else it.collectCount - 1
-                            )
-                        }
-                    },
-                    onFollowChange = { follow ->
-                        viewModel.updateVideoProperty(videoBean.id) {
-                            it.copy(isFollow = follow)
-                        }
-                    },
-                    onShareClick = {
-                        viewModel.updateVideoProperty(videoBean.id) {
-                            it.copy(shareCount = it.shareCount + 1)
-                        }
-                    },
-                )
+                            viewModel.updateVideoProperty(videoBean.id) { videoBean ->
+                                videoBean.copy(videoPlayState = videoBean.videoPlayState.copy(currentPlayProgress = it))
+                            }
+                            LogUtil.i("TickTokPage", "onProgressChanged: $videoBean")
+                        },
+                        onPlayPauseChanged = { isPlaying ->
+                            viewModel.updateVideoProperty(videoBean.id) {
+                                it.copy(videoPlayState = it.videoPlayState.copy(isPlaying = isPlaying))
+                            }
+                            LogUtil.i("TickTokPage", "onPlayPauseChanged $videoBean")
+                        },
+                        onVideoCompleted = {
+                            viewModel.updateVideoProperty(videoBean.id) {
+                                it.copy(videoPlayState = it.videoPlayState.copy(isPlaying = false))
+                            }
+                        },
+                        onDurationRead = {
+                            viewModel.updateVideoProperty(videoBean.id) { videoBean ->
+                                videoBean.copy(videoPlayState = videoBean.videoPlayState.copy(duration = it))
+                            }
+                            LogUtil.i("TickTokPage", "onDurationRead: it=$it, $videoBean")
+                        },
+                        onLikeChange = { like ->
+                            viewModel.updateVideoProperty(videoBean.id) {
+                                it.copy(isLiked = like, likeCount = if (like) it.likeCount + 1 else it.likeCount - 1)
+                            }
+                        },
+                        onCollectChange = { collect ->
+                            viewModel.updateVideoProperty(videoBean.id) {
+                                it.copy(
+                                    isCollect = collect,
+                                    collectCount = if (collect) it.collectCount + 1 else it.collectCount - 1
+                                )
+                            }
+                        },
+                        onFollowChange = { follow ->
+                            viewModel.updateVideoProperty(videoBean.id) {
+                                it.copy(isFollow = follow)
+                            }
+                        },
+                        onShareClick = {
+                            viewModel.updateVideoProperty(videoBean.id) {
+                                it.copy(shareCount = it.shareCount + 1)
+                            }
+                        },
+                    )
+                }
+            } else {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("暂无内容")
+                }
+
             }
-        } else {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text("暂无内容")
+            Column {
+                Box(
+                    modifier = Modifier
+                        .statusBarsPadding()
+                )
+                IconButton(onClick = {
+                    globalNavController?.popBackStack()
+                }) {
+                    Icon(
+                        imageVector = Icons.Outlined.ArrowBackIos,
+                        contentDescription = null,
+                        tint = Color.White
+                    )
+                }
             }
 
         }
-        Column {
-            Box(
-                modifier = Modifier
-                    .statusBarsPadding()
-            )
-            IconButton(onClick = {
-                globalNavController?.popBackStack()
-            }) {
-                Icon(
-                    imageVector = Icons.Outlined.ArrowBackIos,
-                    contentDescription = null,
-                    tint = Color.White
-                )
-            }
-        }
-
     }
+
+
 }
 
 @Composable
