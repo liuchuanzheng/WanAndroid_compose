@@ -1,14 +1,19 @@
 package com.lcz.wanandroid_compose
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.collectAsState
 import com.lcz.wanandroid_compose.navigation.AppNavGraph
 import com.lcz.wanandroid_compose.theme.WanAndroid_composeTheme
+import com.lcz.wanandroid_compose.util.ToastUtil
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -33,6 +38,18 @@ class MainActivity : ComponentActivity() {
             WanAndroid_composeTheme(themeType = themeType.value) {
                 //第一个compose页面就是导航图,剩下的都是导航图控制的。这样逻辑清晰
                 AppNavGraph()
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, mBackPressedCallback)
+    }
+    private var lastBackPressTime = 0L
+    private val mBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            if (System.currentTimeMillis() - lastBackPressTime < 2000) {
+                finish()
+            } else {
+                lastBackPressTime = System.currentTimeMillis()
+                ToastUtil.showShort("再按一次退出程序")
             }
         }
     }

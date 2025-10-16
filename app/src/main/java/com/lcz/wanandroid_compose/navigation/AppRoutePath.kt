@@ -37,4 +37,6 @@ object AppRoutePath {
     data class TickTokProgressBar(val description: String = "抖音风格视频进度条页", val from: String = "")
     @Serializable
     data class NetCache(val description: String = "网络缓存页", val from: String = "")
+    @Serializable
+    data class Web(val description: String = "网页", val from: String = "", val url: String = "")
 }

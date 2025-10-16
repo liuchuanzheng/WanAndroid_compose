@@ -7,7 +7,6 @@ import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -37,7 +36,7 @@ import com.lcz.wanandroid_compose.module.search.page.SearchPage
 import com.lcz.wanandroid_compose.module.setting.page.SettingPage
 import com.lcz.wanandroid_compose.module.ticktok.page.TickTokPage
 import com.lcz.wanandroid_compose.util.LogUtil
-import kotlinx.serialization.Serializable
+import com.lcz.wanandroid_compose.module.web.WebPage
 
 /**
  * 作者:     刘传政
@@ -195,6 +194,12 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
             composable<AppRoutePath.NetCache> { backStackEntry ->
                 val paramsBean = backStackEntry.toRoute<AppRoutePath.NetCache>()
                 NetCacheDemoPage(paramsBean)
+            }
+            composable<AppRoutePath.Web> { backStackEntry ->
+                val paramsBean = backStackEntry.toRoute<AppRoutePath.Web>()
+                WebPage(paramsBean.url, onBackPressed = {
+                    navController.popBackStack()
+                })
             }
 
 

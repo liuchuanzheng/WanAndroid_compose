@@ -61,6 +61,9 @@ object PageJumpManager {
     fun navigateToNetCache(paramsBean: AppRoutePath.NetCache) {
         simpleNavigate(paramsBean)
     }
+    fun navigateToWeb(paramsBean: AppRoutePath.Web) {
+        simpleNavigate(paramsBean)
+    }
 }
 
 private fun <T : Any> simpleNavigate(route: T) {

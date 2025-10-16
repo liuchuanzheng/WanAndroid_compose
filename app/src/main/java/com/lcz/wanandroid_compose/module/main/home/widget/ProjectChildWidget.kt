@@ -41,6 +41,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.lcz.wanandroid_compose.module.main.home.data.Article
 import com.lcz.wanandroid_compose.module.main.home.viewmodel.PageViewModelFactory
 import com.lcz.wanandroid_compose.module.main.home.viewmodel.ProjectChildWidgetViewModel
+import com.lcz.wanandroid_compose.navigation.AppRoutePath
+import com.lcz.wanandroid_compose.navigation.PageJumpManager
 import com.lcz.wanandroid_compose.widget.CoilImage
 import com.lcz.wanandroid_compose.widget.RefreshableList
 
@@ -82,7 +84,9 @@ fun ProjectChildWidget(
                 viewModel.netGetProjectPageList(false)
             },
             itemContent = { index, item ->
-                ProjectArticleItem(article = item) { }
+                ProjectArticleItem(article = item) {
+                    PageJumpManager.navigateToWeb(AppRoutePath.Web(url = item.link ?: ""))
+                }
             }
         )
     }

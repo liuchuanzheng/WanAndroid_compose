@@ -204,7 +204,7 @@ fun ItemView(index: Int, item: Article) {
                 shape = MaterialTheme.shapes.medium
             )
             .clickable {
-
+                PageJumpManager.navigateToWeb(AppRoutePath.Web(url = item.link?:""))
             }
             .padding(horizontal = 16.dp, vertical = 8.dp)
 
