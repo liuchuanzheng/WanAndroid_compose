@@ -36,6 +36,24 @@ class ProjectChildWidgetViewModel(private val isPreview: Boolean = false, privat
     init {
         if (isPreview) {
             //模拟预览数据
+            _projectList.value = listOf(
+                Article(
+                    id = 1,
+                    title = "项目1",
+                    author = "作者1",
+                    niceDate = "2025-10-16",
+                    chapterName = "分类1",
+                    collect = false,
+                ),
+                Article(
+                    id = 2,
+                    title = "项目2",
+                    author = "作者2",
+                    niceDate = "2025-10-15",
+                    chapterName = "分类2",
+                    collect = true,
+                ),
+            )
         }
     }
 

@@ -1,5 +1,6 @@
 package com.lcz.wanandroid_compose.module.main.home.widget
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -33,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -180,4 +182,14 @@ fun ProjectArticleItem(
             }
         }
     }
+}
+
+@SuppressLint("ViewModelConstructorInComposable")
+@Preview(
+    showBackground = true,
+//    showSystemUi = true
+)
+@Composable
+fun ProjectArticleItemPreview() {
+    ProjectChildWidget(categoryId = 100, viewModel = ProjectChildWidgetViewModel(isPreview = true, categoryId = 100))
 }
