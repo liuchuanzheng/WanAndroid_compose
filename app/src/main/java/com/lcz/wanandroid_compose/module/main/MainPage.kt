@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.lcz.wanandroid_compose.module.main.home.widget.HomeWidget
 import com.lcz.wanandroid_compose.module.main.home.widget.ProjectWidget
 import com.lcz.wanandroid_compose.module.main.mine.widget.MineWidget
+import com.lcz.wanandroid_compose.module.takeout.wdiget.TakeoutWdiget
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
 import com.lcz.wanandroid_compose.theme.WanAndroid_composeTheme
 import com.lcz.wanandroid_compose.widget.BottomBar
@@ -50,7 +51,7 @@ fun MainPage(paramsBean: AppRoutePath.Main, modifier: Modifier = Modifier) {
         ),
         BottomBarItem(
             icon = Icons.Default.LocationOn,
-            text = "导航"
+            text = "外卖"
         ),
         BottomBarItem(
             icon = Icons.Default.Share,
@@ -94,12 +95,7 @@ fun MainPage(paramsBean: AppRoutePath.Main, modifier: Modifier = Modifier) {
                     }
 
                     2 -> {
-                        Text(
-                            text = "导航",
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(Color.Blue)
-                        )
+                        TakeoutWdiget()
                     }
 
                     3 -> {
