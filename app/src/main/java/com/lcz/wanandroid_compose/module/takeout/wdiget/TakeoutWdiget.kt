@@ -1,11 +1,11 @@
 package com.lcz.wanandroid_compose.module.takeout.wdiget
 
+import android.R.attr.text
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutLinearInEasing
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.MarqueeSpacing
@@ -13,40 +13,39 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.BluetoothSearching
-import androidx.compose.material.icons.automirrored.filled.ManageSearch
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBackIos
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.MoreHoriz
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.StarOutline
+import androidx.compose.material.icons.outlined.AccessTime
+import androidx.compose.material.icons.outlined.Beenhere
+import androidx.compose.material.icons.outlined.HelpOutline
+import androidx.compose.material.icons.outlined.KeyboardArrowRight
+import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.Phone
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
@@ -55,42 +54,27 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.input.pointer.motionEventSpy
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.request.ImageRequest
-import com.google.common.math.LinearTransformation.horizontal
 import com.lcz.wanandroid_compose.R
-import com.lcz.wanandroid_compose.navigation.globalNavController
-import com.lcz.wanandroid_compose.widget.CoilImage
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * 作者:     刘传政
@@ -104,18 +88,416 @@ import kotlinx.coroutines.delay
 fun TakeoutWdiget() {
     Scaffold() {
         it
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Green)
+                .background(Color(0xFFF7F7F7))
         ) {
+            Box(
+            ) {
 
-            HeaderCard()
-            TitileBar()
+//                HeaderCard()
+                TitileBar()
+
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+            DiancanCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            )
         }
+
 
     }
 }
+
+@Composable
+fun DiancanCard(modifier: Modifier = Modifier) {
+
+    val curPagerState = rememberPagerState(
+        initialPage = 2,
+        pageCount = { 3 })
+    val selectedTabIndex = remember { mutableStateOf(0) }
+    // 监听pager状态变化
+    LaunchedEffect(curPagerState.currentPage) {
+        selectedTabIndex.value = curPagerState.currentPage
+    }
+    val scope = rememberCoroutineScope()
+    Box(
+        modifier = modifier
+
+            .clip(
+                RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+            )
+            .background(Color.White)
+            .padding(top = 10.dp)
+    ) {
+        Column {
+            Row(modifier = Modifier.padding(horizontal = 16.dp)) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .clickable {
+                            selectedTabIndex.value = 0
+                            scope.launch {
+                                curPagerState.animateScrollToPage(0)
+                            }
+                        }) {
+                    Text(
+                        text = "点菜",
+                        color = if (selectedTabIndex.value == 0) Color.Black else Color.Gray,
+                        fontSize = 14.sp,
+                        fontWeight = if (selectedTabIndex.value == 0) FontWeight.W700 else FontWeight.W400
+                    )
+                    Spacer(modifier = Modifier.height(2.dp))
+                    AnimatedVisibility(
+                        visible = selectedTabIndex.value == 0,
+                        enter = EnterTransition.None,
+                        exit = ExitTransition.None,
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .width(30.dp)
+                                .height(3.dp)
+                                .clip(RoundedCornerShape(50))
+                                .background(Color.Yellow)
+                        )
+                    }
+
+                }
+                Spacer(modifier = Modifier.width(16.dp))
+                Column(
+                    horizontalAlignment = Alignment.Start,
+                    modifier = Modifier
+                        .clickable {
+                            selectedTabIndex.value = 1
+                            scope.launch {
+                                curPagerState.animateScrollToPage(1)
+                            }
+                        }) {
+                    Row(
+                        verticalAlignment = Alignment.Bottom,
+                    ) {
+                        Text(
+                            text = "评价",
+                            color = if (selectedTabIndex.value == 1) Color.Black else Color.Gray,
+                            fontSize = 14.sp,
+                            fontWeight = if (selectedTabIndex.value == 1) FontWeight.W700 else FontWeight.W400,
+                        )
+                        Text(
+                            textAlign = TextAlign.Center,
+                            text = "1473",
+                            color = Color.Gray,
+                            fontSize = 10.sp,
+                            lineHeight = 14.sp,
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(2.dp))
+                    AnimatedVisibility(
+                        visible = selectedTabIndex.value == 1,
+                        enter = EnterTransition.None,
+                        exit = ExitTransition.None,
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .width(30.dp)
+                                .height(3.dp)
+                                .clip(RoundedCornerShape(50))
+                                .background(Color.Yellow)
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.width(16.dp))
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .clickable {
+                            selectedTabIndex.value = 2
+                            scope.launch {
+                                curPagerState.animateScrollToPage(2)
+                            }
+                        }) {
+                    Text(
+                        text = "商家",
+                        color = if (selectedTabIndex.value == 2) Color.Black else Color.Gray,
+                        fontSize = 14.sp,
+                        fontWeight = if (selectedTabIndex.value == 2) FontWeight.W700 else FontWeight.W400
+                    )
+                    Spacer(modifier = Modifier.height(2.dp))
+                    AnimatedVisibility(
+                        visible = selectedTabIndex.value == 2,
+                        enter = EnterTransition.None,
+                        exit = ExitTransition.None,
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .width(30.dp)
+                                .height(3.dp)
+                                .clip(RoundedCornerShape(50))
+                                .background(Color.Yellow)
+                        )
+                    }
+                }
+            }
+            HorizontalPager(state = curPagerState) {
+                if (it == 0) {
+                    DiancanContent()
+                } else if (it == 1) {
+                    PingjiaContent()
+                } else {
+                    ShangjiaContent()
+                }
+
+            }
+        }
+    }
+}
+
+@Composable
+fun PingjiaContent() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color.Blue)
+    ) { }
+}
+
+@Composable
+fun DiancanContent() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+
+            .background(color = Color.Red)
+    ) { }
+}
+
+@Composable
+fun ShangjiaContent() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color(0xFFF5F5F5))
+    ) {
+        Column(
+            modifier = Modifier
+
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp))
+                    .background(Color.White)
+                    .padding(horizontal = 16.dp)
+            ) {
+                Spacer(modifier = Modifier.height(10.dp))
+                Box {
+                    Image(
+                        painter = painterResource(id = R.mipmap.takeout_banner),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .width(130.dp)
+                            .height(90.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                    )
+                    Box(
+                        modifier = Modifier
+                            .width(130.dp)
+                            .height(30.dp)
+                            .align(Alignment.BottomStart)
+                            .clip(RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp))
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(
+                                        Color.Transparent,
+                                        Color.Gray.copy(alpha = 1f),
+                                    ),
+                                    //                    startY = 0f,
+                                    //                    endY = 100f
+                                )
+                            )
+
+                    ) {
+                        Text(
+                            text = "品牌故事",
+                            color = Color.White,
+                            fontSize = 14.sp,
+                            modifier = Modifier
+
+                                .padding(5.dp)
+                        )
+                    }
+
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                HorizontalDivider(thickness = 1.dp, color = Color.Gray)
+                Spacer(modifier = Modifier.height(10.dp))
+                Row {
+                    Icon(
+                        imageVector = Icons.Outlined.LocationOn,
+                        contentDescription = null,
+                        tint = Color.Gray,
+                        modifier = Modifier
+                            .width(24.dp)
+                            .height(24.dp)
+                    )
+                    Text(
+                        text = "北京市大兴区礼贤镇敬贤家园中里A区一层112室",
+                        color = Color.Black,
+                        fontSize = 16.sp,
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = 5.dp)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .padding(horizontal = 5.dp)
+                            .width(1.dp)
+                            .height(20.dp)
+                            .clip(RoundedCornerShape(50))
+                            .background(Color.Gray)
+
+                    )
+                    Icon(
+                        imageVector = Icons.Outlined.Phone,
+                        contentDescription = null,
+                        tint = Color.Black,
+                        modifier = Modifier
+                            .width(24.dp)
+                            .height(24.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                Row {
+                    Icon(
+                        imageVector = Icons.Outlined.Beenhere,
+                        contentDescription = null,
+                        tint = Color.Gray,
+                        modifier = Modifier
+                            .width(20.dp)
+                            .height(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(5.dp))
+                    Column {
+                        Text(
+                            text = "服务设施",
+                            color = Color.Black,
+                            fontSize = 16.sp,
+                            modifier = Modifier
+
+
+                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.wrapContentHeight()
+                        ) {
+                            Text(
+                                text = "到店自取、放心吃",
+                                color = Color.Black,
+                                fontSize = 13.sp,
+                                modifier = Modifier
+
+                            )
+                            Icon(
+                                imageVector = Icons.Outlined.HelpOutline,
+                                contentDescription = null,
+                                tint = Color.Gray,
+                                modifier = Modifier
+                                    .width(12.dp)
+                                    .height(12.dp)
+                                    .align(Alignment.CenterVertically)
+                            )
+                        }
+                    }
+
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.wrapContentHeight()
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.AccessTime,
+                        contentDescription = null,
+                        tint = Color.Gray,
+                        modifier = Modifier
+                            .width(20.dp)
+                            .height(20.dp)
+                            .align(Alignment.CenterVertically)
+                    )
+                    Spacer(modifier = Modifier.width(5.dp))
+                    Text(
+                        text = "配送时间：09:30-22:00",
+                        color = Color.Black,
+                        fontSize = 16.sp,
+                        modifier = Modifier
+
+                    )
+
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(
+                        RoundedCornerShape(16.dp)
+                    )
+                    .background(Color.White)
+                    .padding(horizontal = 16.dp)
+            ) {
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "商家档案",
+                    color = Color.Black,
+                    fontSize = 18.sp,
+                    modifier = Modifier
+
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.wrapContentHeight()
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Beenhere,
+                        contentDescription = null,
+                        tint = Color.Gray,
+                        modifier = Modifier
+                            .width(20.dp)
+                            .height(20.dp)
+                            .align(Alignment.CenterVertically)
+                    )
+                    Spacer(modifier = Modifier.width(5.dp))
+                    Text(
+                        text = "商家经营牌照",
+                        color = Color.Black,
+                        fontSize = 16.sp,
+                        modifier = Modifier
+
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Icon(
+                        imageVector = Icons.Outlined.KeyboardArrowRight,
+                        contentDescription = null,
+                        tint = Color.Black,
+                        modifier = Modifier
+                            .width(12.dp)
+                            .height(12.dp)
+                            .align(Alignment.CenterVertically)
+                    )
+
+
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+            }
+        }
+    }
+}
+
 
 @Composable
 fun HeaderCard() {
@@ -123,7 +505,9 @@ fun HeaderCard() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .clip(RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp))
             .background(Color.White)
+            .padding(bottom = 10.dp)
     ) {
         Column(
             modifier = Modifier
@@ -562,6 +946,7 @@ fun HeaderCard() {
             }
 
         }
+        Spacer(modifier = Modifier.height(8.dp))
 
         Text(
             fontSize = 8.sp,
@@ -570,7 +955,8 @@ fun HeaderCard() {
                 .padding(horizontal = 16.dp)
                 .basicMarquee(
                     iterations = Int.MAX_VALUE,
-                    spacing = MarqueeSpacing.fractionOfContainer(1f / 5f)),
+                    spacing = MarqueeSpacing.fractionOfContainer(1f / 5f)
+                ),
             text = "亲亲看这里哦！如果收到餐品有任何漏放吸管勺子、餐品错误或破损漏撒等问题不要着急不要生气，请立刻拨打门店电话给我们，我们将竭诚为您服务！感谢您的支持！比心心~！"
         )
 
