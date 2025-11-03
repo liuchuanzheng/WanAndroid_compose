@@ -64,6 +64,9 @@ object PageJumpManager {
     fun navigateToWeb(paramsBean: AppRoutePath.Web) {
         simpleNavigate(paramsBean)
     }
+    fun navigateToNestedScrollDemo(paramsBean: AppRoutePath.NestedScrollDemo) {
+        simpleNavigate(paramsBean)
+    }
 }
 
 private fun <T : Any> simpleNavigate(route: T) {

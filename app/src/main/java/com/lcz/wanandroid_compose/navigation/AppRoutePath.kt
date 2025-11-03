@@ -39,4 +39,6 @@ object AppRoutePath {
     data class NetCache(val description: String = "网络缓存页", val from: String = "")
     @Serializable
     data class Web(val description: String = "网页", val from: String = "", val url: String = "")
+    @Serializable
+    data class NestedScrollDemo(val description: String = "嵌套滚动Demo页", val from: String = "")
 }

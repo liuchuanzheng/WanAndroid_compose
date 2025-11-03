@@ -26,6 +26,7 @@ import androidx.navigation.toRoute
 import com.lcz.wanandroid_compose.module.coin.CoinRankPage
 import com.lcz.wanandroid_compose.module.coin.MyCoinHistoryPage
 import com.lcz.wanandroid_compose.module.demo.DemoPage
+import com.lcz.wanandroid_compose.module.demo.nestedscroll.NestedScrollDemoPage
 import com.lcz.wanandroid_compose.module.demo.netcache.NetCacheDemoPage
 import com.lcz.wanandroid_compose.module.demo.sign.page.SignPage
 import com.lcz.wanandroid_compose.module.demo.slider.SliderDemoPage
@@ -200,6 +201,10 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
                 WebPage(paramsBean.url, onBackPressed = {
                     navController.popBackStack()
                 })
+            }
+            composable<AppRoutePath.NestedScrollDemo> { backStackEntry ->
+                val paramsBean = backStackEntry.toRoute<AppRoutePath.NestedScrollDemo>()
+                NestedScrollDemoPage(paramsBean)
             }
 
 

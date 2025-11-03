@@ -41,6 +41,10 @@ fun DemoPage(paramsBean: AppRoutePath.Demo) {
             ItemView("缓存拦截器", "通过缓存拦截器，优化网络接口体验") {
                 PageJumpManager.navigateToNetCache(AppRoutePath.NetCache())
             }
+            ItemView("嵌套滚动Demo", "嵌套滚动Demo") {
+                PageJumpManager.navigateToNestedScrollDemo(AppRoutePath.NestedScrollDemo())
+            }
+
         }
     }
 
