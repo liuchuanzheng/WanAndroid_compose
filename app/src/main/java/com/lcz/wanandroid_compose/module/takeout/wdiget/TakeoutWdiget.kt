@@ -1,6 +1,5 @@
 package com.lcz.wanandroid_compose.module.takeout.wdiget
 
-import android.R.attr.category
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
@@ -48,9 +47,9 @@ import androidx.compose.material.icons.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.MoreHoriz
 import androidx.compose.material.icons.outlined.Phone
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
@@ -66,12 +65,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
@@ -95,28 +99,153 @@ import kotlinx.coroutines.launch
  * 描述: ui仿照美团外卖的点餐页
  * 所有数据都是本地模拟的
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TakeoutWdiget() {
-    Scaffold() {
+    Scaffold(
+    ) {
         it
-        Column(
+        var headerHeight by remember { mutableStateOf(0) }
+        var titileBarHeight by remember { mutableStateOf(0) }
+        var currentOffsetY by remember { mutableStateOf(0f) }//顶部偏移距离
+        val scrollProgress = remember(currentOffsetY) {
+            // 计算滚动进度（0-1范围）
+            val progress = if (headerHeight > 0) {
+                (-currentOffsetY / headerHeight / 3).coerceIn(0f, 1f)
+            } else 0f
+            progress
+        }
+        val density = LocalDensity.current
+        val parentConnection = remember {
+            object : NestedScrollConnection {
+                // 处理 Pre-scroll (子组件滑动前)
+                // 直接调用父的实现，父不优先消耗
+                override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                    //在这里我只处理手指从下往上滑动，而不处理从上往下滑动。从上往下滑动在onPostScroll中处理，因为要检测滑到头的情况。
+                    //总体gu是手指从下往上滑动优先顶部，而从上往下滑动优先底部
+                    LogUtil.i(
+                        tag = "TakeoutWdiget",
+                        msg = "父组件获取到 onPreScroll available: $available source: $source",
+                    )
+                    var originOffsetY = currentOffsetY
+                    var dh = 0f
+                    if (currentOffsetY > -headerHeight && currentOffsetY < 0f) {
+                        //还没完全收起，全部消费掉
+
+                        if (originOffsetY + available.y >= -headerHeight.toFloat()) {
+                            //当前滑动全部消费掉，头部也没完全隐藏
+                            dh = available.y
+                        } else {
+                            //消费此次滑动的部分距离，就会让头部完全隐藏
+                            dh = available.y + (originOffsetY - (-headerHeight.toFloat()))
+                        }
+                    } else {
+                        //已经完全收起了
+                        dh = 0f
+                    }
+
+
+
+                    if (source == NestedScrollSource.UserInput || source == NestedScrollSource.SideEffect) {
+                        //滑动或者惯性滑动
+                        if (available.y < 0) { //手指从下往上滑动
+                            currentOffsetY = (currentOffsetY + available.y).coerceIn((-headerHeight.toFloat()), 0f)
+                            return Offset(available.x, dh)
+                        } else { //手指从上往下滑动
+
+                        }
+//                        return Offset(available.x, dh)
+                    }
+
+                    return super.onPreScroll(available, source)
+                }
+
+                // 处理 Post-scroll (子组件滑动后)
+                override fun onPostScroll(
+                    consumed: Offset,
+                    available: Offset,
+                    source: NestedScrollSource,
+                ): Offset {
+                    // 父组件消费最后的滚动距离
+//                    offsetY += available.y
+//                    return Offset(x = 0f, available.y) // 返回实际消耗的量
+                    LogUtil.e(
+                        tag = "TakeoutWdiget",
+                        msg = "父组件获取到 onPostScroll consumed: $consumed, available: $available",
+                    )
+                    if (source == NestedScrollSource.UserInput || source == NestedScrollSource.SideEffect) {
+                        //滑动或者惯性滑动
+                        if (available.y < 0) { //手指从下往上滑动
+
+                        } else { //手指从上往下滑动
+                            if (consumed.y == 0f) {
+                                //说明子组件没消费滑动，也就是滑到头了
+                                currentOffsetY = (currentOffsetY + available.y).coerceIn((-headerHeight.toFloat()), 0f)
+
+                            }
+                        }
+
+                    }
+//                    return Offset(x = 0f, (available.y))
+                    return super.onPostScroll(consumed, available, source)
+                }
+            }
+        }
+
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFFF7F7F7)),
+                .background(Color(0xFFF7F7F7))
+                .nestedScroll(parentConnection),
         ) {
+            Column(
+            ) {
+                Spacer(modifier = Modifier.height(10.dp))
+                DiancanCard(
+                    modifier = Modifier
+                        .padding(
+                            top = with(density) {
+                                (headerHeight + currentOffsetY).coerceIn(
+                                    minimumValue = titileBarHeight.toFloat(),
+                                    maximumValue = headerHeight.toFloat(),
+                                ).toDp()
+                            },
+                        )
+                        .fillMaxWidth()
+                        .fillMaxSize(),
+                )
+            }
+
             Box(
             ) {
 
-                HeaderCard()
-                TitileBar()
+                // 添加高度测量修饰符
+                Box(
+                    modifier = Modifier
+                        .onGloballyPositioned { coordinates ->
+                            headerHeight = coordinates.size.height
+                        }
+                        .offset(
+                            0.dp,
+                            with(density) {
+                                currentOffsetY.toDp()
+                            },
+                        ),
+                ) {
+                    HeaderCard()
+                }
+                Box(
+                    modifier = Modifier
+                        .onGloballyPositioned { coordinates ->
+                            titileBarHeight = coordinates.size.height
+                        },
+                ) {
+                    TitileBar(currentOffsetY, headerHeight)
+                }
 
             }
-            Spacer(modifier = Modifier.height(10.dp))
-            DiancanCard(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-            )
+
+
         }
 
 
@@ -1594,233 +1723,240 @@ fun ShangjiaContent() {
             .fillMaxSize()
             .background(color = Color(0xFFF5F5F5)),
     ) {
-        Column(
+        LazyColumn(
             modifier = Modifier,
 
             ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(
-                        RoundedCornerShape(
-                            bottomStart = 16.dp,
-                            bottomEnd = 16.dp,
-                        ),
-                    )
-                    .background(Color.White)
-                    .padding(horizontal = 16.dp),
-            ) {
-                Spacer(modifier = Modifier.height(10.dp))
-                Box {
-                    Image(
-                        painter = painterResource(id = R.mipmap.takeout_banner),
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .width(130.dp)
-                            .height(90.dp)
-                            .clip(RoundedCornerShape(10.dp)),
-                    )
-                    Box(
-                        modifier = Modifier
-                            .width(130.dp)
-                            .height(30.dp)
-                            .align(Alignment.BottomStart)
-                            .clip(
-                                RoundedCornerShape(
-                                    bottomStart = 10.dp,
-                                    bottomEnd = 10.dp,
-                                ),
-                            )
-                            .background(
-                                brush = Brush.verticalGradient(
-                                    colors = listOf(
-                                        Color.Transparent,
-                                        Color.Gray.copy(alpha = 1f),
-                                    ),
-                                    //                    startY = 0f,
-                                    //                    endY = 100f
-                                ),
+            item {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(
+                            RoundedCornerShape(
+                                bottomStart = 16.dp,
+                                bottomEnd = 16.dp,
                             ),
-
-                        ) {
-                        Text(
-                            text = "品牌故事",
-                            color = Color.White,
-                            fontSize = 14.sp,
+                        )
+                        .background(Color.White)
+                        .padding(horizontal = 16.dp),
+                ) {
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Box {
+                        Image(
+                            painter = painterResource(id = R.mipmap.takeout_banner),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
                             modifier = Modifier
+                                .width(130.dp)
+                                .height(90.dp)
+                                .clip(RoundedCornerShape(10.dp)),
+                        )
+                        Box(
+                            modifier = Modifier
+                                .width(130.dp)
+                                .height(30.dp)
+                                .align(Alignment.BottomStart)
+                                .clip(
+                                    RoundedCornerShape(
+                                        bottomStart = 10.dp,
+                                        bottomEnd = 10.dp,
+                                    ),
+                                )
+                                .background(
+                                    brush = Brush.verticalGradient(
+                                        colors = listOf(
+                                            Color.Transparent,
+                                            Color.Gray.copy(alpha = 1f),
+                                        ),
+                                        //                    startY = 0f,
+                                        //                    endY = 100f
+                                    ),
+                                ),
 
-                                .padding(5.dp),
+                            ) {
+                            Text(
+                                text = "品牌故事",
+                                color = Color.White,
+                                fontSize = 14.sp,
+                                modifier = Modifier
+
+                                    .padding(5.dp),
+                            )
+                        }
+
+                    }
+                    Spacer(modifier = Modifier.height(10.dp))
+                    HorizontalDivider(
+                        thickness = 1.dp,
+                        color = Color.Gray,
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Row {
+                        Icon(
+                            imageVector = Icons.Outlined.LocationOn,
+                            contentDescription = null,
+                            tint = Color.Gray,
+                            modifier = Modifier
+                                .width(24.dp)
+                                .height(24.dp),
+                        )
+                        Text(
+                            text = "北京市大兴区礼贤镇敬贤家园中里A区一层112室",
+                            color = Color.Black,
+                            fontSize = 16.sp,
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(horizontal = 5.dp),
+                        )
+                        Box(
+                            modifier = Modifier
+                                .padding(horizontal = 5.dp)
+                                .width(1.dp)
+                                .height(20.dp)
+                                .clip(RoundedCornerShape(50))
+                                .background(Color.Gray),
+
+                            )
+                        Icon(
+                            imageVector = Icons.Outlined.Phone,
+                            contentDescription = null,
+                            tint = Color.Black,
+                            modifier = Modifier
+                                .width(24.dp)
+                                .height(24.dp),
                         )
                     }
-
-                }
-                Spacer(modifier = Modifier.height(10.dp))
-                HorizontalDivider(
-                    thickness = 1.dp,
-                    color = Color.Gray,
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Row {
-                    Icon(
-                        imageVector = Icons.Outlined.LocationOn,
-                        contentDescription = null,
-                        tint = Color.Gray,
-                        modifier = Modifier
-                            .width(24.dp)
-                            .height(24.dp),
-                    )
-                    Text(
-                        text = "北京市大兴区礼贤镇敬贤家园中里A区一层112室",
-                        color = Color.Black,
-                        fontSize = 16.sp,
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(horizontal = 5.dp),
-                    )
-                    Box(
-                        modifier = Modifier
-                            .padding(horizontal = 5.dp)
-                            .width(1.dp)
-                            .height(20.dp)
-                            .clip(RoundedCornerShape(50))
-                            .background(Color.Gray),
-
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Row {
+                        Icon(
+                            imageVector = Icons.Outlined.Beenhere,
+                            contentDescription = null,
+                            tint = Color.Gray,
+                            modifier = Modifier
+                                .width(20.dp)
+                                .height(20.dp),
                         )
-                    Icon(
-                        imageVector = Icons.Outlined.Phone,
-                        contentDescription = null,
-                        tint = Color.Black,
-                        modifier = Modifier
-                            .width(24.dp)
-                            .height(24.dp),
-                    )
-                }
-                Spacer(modifier = Modifier.height(10.dp))
-                Row {
-                    Icon(
-                        imageVector = Icons.Outlined.Beenhere,
-                        contentDescription = null,
-                        tint = Color.Gray,
-                        modifier = Modifier
-                            .width(20.dp)
-                            .height(20.dp),
-                    )
-                    Spacer(modifier = Modifier.width(5.dp))
-                    Column {
+                        Spacer(modifier = Modifier.width(5.dp))
+                        Column {
+                            Text(
+                                text = "服务设施",
+                                color = Color.Black,
+                                fontSize = 16.sp,
+                                modifier = Modifier,
+
+
+                                )
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.wrapContentHeight(),
+                            ) {
+                                Text(
+                                    text = "到店自取、放心吃",
+                                    color = Color.Black,
+                                    fontSize = 13.sp,
+                                    modifier = Modifier,
+
+                                    )
+                                Icon(
+                                    imageVector = Icons.Outlined.HelpOutline,
+                                    contentDescription = null,
+                                    tint = Color.Gray,
+                                    modifier = Modifier
+                                        .width(12.dp)
+                                        .height(12.dp)
+                                        .align(Alignment.CenterVertically),
+                                )
+                            }
+                        }
+
+                    }
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.wrapContentHeight(),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.AccessTime,
+                            contentDescription = null,
+                            tint = Color.Gray,
+                            modifier = Modifier
+                                .width(20.dp)
+                                .height(20.dp)
+                                .align(Alignment.CenterVertically),
+                        )
+                        Spacer(modifier = Modifier.width(5.dp))
                         Text(
-                            text = "服务设施",
+                            text = "配送时间：09:30-22:00",
                             color = Color.Black,
                             fontSize = 16.sp,
                             modifier = Modifier,
 
-
                             )
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.wrapContentHeight(),
-                        ) {
-                            Text(
-                                text = "到店自取、放心吃",
-                                color = Color.Black,
-                                fontSize = 13.sp,
-                                modifier = Modifier,
 
-                                )
-                            Icon(
-                                imageVector = Icons.Outlined.HelpOutline,
-                                contentDescription = null,
-                                tint = Color.Gray,
-                                modifier = Modifier
-                                    .width(12.dp)
-                                    .height(12.dp)
-                                    .align(Alignment.CenterVertically),
-                            )
-                        }
                     }
-
+                    Spacer(modifier = Modifier.height(10.dp))
                 }
+            }
+            item {
                 Spacer(modifier = Modifier.height(10.dp))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.wrapContentHeight(),
+            }
+            item {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(
+                            RoundedCornerShape(16.dp),
+                        )
+                        .background(Color.White)
+                        .padding(horizontal = 16.dp),
                 ) {
-                    Icon(
-                        imageVector = Icons.Outlined.AccessTime,
-                        contentDescription = null,
-                        tint = Color.Gray,
-                        modifier = Modifier
-                            .width(20.dp)
-                            .height(20.dp)
-                            .align(Alignment.CenterVertically),
-                    )
-                    Spacer(modifier = Modifier.width(5.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
                     Text(
-                        text = "配送时间：09:30-22:00",
+                        text = "商家档案",
                         color = Color.Black,
-                        fontSize = 16.sp,
+                        fontSize = 18.sp,
                         modifier = Modifier,
 
                         )
-
-                }
-                Spacer(modifier = Modifier.height(10.dp))
-            }
-            Spacer(modifier = Modifier.height(10.dp))
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(
-                        RoundedCornerShape(16.dp),
-                    )
-                    .background(Color.White)
-                    .padding(horizontal = 16.dp),
-            ) {
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    text = "商家档案",
-                    color = Color.Black,
-                    fontSize = 18.sp,
-                    modifier = Modifier,
-
-                    )
-                Spacer(modifier = Modifier.height(10.dp))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.wrapContentHeight(),
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Beenhere,
-                        contentDescription = null,
-                        tint = Color.Gray,
-                        modifier = Modifier
-                            .width(20.dp)
-                            .height(20.dp)
-                            .align(Alignment.CenterVertically),
-                    )
-                    Spacer(modifier = Modifier.width(5.dp))
-                    Text(
-                        text = "商家经营牌照",
-                        color = Color.Black,
-                        fontSize = 16.sp,
-                        modifier = Modifier,
-
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.wrapContentHeight(),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Beenhere,
+                            contentDescription = null,
+                            tint = Color.Gray,
+                            modifier = Modifier
+                                .width(20.dp)
+                                .height(20.dp)
+                                .align(Alignment.CenterVertically),
                         )
-                    Spacer(modifier = Modifier.weight(1f))
-                    Icon(
-                        imageVector = Icons.Outlined.KeyboardArrowRight,
-                        contentDescription = null,
-                        tint = Color.Black,
-                        modifier = Modifier
-                            .width(12.dp)
-                            .height(12.dp)
-                            .align(Alignment.CenterVertically),
-                    )
+                        Spacer(modifier = Modifier.width(5.dp))
+                        Text(
+                            text = "商家经营牌照",
+                            color = Color.Black,
+                            fontSize = 16.sp,
+                            modifier = Modifier,
+
+                            )
+                        Spacer(modifier = Modifier.weight(1f))
+                        Icon(
+                            imageVector = Icons.Outlined.KeyboardArrowRight,
+                            contentDescription = null,
+                            tint = Color.Black,
+                            modifier = Modifier
+                                .width(12.dp)
+                                .height(12.dp)
+                                .align(Alignment.CenterVertically),
+                        )
 
 
+                    }
+                    Spacer(modifier = Modifier.height(10.dp))
                 }
-                Spacer(modifier = Modifier.height(10.dp))
             }
+
         }
     }
 }
@@ -2351,12 +2487,35 @@ fun HeaderCard() {
 
 
 @Composable
-fun TitileBar() {
+fun TitileBar(currentOffsetY: Float, headerHeight: Int) {
+    var backgroundColor by remember { mutableStateOf(Color(0xFF80262F)) }
+    var isWhite by remember { mutableStateOf(false) }
+    // 添加滚动进度计算
+    var progress = 0f
+
+    if (headerHeight > 0) {
+        if (-currentOffsetY <= headerHeight / 4) {
+            //先渐渐半透明
+            progress = (-currentOffsetY / headerHeight / 4).coerceIn(0f, 1f)
+            backgroundColor = Color(0xFF80262F).copy(alpha = 1 - progress)
+            isWhite = false
+        } else {
+            //再渐渐变白
+            backgroundColor = Color.White.copy(alpha = 1f)
+            isWhite = true
+        }
+
+    }
+    // 背景色动画过渡
+    val backgroundColorAnim by animateColorAsState(
+        targetValue = backgroundColor,
+        animationSpec = tween(durationMillis = 200),
+    )
     Column {
         //状态栏高度
         Box(
             modifier = Modifier
-                .background(Color(0xFF80262F))
+                .background(backgroundColorAnim)
                 .fillMaxWidth()
                 .statusBarsPadding(),
         ) {
@@ -2365,7 +2524,7 @@ fun TitileBar() {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(40.dp)
-                .background(Color(0xFF80262F))
+                .background(backgroundColorAnim)
                 .padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -2373,13 +2532,13 @@ fun TitileBar() {
             Icon(
                 imageVector = Icons.Filled.ArrowBackIos,
                 contentDescription = "返回",
-                tint = Color.White,
+                tint = if (isWhite) Color.Black else Color.White,
             )
             Spacer(modifier = Modifier.weight(1f))
             Icon(
                 imageVector = Icons.Filled.Search,
                 contentDescription = "搜索",
-                tint = Color.White,
+                tint = if (isWhite) Color.Black else Color.White,
             )
             Spacer(
                 modifier = Modifier.width(10.dp),
@@ -2387,7 +2546,7 @@ fun TitileBar() {
             Icon(
                 imageVector = Icons.Filled.StarOutline,
                 contentDescription = "收藏",
-                tint = Color.White,
+                tint = if (isWhite) Color.Black else Color.White,
             )
             Spacer(
                 modifier = Modifier.width(10.dp),
@@ -2397,10 +2556,10 @@ fun TitileBar() {
 
 
                     .clip(RoundedCornerShape(50))
-                    .background(Color(0xFF682125))
+                    .background(if (isWhite) Color.White else Color(0xFF682125))
                     .border(
                         1.dp,
-                        Color.White,
+                        if (isWhite) Color.Black else Color.White,
                         RoundedCornerShape(50),
                     )
                     .padding(
@@ -2411,7 +2570,7 @@ fun TitileBar() {
                 ) {
                 Text(
                     "预订",
-                    color = Color.White,
+                    color = if (isWhite) Color.Black else Color.White,
                 )
             }
             Spacer(
@@ -2420,10 +2579,10 @@ fun TitileBar() {
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(50))
-                    .background(Color(0xFF682125))
+                    .background(if (isWhite) Color.White else Color(0xFF682125))
                     .border(
                         1.dp,
-                        Color.White,
+                        if (isWhite) Color.Black else Color.White,
                         RoundedCornerShape(50),
                     )
                     .padding(
@@ -2434,7 +2593,7 @@ fun TitileBar() {
                 ) {
                 Text(
                     "拼单",
-                    color = Color.White,
+                    color = if (isWhite) Color.Black else Color.White,
                 )
             }
             Spacer(
@@ -2443,7 +2602,7 @@ fun TitileBar() {
             Icon(
                 imageVector = Icons.Filled.MoreHoriz,
                 contentDescription = "更多",
-                tint = Color.White,
+                tint = if (isWhite) Color.Black else Color.White,
             )
         }
     }

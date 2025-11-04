@@ -55,9 +55,9 @@ import kotlin.math.roundToInt
 fun NestedScrollDemoPage(
     paramsBean: AppRoutePath.NestedScrollDemo,
 ) {
-//    Demo1()
+    Demo1()
 //    Demo2()
-    Demo3()
+//    Demo3()
 }
 
 /**
