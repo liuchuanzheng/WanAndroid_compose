@@ -1,11 +1,10 @@
-package com.lcz.wanandroid_compose.module.main.home.viewmodel
+package com.lcz.wanandroid_compose.module.main.project.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.lcz.wanandroid_compose.base.BaseViewModel
 import com.lcz.wanandroid_compose.data.repository.CommonRepository
 import com.lcz.wanandroid_compose.module.main.home.data.Article
-import com.lcz.wanandroid_compose.module.main.home.widget.ProjectChildWidget
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlin.collections.plus

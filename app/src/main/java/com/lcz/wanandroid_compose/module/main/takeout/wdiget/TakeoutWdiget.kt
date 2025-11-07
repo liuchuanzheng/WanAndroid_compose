@@ -1,4 +1,4 @@
-package com.lcz.wanandroid_compose.module.takeout.wdiget
+package com.lcz.wanandroid_compose.module.main.takeout.wdiget
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutLinearInEasing

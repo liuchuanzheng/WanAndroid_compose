@@ -1,4 +1,4 @@
-package com.lcz.wanandroid_compose.module.main.home.widget
+package com.lcz.wanandroid_compose.module.main.project.widget
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.border
@@ -40,8 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.lcz.wanandroid_compose.module.main.home.data.Article
-import com.lcz.wanandroid_compose.module.main.home.viewmodel.PageViewModelFactory
-import com.lcz.wanandroid_compose.module.main.home.viewmodel.ProjectChildWidgetViewModel
+import com.lcz.wanandroid_compose.module.main.project.viewmodel.PageViewModelFactory
+import com.lcz.wanandroid_compose.module.main.project.viewmodel.ProjectChildWidgetViewModel
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
 import com.lcz.wanandroid_compose.navigation.PageJumpManager
 import com.lcz.wanandroid_compose.widget.CoilImage

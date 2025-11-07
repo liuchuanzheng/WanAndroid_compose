@@ -1,4 +1,4 @@
-package com.lcz.wanandroid_compose.module.takeout.wdiget
+package com.lcz.wanandroid_compose.module.main.takeout.wdiget
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

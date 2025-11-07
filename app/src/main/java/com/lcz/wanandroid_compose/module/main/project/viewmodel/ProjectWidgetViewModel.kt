@@ -1,4 +1,4 @@
-package com.lcz.wanandroid_compose.module.main.home.viewmodel
+package com.lcz.wanandroid_compose.module.main.project.viewmodel
 
 import com.lcz.wanandroid_compose.base.BaseViewModel
 import com.lcz.wanandroid_compose.data.repository.CommonRepository

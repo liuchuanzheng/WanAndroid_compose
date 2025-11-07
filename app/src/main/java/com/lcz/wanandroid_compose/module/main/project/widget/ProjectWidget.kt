@@ -1,4 +1,4 @@
-package com.lcz.wanandroid_compose.module.main.home.widget
+package com.lcz.wanandroid_compose.module.main.project.widget
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -34,7 +34,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.lcz.wanandroid_compose.module.main.home.viewmodel.ProjectWidgetViewModel
+import com.lcz.wanandroid_compose.module.main.project.viewmodel.ProjectWidgetViewModel
 import kotlinx.coroutines.launch
 
 /**
