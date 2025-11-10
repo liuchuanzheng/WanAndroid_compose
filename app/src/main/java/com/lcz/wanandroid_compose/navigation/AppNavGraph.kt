@@ -25,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.lcz.wanandroid_compose.module.coin.CoinRankPage
 import com.lcz.wanandroid_compose.module.coin.MyCoinHistoryPage
+import com.lcz.wanandroid_compose.module.customerservice.page.CustomerServicePage
 import com.lcz.wanandroid_compose.module.demo.DemoPage
 import com.lcz.wanandroid_compose.module.demo.nestedscroll.NestedScrollDemoPage
 import com.lcz.wanandroid_compose.module.demo.netcache.NetCacheDemoPage
@@ -207,6 +208,10 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
                 NestedScrollDemoPage(paramsBean)
             }
 
+            composable<AppRoutePath.CustomerService> { backStackEntry ->
+                val paramsBean = backStackEntry.toRoute<AppRoutePath.CustomerService>()
+                CustomerServicePage(paramsBean)
+            }
 
 
         }

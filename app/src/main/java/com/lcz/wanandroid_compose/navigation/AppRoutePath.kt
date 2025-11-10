@@ -41,4 +41,6 @@ object AppRoutePath {
     data class Web(val description: String = "网页", val from: String = "", val url: String = "")
     @Serializable
     data class NestedScrollDemo(val description: String = "嵌套滚动Demo页", val from: String = "")
+    @Serializable
+    data class CustomerService(val description: String = "客服聊天页", val from: String = "")
 }

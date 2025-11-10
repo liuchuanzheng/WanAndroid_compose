@@ -170,6 +170,9 @@ fun MineWidget(viewModel: MineWidgetViewModel = viewModel(), appViewModel: MyApp
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.surface)
                     .height(50.dp)
+                    .clickable {
+                        PageJumpManager.navigateToCustomerService(AppRoutePath.CustomerService())
+                    }
                     .padding(horizontal = 16.dp, vertical = 5.dp)
 
 
