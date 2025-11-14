@@ -58,6 +58,7 @@ fun LoginPage() {
     // 添加 ViewModel 实例
     val viewModel: LoginViewModel = viewModel()
     LogUtil.i(msg = "viewmodel实例:${viewModel}")
+    aaa
     // 添加输入状态
     val username = viewModel.userName.collectAsState()
     val password = viewModel.password.collectAsState()
@@ -66,6 +67,7 @@ fun LoginPage() {
     val passwordHasInteracted = remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
     val showLoading = viewModel.isLoading.collectAsState()
+    bbb
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
