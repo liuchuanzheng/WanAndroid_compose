@@ -1,5 +1,6 @@
 package com.lcz.wanandroid_compose.module.demo
 
+import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,8 +12,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.lcz.wanandroid_compose.module.demo.notification.TestNotificationActivity
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
 import com.lcz.wanandroid_compose.navigation.PageJumpManager
 
@@ -25,6 +28,7 @@ import com.lcz.wanandroid_compose.navigation.PageJumpManager
  */
 @Composable
 fun DemoPage(paramsBean: AppRoutePath.Demo) {
+    var context = LocalContext.current
     LazyColumn(modifier = Modifier.statusBarsPadding()) {
         item {
             ItemView("手写签名", "通过画笔签名，保存图片") {
@@ -43,6 +47,11 @@ fun DemoPage(paramsBean: AppRoutePath.Demo) {
             }
             ItemView("嵌套滚动Demo", "嵌套滚动Demo") {
                 PageJumpManager.navigateToNestedScrollDemo(AppRoutePath.NestedScrollDemo())
+            }
+            ItemView("通知Demo", "测试各种各样的通知，使用原始xml方式") {
+                val intent = Intent(context, TestNotificationActivity::class.java)
+                context.startActivity(intent)
+
             }
 
         }
