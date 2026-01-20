@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     kotlin("plugin.serialization") version "2.0.21"
+    id("com.dropbox.dependency-guard")
 }
 
 android {
@@ -95,3 +96,9 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
+dependencyGuard {
+    configuration("releaseRuntimeClasspath") // 分析发布版本的依赖
+}
+//生成依赖报告
+//./gradlew dependencyGuard
+//file://D:\work\androidProjects\compose\WanAndroid_compose\app\dependencies\releaseRuntimeClasspath.txt
