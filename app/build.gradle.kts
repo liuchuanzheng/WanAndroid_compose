@@ -84,6 +84,8 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     debugImplementation("com.github.chuckerteam.chucker:library:3.5.2")
     releaseImplementation("com.github.chuckerteam.chucker:library-no-op:3.5.2")
+
+    lintChecks(project(":lint-rules"))
     //以下都是测试相关的
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -22,4 +22,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "WanAndroid_compose"
 include(":app")
- 
+include(":lint-rules")

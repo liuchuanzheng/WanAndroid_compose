@@ -1,7 +1,9 @@
 package com.lcz.wanandroid_compose
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
@@ -41,6 +43,12 @@ class MainActivity : ComponentActivity() {
             }
         }
         onBackPressedDispatcher.addCallback(this, mBackPressedCallback)
+        testMyLint()
+    }
+//    @SuppressLint("DirectLogUsage")// 抑制自定义lint规则的警告
+    fun testMyLint() {
+        // 测试自定义lint规则
+        Log.i("MainActivity", "testMyLint: 测试自定义lint规则")
     }
     private var lastBackPressTime = 0L
     private val mBackPressedCallback = object : OnBackPressedCallback(true) {
