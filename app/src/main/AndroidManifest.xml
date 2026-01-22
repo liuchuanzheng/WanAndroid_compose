@@ -7,6 +7,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!--添加日历权限-->
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+
     <application
         android:name=".MyApp"
         android:allowBackup="true"
@@ -18,9 +22,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WanAndroid_compose">
         <activity
-            android:theme="@style/Theme.AppCompat.Light"
             android:name=".module.demo.notification.TestNotificationActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -39,7 +43,9 @@
         <activity
             android:name=".module.demo.alarm.AlarmOpenActivity"
             android:exported="true" />
-
+        <activity
+            android:name=".module.demo.calendar.CalendarActivity"
+            android:exported="true" />
 
 
         <receiver
@@ -55,10 +61,10 @@
                 android:resource="@xml/appwidget_info" />
         </receiver>
         <receiver
-            android:process=":newinst"
             android:name=".module.demo.alarm.AlarmReceiver"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:process=":newinst" />
     </application>
 
 </manifest>

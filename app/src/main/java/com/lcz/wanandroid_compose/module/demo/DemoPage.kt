@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lcz.wanandroid_compose.module.demo.alarm.AlarmManagerDemoActivity
+import com.lcz.wanandroid_compose.module.demo.calendar.CalendarActivity
 import com.lcz.wanandroid_compose.module.demo.notification.TestNotificationActivity
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
 import com.lcz.wanandroid_compose.navigation.PageJumpManager
@@ -59,6 +60,12 @@ fun DemoPage(paramsBean: AppRoutePath.Demo) {
                 val intent = Intent(context, AlarmManagerDemoActivity::class.java)
                 context.startActivity(intent)
             }
+            ItemView("添加日历事件Demo", "测试添加事件到系统日历") {
+                val intent = Intent(context, CalendarActivity::class.java)
+                context.startActivity(intent)
+            }
+
+
 
         }
     }
