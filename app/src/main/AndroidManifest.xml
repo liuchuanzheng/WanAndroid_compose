@@ -33,6 +33,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".module.demo.alarm.AlarmManagerDemoActivity"
+            android:exported="true" />
+        <activity
+            android:name=".module.demo.alarm.AlarmOpenActivity"
+            android:exported="true" />
+
+
 
         <receiver
             android:name=".appwidget.WanAndroidWidget"
@@ -46,6 +54,11 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/appwidget_info" />
         </receiver>
+        <receiver
+            android:process=":newinst"
+            android:name=".module.demo.alarm.AlarmReceiver"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>

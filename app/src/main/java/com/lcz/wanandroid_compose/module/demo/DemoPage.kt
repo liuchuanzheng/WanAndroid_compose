@@ -15,9 +15,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.lcz.wanandroid_compose.module.demo.alarm.AlarmManagerDemoActivity
 import com.lcz.wanandroid_compose.module.demo.notification.TestNotificationActivity
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
 import com.lcz.wanandroid_compose.navigation.PageJumpManager
+import kotlin.jvm.java
 
 /**
  * 作者:     刘传政
@@ -52,6 +54,10 @@ fun DemoPage(paramsBean: AppRoutePath.Demo) {
                 val intent = Intent(context, TestNotificationActivity::class.java)
                 context.startActivity(intent)
 
+            }
+            ItemView("AlarmManager测试", "测试定时任务和闹钟功能") {
+                val intent = Intent(context, AlarmManagerDemoActivity::class.java)
+                context.startActivity(intent)
             }
 
         }
