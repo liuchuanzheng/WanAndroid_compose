@@ -21,7 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import com.lcz.wanandroid_compose.ui.theme.WanAndroid_composeTheme
+import com.lcz.wanandroid_compose.theme.WanAndroid_composeTheme
 import java.util.Calendar
 import kotlin.jvm.java
 

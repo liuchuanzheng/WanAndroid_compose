@@ -32,7 +32,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
-import com.lcz.wanandroid_compose.ui.theme.WanAndroid_composeTheme
+import com.lcz.wanandroid_compose.theme.WanAndroid_composeTheme
 import kotlinx.coroutines.launch
 import java.util.*
 

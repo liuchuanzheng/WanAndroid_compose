@@ -41,7 +41,7 @@ import com.lcz.wanandroid_compose.module.ticktok.widget.Cover
 import com.lcz.wanandroid_compose.module.ticktok.widget.VideoPlayCard
 import com.lcz.wanandroid_compose.navigation.AppRoutePath
 import com.lcz.wanandroid_compose.navigation.globalNavController
-import com.lcz.wanandroid_compose.ui.theme.WanAndroid_composeTheme
+import com.lcz.wanandroid_compose.theme.WanAndroid_composeTheme
 import com.lcz.wanandroid_compose.util.LogUtil
 
 /**

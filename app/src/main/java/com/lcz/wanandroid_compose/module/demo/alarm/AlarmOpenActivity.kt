@@ -13,7 +13,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.lcz.wanandroid_compose.ui.theme.WanAndroid_composeTheme
+import com.lcz.wanandroid_compose.theme.WanAndroid_composeTheme
 
 class AlarmOpenActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
