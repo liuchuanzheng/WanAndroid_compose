@@ -1,46 +1,71 @@
 
+[掘金文档](https://juejin.cn/post/7571351275977556019)
 
-# WanAndroid Compose
+# 介绍
 
-本项目是一个基于 **Jetpack Compose** 实现的现代化 Android 客户端，旨在对接 [玩Android](https://www.wanandroid.com/) 开放 API。项目采用 Material Design 3 设计规范，并结合了 MVVM 架构与 Kotlin 协程，展示了当前 Android 端最主流的开发技术栈。
+本项目是玩安卓compose版，主要用来学习compose的写法。\
+业务功能都是简单的，偏重ui使用，使用玩安卓的开放api和一些自造假数据。有些功能是不完整的。\
+希望能在大家学习compose过程中提供帮助。也能获得反馈，让自己进步。
 
-## ✨ 功能特点
+# 预览
 
-本项目不仅涵盖了玩 Android 的基础功能，还包含了许多高级特性与自定义 UI Demo。
+<img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/1fb14584d39c4a089294f5fa8c94cf82~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAg5aSa5byX5pyX5piO5ZOlMQ==:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiMTI3NTA4OTIyMDI4NTA4NSJ9&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1771320175&x-orig-sign=YabfG4gFObD0E%2F43IV7jpZsYR2A%3D" width="20%" alt="首页">
 
-### 核心业务功能
-*   **📱 首页 (Home)**: 文章列表展示，顶部轮播图 (Banner)。
-*   **🔍 搜索 (Search)**: 支持热门搜索关键词搜索、历史搜索记录管理。
-*   **📂 项目 (Project)**: 项目分类展示与列表。
-*   **👤 个人中心 (Mine)**: 用户登录注册、个人积分信息展示。
-*   **🪙 积分体系**: 积分排行榜、积分获取历史记录。
-*   **🌐 网页 (Web)**: 内置 WebView 加载文章详情。
+<img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/04cf107b8bce427d962c982813aefe59~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAg5aSa5byX5pyX5piO5ZOlMQ==:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiMTI3NTA4OTIyMDI4NTA4NSJ9&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1771320175&x-orig-sign=FTElP2v2yVfa8P02gCAHUi7IROk%3D" width="20%" alt="项目页">
 
-### 进阶 Demo 示例
-项目中集成了多个功能演示模块 (`module/demo`)，方便学习和参考：
-*   **🎬 抖音视频 (TickTok)**: 类似抖音的上下滑动视频播放功能，使用 ExoPlayer 实现，包含点赞、评论、分享等交互。
-*   **🔔 通知与闹钟 (Alarm & Notification)**: 演示了如何创建复杂通知、设置一次性/重复闹钟、权限申请处理。
-*   **📅 日历集成 (Calendar)**: 演示如何将提醒事件写入系统日历。
-*   **🛒 外卖 UI (Takeout)**: 仿外卖 App 的购物车联动动画、分类标签与列表联动效果。
-*   **🎨 签名绘制 (Sign)**: 使用 Canvas API 实现的手写签名功能。
-*   **💾 网络缓存 (NetCache)**: 演示 OkHttp 拦截器实现的离线缓存策略。
+<img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/d78ed31414504f6bb262c0d7e59ee2cf~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAg5aSa5byX5pyX5piO5ZOlMQ==:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiMTI3NTA4OTIyMDI4NTA4NSJ9&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1771320175&x-orig-sign=OFd1w%2FtZTTGYg98V3BXhubFhmJo%3D" width="20%" alt="外卖">
 
-## 🛠 技术栈
+<img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/32be4b090c9949ae92a0cc79d11e41cf~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAg5aSa5byX5pyX5piO5ZOlMQ==:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiMTI3NTA4OTIyMDI4NTA4NSJ9&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1771320175&x-orig-sign=4rJWvP%2BEP2SJUWolUOBoVU5Qywg%3D" alt="" width="20%">
 
-*   **UI 框架**: Jetpack Compose (Material 3)
-*   **架构模式**: MVVM + Clean Architecture
-*   **网络请求**: Retrofit + OkHttp + Coroutines
-*   **图片加载**: Coil
-*   **视频播放**: ExoPlayer
-*   **状态管理**: ViewModel + StateFlow / SharedFlow
-*   **导航**: Jetpack Navigation Compose
-*   **依赖注入**: 简单的懒加载模式 (避免引入重型 DI 框架以保持 Demo 简洁)
-*   **Lint 检查**: 自定义 Lint 规则 (`lint-rules` 模块)
+<img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/b1f12115018140058d238dc51826d4f4~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAg5aSa5byX5pyX5piO5ZOlMQ==:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiMTI3NTA4OTIyMDI4NTA4NSJ9&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1771320175&x-orig-sign=l3yI7MUfk5jrFfbs2nL8IWkxm2Q%3D" alt="" width="20%">
+<img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/6f035573f1fa45cfbec858d8228fc95d~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAg5aSa5byX5pyX5piO5ZOlMQ==:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiMTI3NTA4OTIyMDI4NTA4NSJ9&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1771320175&x-orig-sign=7vD5POUvmExYfKAdSk5wKQgjSeg%3D" alt="" width="20%">
+<img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/19a4a32b2de9406e83c50586c23f625f~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAg5aSa5byX5pyX5piO5ZOlMQ==:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiMTI3NTA4OTIyMDI4NTA4NSJ9&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1771320175&x-orig-sign=LOnNHt4bR%2BxFIgKrzaJ0%2BkM3hpM%3D" alt="" width="20%">
+<img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/caf685d68ef44266a32bee7de9ba7027~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAg5aSa5byX5pyX5piO5ZOlMQ==:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiMTI3NTA4OTIyMDI4NTA4NSJ9&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1771320175&x-orig-sign=C%2BPXDkWr2gq8y%2Bn2KrULZOjhlZo%3D" alt="" width="20%">
+<img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/e3c1b896bd6b48449e2ebfa6d46884ef~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAg5aSa5byX5pyX5piO5ZOlMQ==:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiMTI3NTA4OTIyMDI4NTA4NSJ9&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1771320175&x-orig-sign=UkmCaDrEw2y6bW1fbyY1hmPG0wM%3D" alt="" width="20%">
+<img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/8fa2670836a64e1999c8bc32abee7dc5~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAg5aSa5byX5pyX5piO5ZOlMQ==:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiMTI3NTA4OTIyMDI4NTA4NSJ9&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1771320175&x-orig-sign=bjARHPS%2FN7Y%2BALy%2FY1MnsXqMCbE%3D" alt="" width="20%">
 
+<img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/b1f18060c0664a5d985242988a00ffa2~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAg5aSa5byX5pyX5piO5ZOlMQ==:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiMTI3NTA4OTIyMDI4NTA4NSJ9&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1771320175&x-orig-sign=H2nmSbFSLbhqdd%2BBIC80ara3VJM%3D" alt="" width="20%">
+<img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/2182e5ca62924e2ea3a605e91fbe77c5~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAg5aSa5byX5pyX5piO5ZOlMQ==:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiMTI3NTA4OTIyMDI4NTA4NSJ9&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1771320175&x-orig-sign=ZjwluAGhrift4BhXoX0QFd4WOfA%3D" alt="" width="20%">
+
+# 技术栈
+
+*   kotlin
+*   compose
+*   flow。就简单一用，viewmodel中发个消息。
+*   [coil](https://github.com/coil-kt/coil/blob/main/README-zh.md) 网络图片加载库
+*   [Chucker](https://github.com/ChuckerTeam/chucker) 网络接口抓包查看库
+*   原生navigation导航。整体只有一个activity。对于compose而言，确实适合单一activity，不要排斥。
+*   Exoplayer。 视频播放
+*   retrofit+okhttp+协程
+*   compose各种预览。compose的预览确实方便。
+*   主题，深色模式。这里深色模式只适配了少数页面。深色模式的适配是个麻烦活，但是逻辑已经ok了。
+
+# 主要功能
+
+*   首页。文章列表，banner，下拉刷新上拉加载更多。
+*   项目页。tab搭配pager实现多页列表。
+*   外卖页。仿美团外卖蜜雪冰城页，左右双列联动，整体嵌套滑动效果处理。
+*   商品页。双列网格布局和双列瀑布流布局。
+*   客服页。仿照常见的聊天页，有表情，能输入文字。
+*   抖音页。仿抖音上下滑动视频播放，有视频缓存和播放进度记录，切换播放比较流畅。
+*   手写签名页。Canvas绘制。不得不说compose的绘制比原生写法简单易懂多了。
+
+# 体会
+
+*   compose写ui比原生快捷很多，而且官方ui组件很多能直接用，不像原生xml写法时官方ui组件大部分没法用，都得第三方和自写。由于compose使用纯代码编写ui，使得ui的灵活性变强，配合上预览功能，写ui确实很方便。实现边框、圆角、列表、吸顶布局、触摸、滑动、绘制这些都更简便。跟Android原生view也能完全互相用，用法很简单。后续还有Kotlin Multiplatform来助力实现跨平台的优势。
+*   但是它也有一些缺点，必须得会kotlin和协程，理解声明式ui和状态变量的更新机制，ui代码里嵌套了很多状态变量，尤其是业务复杂的时候，我觉得代码可读性和可维护性糟糕，倒腾各状态变量关系时头大。典型的写的人觉得很痛快，维护的人一个劲的骂。还有compose的副作用函数，比较像生命周期的概念，但是不一样，比较不好理解，api也多，有点乱套，有时写完都不知道对不对。viewmodel创建推荐用hilt依赖注入，但是我不喜欢依赖注入，感觉代码面目全非，本项目没用。
+*   总体而言我觉得compose优点大于缺点，之后会是大势所趋，发展越来越好。
+
+# 代码
+
+<https://gitee.com/liuchuanzheng/WanAndroid_compose>
+
+# 安装包
+
+<https://www.pgyer.com/wananzhuo-android>
+
+![image.png](https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/15cc662789d14f5d8a547a32fe0fffb0~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAg5aSa5byX5pyX5piO5ZOlMQ==:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiMTI3NTA4OTIyMDI4NTA4NSJ9&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1771320175&x-orig-sign=EBx28MxTs0oQdig1m6YQbm37ipA%3D)
 ## 📁 项目结构
-
-项目结构清晰，模块化程度高。
-
 ```text
 app/src/main/java/com/lcz/wanandroid_compose/
 ├── base/               # 基础类：BaseViewModel, BaseResponseBean
@@ -62,22 +87,15 @@ app/src/main/java/com/lcz/wanandroid_compose/
 
 ## 🚀 环境配置
 
-*   **JDK**: JDK 17 或更高版本。
-*   **Gradle**: Gradle 8.x (具体版本请参考 `gradle/wrapper/gradle-wrapper.properties`)。
-*   **Android Studio**: Arctic Fox (2020.3.1) 或更高版本。
-*   **Android SDK**: compileSdk 35 (项目中使用了一些较新的 API)。
+*   **JDK**: JDK 21.0.8 或更高版本。
+*   **Gradle**: Gradle 8.13 (具体版本请参考 `gradle/wrapper/gradle-wrapper.properties`)。
+*   **Android Studio**: Android Studio Otter 3 Feature Drop | 2025.2.3 或更高版本。
+*   **Android SDK**: compileSdk 36
 
-### 构建运行
 
-1.  克隆项目至本地。
-2.  使用 Android Studio 打开项目根目录。
-3.  等待 Gradle 同步完成。
-4.  连接设备或启动模拟器，点击运行 (Run)。
 
 ## 📄 License
 
 本项目基于 MIT License 开源。
 
 ---
-
-**感谢阅读，欢迎 Star 和 Fork！**
