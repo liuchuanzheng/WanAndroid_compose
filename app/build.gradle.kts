@@ -95,6 +95,9 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+    //字节的代码调试工具codelocator
+    // 依赖androidx, 已升级AndroidX的项目集成下面的依赖
+    implementation("com.bytedance.tools.codelocator:codelocator-core:2.0.4")
 }
 dependencyGuard {
     configuration("releaseRuntimeClasspath") // 分析发布版本的依赖
