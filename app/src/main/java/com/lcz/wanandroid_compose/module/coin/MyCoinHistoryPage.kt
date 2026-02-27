@@ -58,7 +58,7 @@ import com.lcz.wanandroid_compose.widget.RefreshableList
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyCoinHistoryPage(modifier: Modifier = Modifier) {
+fun MyCoinHistoryPage(paramsBean: AppRoutePath.MyCoinHistory, modifier: Modifier = Modifier) {
     val viewModel = viewModel<MyCoinHistoryPageViewModel>()
 
     val coinList by viewModel.coinList.collectAsState()
@@ -176,7 +176,7 @@ fun MyCoinHistoryItemView(index: Int, item: MyCoinHistoryResponseBean?) {
 @Composable
 fun MyCoinHistoryPagePreview() {
     WanAndroid_composeTheme {
-        MyCoinHistoryPage()
+        MyCoinHistoryPage(AppRoutePath.MyCoinHistory())
     }
 
 }

@@ -155,15 +155,15 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
             }
             composable<AppRoutePath.Login> { backStackEntry ->
                 val paramsBean = backStackEntry.toRoute<AppRoutePath.Login>()
-                LoginPage()
+                LoginPage(paramsBean)
             }
             composable<AppRoutePath.MyCoinHistory> { backStackEntry ->
                 val paramsBean = backStackEntry.toRoute<AppRoutePath.MyCoinHistory>()
-                MyCoinHistoryPage()
+                MyCoinHistoryPage(paramsBean)
             }
             composable<AppRoutePath.CoinRank> { backStackEntry ->
                 val paramsBean = backStackEntry.toRoute<AppRoutePath.CoinRank>()
-                CoinRankPage()
+                CoinRankPage(paramsBean)
             }
             composable<AppRoutePath.Setting> { backStackEntry ->
                 val paramsBean = backStackEntry.toRoute<AppRoutePath.Setting>()

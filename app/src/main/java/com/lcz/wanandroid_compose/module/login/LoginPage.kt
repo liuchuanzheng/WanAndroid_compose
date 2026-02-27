@@ -39,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.lcz.wanandroid_compose.navigation.AppRoutePath
 import com.lcz.wanandroid_compose.navigation.globalNavController
 import com.lcz.wanandroid_compose.theme.WanAndroid_composeTheme
 import com.lcz.wanandroid_compose.util.LogUtil
@@ -54,7 +55,7 @@ import com.lcz.wanandroid_compose.widget.LodingDialog
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginPage() {
+fun LoginPage(paramsBean: AppRoutePath.Login) {
     // 添加 ViewModel 实例
     val viewModel: LoginViewModel = viewModel()
     LogUtil.i(msg = "viewmodel实例:${viewModel}")
@@ -194,7 +195,7 @@ fun LoginPage() {
 @Composable
 private fun LoginPagePreview() {
     WanAndroid_composeTheme {
-        LoginPage()
+        LoginPage(AppRoutePath.Login())
     }
 
 }

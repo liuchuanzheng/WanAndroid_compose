@@ -13,3 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+/JustForCodeIndexModuleDebug
+/JustForCodeIndexModuleRelease
+codeLocator.gradle
