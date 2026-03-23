@@ -31,8 +31,9 @@ import com.lcz.wanandroid_compose.module.demo.nestedscroll.NestedScrollDemoPage
 import com.lcz.wanandroid_compose.module.demo.netcache.NetCacheDemoPage
 import com.lcz.wanandroid_compose.module.demo.sign.page.SignPage
 import com.lcz.wanandroid_compose.module.demo.slider.SliderDemoPage
-import com.lcz.wanandroid_compose.module.demo.loading.LoadingTestPage
 import com.lcz.wanandroid_compose.module.demo.ticktokprogressbar.TickTokProgressBarPage
+import com.lcz.wanandroid_compose.module.demo.loading.LoadingTestPage
+import com.lcz.wanandroid_compose.module.demo.badge.BadgeTestPage
 import com.lcz.wanandroid_compose.module.login.LoginPage
 import com.lcz.wanandroid_compose.module.main.MainPage
 import com.lcz.wanandroid_compose.module.search.page.SearchPage
@@ -212,6 +213,11 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
             composable<AppRoutePath.LoadingTest> { backStackEntry ->
                 val paramsBean = backStackEntry.toRoute<AppRoutePath.LoadingTest>()
                 LoadingTestPage(paramsBean)
+            }
+
+            composable<AppRoutePath.BadgeTest> { backStackEntry ->
+                val paramsBean = backStackEntry.toRoute<AppRoutePath.BadgeTest>()
+                BadgeTestPage(paramsBean)
             }
 
             composable<AppRoutePath.CustomerService> { backStackEntry ->

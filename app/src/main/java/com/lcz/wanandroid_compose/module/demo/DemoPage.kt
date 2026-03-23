@@ -54,6 +54,9 @@ fun DemoPage(paramsBean: AppRoutePath.Demo) {
             ItemView("官方Loading测试", "测试官方CircularProgressIndicator和LinearProgressIndicator") {
                 PageJumpManager.navigateToLoadingTest(AppRoutePath.LoadingTest())
             }
+            ItemView("官方Badge测试", "测试官方Badge组件的样式和事件") {
+                PageJumpManager.navigateToBadgeTest(AppRoutePath.BadgeTest())
+            }
             ItemView("通知Demo", "测试各种各样的通知，使用原始xml方式") {
                 val intent = Intent(context, TestNotificationActivity::class.java)
                 context.startActivity(intent)

@@ -69,6 +69,9 @@ sealed class AppRoutePath {
     //Loading组件测试
     @Serializable
     data class LoadingTest(val description: String = "Loading组件测试", val from: String = "") : AppRoutePath()
+    //Badge组件测试
+    @Serializable
+    data class BadgeTest(val description: String = "Badge组件测试", val from: String = "") : AppRoutePath()
     //客服聊天页
     @Serializable
     data class CustomerService(val description: String = "客服聊天页", val from: String = "") :

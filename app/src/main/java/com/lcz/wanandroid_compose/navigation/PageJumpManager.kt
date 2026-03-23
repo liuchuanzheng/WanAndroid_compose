@@ -70,6 +70,9 @@ object PageJumpManager {
     fun navigateToLoadingTest(paramsBean: AppRoutePath.LoadingTest) {
         simpleNavigate(paramsBean)
     }
+    fun navigateToBadgeTest(paramsBean: AppRoutePath.BadgeTest) {
+        simpleNavigate(paramsBean)
+    }
     fun navigateToCustomerService(paramsBean: AppRoutePath.CustomerService) {
         simpleNavigate(paramsBean)
     }
