@@ -51,6 +51,9 @@ fun DemoPage(paramsBean: AppRoutePath.Demo) {
             ItemView("嵌套滚动Demo", "嵌套滚动Demo") {
                 PageJumpManager.navigateToNestedScrollDemo(AppRoutePath.NestedScrollDemo())
             }
+            ItemView("官方Loading测试", "测试官方CircularProgressIndicator和LinearProgressIndicator") {
+                PageJumpManager.navigateToLoadingTest(AppRoutePath.LoadingTest())
+            }
             ItemView("通知Demo", "测试各种各样的通知，使用原始xml方式") {
                 val intent = Intent(context, TestNotificationActivity::class.java)
                 context.startActivity(intent)

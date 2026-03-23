@@ -66,6 +66,9 @@ sealed class AppRoutePath {
     @Serializable
     data class NestedScrollDemo(val description: String = "嵌套滚动Demo页", val from: String = "") :
         AppRoutePath()
+    //Loading组件测试
+    @Serializable
+    data class LoadingTest(val description: String = "Loading组件测试", val from: String = "") : AppRoutePath()
     //客服聊天页
     @Serializable
     data class CustomerService(val description: String = "客服聊天页", val from: String = "") :
