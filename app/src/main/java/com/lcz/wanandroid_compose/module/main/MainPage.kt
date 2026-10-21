@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.ShoppingBasket
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,28 +39,30 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainPage(paramsBean: AppRoutePath.Main, modifier: Modifier = Modifier) {
-    val bottomBarItems = listOf(
-        BottomBarItem(
-            icon = Icons.Default.Home,
-            text = "首页"
-        ),
-        BottomBarItem(
-            icon = Icons.Default.Email,
-            text = "项目"
-        ),
-        BottomBarItem(
-            icon = Icons.Default.LocationOn,
-            text = "外卖"
-        ),
-        BottomBarItem(
-            icon = Icons.Default.ShoppingBasket,
-            text = "商品"
-        ),
-        BottomBarItem(
-            icon = Icons.Default.Person,
-            text = "我的"
-        ),
-    )
+    val bottomBarItems = remember {
+        listOf(
+            BottomBarItem(
+                icon = Icons.Default.Home,
+                text = "首页"
+            ),
+            BottomBarItem(
+                icon = Icons.Default.Email,
+                text = "项目"
+            ),
+            BottomBarItem(
+                icon = Icons.Default.LocationOn,
+                text = "外卖"
+            ),
+            BottomBarItem(
+                icon = Icons.Default.ShoppingBasket,
+                text = "商品"
+            ),
+            BottomBarItem(
+                icon = Icons.Default.Person,
+                text = "我的"
+            ),
+        )
+    }
 
     val pagerState = rememberPagerState(initialPage = 0) { bottomBarItems.size }
     val coroutineScope = rememberCoroutineScope()
